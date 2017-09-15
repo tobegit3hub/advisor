@@ -28,19 +28,21 @@
                 <th class="active">Id</th>
                 <th class="success">Name</th>
                 <th class="warning">Study Configuration</th>
-                <th class="danger">Status</th>
-                <th class="info">Created Time</th>
-                <th class="active">Updated Time</th>
-                <th class="success">Operation</th>
+                <th class="danger">Algorithm</th>
+                <th class="info">Status</th>
+                <th class="active">Created Time</th>
+                <th class="success">Updated Time</th>
+                <th class="warning">Operation</th>
 
                 {% for study in studies %}
                 <tr>
                     <td class="active"><a href="/dashboard/v1/studies/{{ study.id }}">{{ study.id }}</a></td>
                     <td class="success">{{ study.name }}</td>
                     <td class="warning">{{ study.study_configuration }}</td>
-                    <td class="danger">{{ study.status }}</td>
-                    <td class="info">{{ study.created_time }}</td>
-                    <td class="active">{{ study.updated_time }}</td>
+                    <td class="danger">{{ study.algorithm }}</td>
+                    <td class="info">{{ study.status }}</td>
+                    <td class="active">{{ study.created_time }}</td>
+                    <td class="success">{{ study.updated_time }}</td>
                     <td class="warning">
                         <input type="image" width="22px" src="/static/images/delete-icon.png" alt="Delete"
                                onclick="delete_resource('/dashboard/v1/studies/{{ study.id }}')"/>
@@ -53,9 +55,8 @@
             <hr/>
             <h2>Create Resources</h2>
 
-            <form action="/dashboard/v1/studies" method="post" onsubmit="return confirm(" Do you want to create the
-                  resource?
-            ");">
+            <form action="/dashboard/v1/studies" method="post" onsubmit="return confirm('Do you want to create the
+                  resource?');">
             <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Name </label>
                 <div class="col-sm-10">
@@ -95,8 +96,7 @@
 
                 {% for trial in trials %}
                 <tr>
-                    <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{
-                        trial.id }}</a></td>
+                    <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
                     <td class="success">{{ trial.study_id }}</td>
                     <td class="warning">{{ trial.name }}</td>
                     <td class="danger">{{ trial.parameter_values }}</td>
@@ -116,9 +116,8 @@
             <hr/>
             <h2>Create Resources</h2>
 
-            <form action="/dashboard/v1/trials" method="post" onsubmit="return confirm(" Do you want to create the
-                  resource?
-            ");">
+            <form action="/dashboard/v1/trials" method="post" onsubmit="return confirm('Do you want to create the
+                  resource?');">
             <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Study Id </label>
                 <div class="col-sm-10">

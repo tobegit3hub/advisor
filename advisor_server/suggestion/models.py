@@ -7,6 +7,7 @@ from django.db import models
 class Study(models.Model):
   name = models.CharField(max_length=128, blank=False)
   study_configuration = models.TextField(blank=False)
+  algorithm = models.CharField(max_length=128, blank=False)
 
   status = models.CharField(max_length=128, blank=False)
   created_time = models.DateTimeField(auto_now_add=True)
@@ -16,11 +17,12 @@ class Study(models.Model):
     return "{}-{}".format(self.id, self.name)
 
   @classmethod
-  def create(cls, name, study_configuration):
+  def create(cls, name, study_configuration, algorithm="RandomSearchAlgorithm", status="PENDING"):
     study = cls()
     study.name = name
     study.study_configuration = study_configuration
-    study.status = "PENDING"
+    study.algorithm = algorithm
+    study.status = status
     study.save()
     return study
 
@@ -29,6 +31,7 @@ class Study(models.Model):
         "id": self.id,
         "name": self.name,
         "study_configuration": self.study_configuration,
+        "algorithm": self.algorithm,
         "status": self.status,
         "created_time": self.created_time,
         "updated_time": self.updated_time

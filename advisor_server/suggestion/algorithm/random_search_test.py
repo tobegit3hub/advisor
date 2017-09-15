@@ -25,8 +25,8 @@ class RandomSearchAlgorithmTest(TestCase):
         }]
     }
     study_configuration = json.dumps(study_configuration_json)
-    study = Study.create("RandomSearchStudy", study_configuration)
-    trial = Trial.create(study.id, "RandomSearchTrial")
+    self.study = Study.create("RandomSearchStudy", study_configuration)
+    trial = Trial.create(self.study.id, "RandomSearchTrial")
     self.trials = [trial]
 
   def tearDown(self):
@@ -38,7 +38,7 @@ class RandomSearchAlgorithmTest(TestCase):
 
   def test_get_new_suggestions(self):
     randomSearchAlgorithm = RandomSearchAlgorithm()
-    new_trials = randomSearchAlgorithm.get_new_suggestions(self.trials)
+    new_trials = randomSearchAlgorithm.get_new_suggestions(self.study.id, self.trials)
 
     # Assert getting one trial
     self.assertEqual(len(new_trials), 1)

@@ -5,9 +5,7 @@ import json
 import requests
 
 from django.contrib import messages
-from django.http import JsonResponse
 from django.shortcuts import redirect
-from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -92,6 +90,20 @@ def v1_study(request, study_id):
         "message": "{} method not allowed".format(request.method)
     }
     return JsonResponse(response, status=405)
+
+
+@csrf_exempt
+def v1_study_suggestions(request, study_id):
+  if request.method == "POST":
+    data = {}
+    url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/suggestions".format(
+      study_id)
+    response = requests.post(url, json=data)
+    messages.info(request, response.content)
+    #return redirect("v1_study")
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+  else:
+    return JsonResponse({"error": "Unsupported http method"})
 
 
 @csrf_exempt

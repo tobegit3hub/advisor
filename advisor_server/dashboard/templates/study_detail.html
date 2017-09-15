@@ -33,6 +33,10 @@
         <td class="success">{{ study.study_configuration }}</td>
       </tr>
       <tr>
+        <td class="active">Algorithm</td>
+        <td class="success">{{ study.algorithm }}</td>
+      </tr>
+      <tr>
         <td class="active">Status</td>
         <td class="success">{{ study.status }}</td>
       </tr>
@@ -45,6 +49,14 @@
         <td class="success">{{ study.updated_time }}</td>
       </tr>
     </table>
+
+    <form action="/dashboard/v1/studies/{{ study.id }}/suggestions" method="post" onsubmit="return confirm('Do you want to generate the suggestions?');">
+      <div class="form-group row">
+        <div align="center">
+          <button type="submit" class="btn btn-primary">Generate Suggestions</button>
+        </div>
+      </div>
+    </form>
 
   </div>
 

@@ -10,12 +10,11 @@ class RandomSearchAlgorithm(BaseSuggestionAlgorithm):
   def get_random_value(self, min_value, max_value):
     return random.uniform(min_value, max_value)
 
-  def get_new_suggestions(self, trials, number=1):
+  def get_new_suggestions(self, study_id, trials, number=1):
     """
     Get the new suggested trials with random search.
     """
-    old_trial = trials[0]
-    study = Study.objects.get(id=old_trial.study_id)
+    study = Study.objects.get(id=study_id)
 
     result = []
     for i in range(number):
@@ -31,6 +30,7 @@ class RandomSearchAlgorithm(BaseSuggestionAlgorithm):
         parameter_values_json[param["parameterName"]] = random_value
 
       trial.parameter_values = json.dumps(parameter_values_json)
+      trial.save()
       result.append(trial)
 
     return result

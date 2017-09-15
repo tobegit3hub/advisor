@@ -6,6 +6,8 @@ urlpatterns = [
     url(r"^v1/studies$", views.v1_studies, name="v1_studies"),
     url(r"^v1/studies/(?P<study_id>[\w.-]+)$", views.v1_study,
         name="v1_study"),
+    url(r"^v1/studies/(?P<study_id>[\w.-]+)/suggestions$", views.v1_study_suggestions,
+        name="v1_study_suggestions"),
     url(r"^v1/studies/(?P<study_id>[\w.-]+)/trials$",
         views.v1_trials,
         name="v1_trials"),

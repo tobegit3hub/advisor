@@ -3,7 +3,7 @@ from suggestion.models import Trial
 
 
 class BaseSuggestionAlgorithm(object):
-  def get_new_suggestions(self, trials, number=1):
+  def get_new_suggestions(self, study_id, trials, number=1):
     """
     The study's study_configuration is like this.
     {
@@ -27,6 +27,7 @@ class BaseSuggestionAlgorithm(object):
     }
     
     Args:
+      study_id: The study id.
       trials: The all trials of this study.
       number: The number of trial to return. 
     Returns:
