@@ -3,30 +3,36 @@ from suggestion.models import Trial
 
 
 class BaseSuggestionAlgorithm(object):
-  """
-  The study's study_configuration is like this.
-  {
-		"goal": "MAXIMIZE",
-		"maxTrials": 5,
-		"maxParallelTrials": 1,
-		"params": [
-			{
-				"parameterName": "hidden1",
-				"type": "INTEGER",
-				"minValue": 40,
-				"maxValue": 400,
-				"scallingType": "LINEAR"
-			}
-		]
-	}
-  
-  The trial's parameter_values_json should be like this.
-  {
-        "hidden1": 40
-  }
-  """
   def get_new_suggestions(self, trials, number=1):
-    pass
+    """
+    The study's study_configuration is like this.
+    {
+          "goal": "MAXIMIZE",
+          "maxTrials": 5,
+          "maxParallelTrials": 1,
+          "params": [
+              {
+                  "parameterName": "hidden1",
+                  "type": "INTEGER",
+                  "minValue": 40,
+                  "maxValue": 400,
+                  "scallingType": "LINEAR"
+              }
+          ]
+      }
+    
+    The trial's parameter_values_json should be like this.
+    {
+          "hidden1": 40
+    }
+    
+    Args:
+      trials: The all trials of this study.
+      number: The number of trial to return. 
+    Returns:
+      The array of trial objects.
+    """
+    return []
 
 
 class BaseEarlyStopAlgorithm(object):
