@@ -53,6 +53,7 @@ class Trial(models.Model):
     trial = cls()
     trial.study_id = study_id
     trial.name = name
+    trial.status = "PENDING"
     trial.save()
     return trial
 
@@ -63,6 +64,7 @@ class Trial(models.Model):
         "name": self.name,
         "parameter_values": self.parameter_values,
         "objective_value": self.objective_value,
+        "status": self.status,
         "created_time": self.created_time,
         "updated_time": self.updated_time
     }

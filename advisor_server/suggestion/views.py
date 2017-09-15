@@ -21,6 +21,7 @@ def index(request):
 
 @csrf_exempt
 def v1_studies(request):
+
   # Create the study
   if request.method == "POST":
     data = json.loads(request.body)
@@ -32,29 +33,42 @@ def v1_studies(request):
 
   # List the studies
   elif request.method == "GET":
-    pass
-
     studies = Study.objects.all()
     response_data = [study.to_json() for study in studies]
     return JsonResponse({"data": response_data})
   else:
-    response = {"error": "Unsupported http method"}
-    return JsonResponse(response)
+    return JsonResponse({"error": "Unsupported http method"})
 
 
 @csrf_exempt
 def v1_study(request, study_id):
-  if request.method == "GET":
-    pass
-  elif request.method == "DELETE":
-    pass
 
-  response = {"study_id": study_id}
-  return JsonResponse(response)
+  # Describe the study
+  if request.method == "GET":
+    study = Study.objects.get(id=study_id)
+    return JsonResponse({"data": study.to_json()})
+
+  # Update the study
+  elif request.method == "PATCH":
+    study = Study.objects.get(id=study_id)
+    data = json.loads(request.body)
+    if "status" in data:
+      study.status = data["status"]
+    study.save()
+    return JsonResponse({"data": study.to_json()})
+
+  # Delete the study
+  elif request.method == "DELETE":
+    study = Study.objects.get(id=study_id)
+    study.delete()
+    return JsonResponse({"message": "Success to delete"})
+  else:
+    return JsonResponse({"error": "Unsupported http method"})
 
 
 @csrf_exempt
 def v1_trials(request, study_id):
+
   # Create the trial
   if request.method == "POST":
     data = json.loads(request.body)
@@ -69,16 +83,30 @@ def v1_trials(request, study_id):
     response_data = [trial.to_json() for trial in trials]
     return JsonResponse({"data": response_data})
   else:
-    response = {"error": "Unsupported http method"}
-    return JsonResponse(response)
+    return JsonResponse({"error": "Unsupported http method"})
 
 
 @csrf_exempt
 def v1_trial(request, study_id, trial_id):
-  if request.method == "GET":
-    pass
-  elif request.method == "DELETE":
-    pass
 
-  response = {"study_id": study_id, "trial_id": trial_id}
-  return JsonResponse(response)
+  # Describe the trial
+  if request.method == "GET":
+    trial = Trial.objects.get(study_id=study_id, id=trial_id)
+    return JsonResponse({"data": trial.to_json()})
+
+  # Update the trial
+  elif request.method == "PATCH":
+    trial = Trial.objects.get(study_id=study_id, id=trial_id)
+    data = json.loads(request.body)
+    if "status" in data:
+      trial.status = data["status"]
+    trial.save()
+    return JsonResponse({"data": trial.to_json()})
+
+  # Delete the trial
+  elif request.method == "DELETE":
+    trial = Trial.objects.get(study_id=study_id, id=trial_id)
+    trial.delete()
+    return JsonResponse({"message": "Success to delete"})
+  else:
+    return JsonResponse({"error": "Unsupported http method"})
