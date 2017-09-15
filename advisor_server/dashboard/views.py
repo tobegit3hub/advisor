@@ -53,13 +53,48 @@ def v1_studies(request):
     messages.info(request, response.content)
     return redirect("index")
   else:
-    return JsonResponse({"error": "Unsupported http method"})
+    response = {
+        "error": True,
+        "message": "{} method not allowed".format(request.method)
+    }
+    return JsonResponse(response, status=405)
 
 
 @csrf_exempt
-def v1_study(request):
-  context = {}
-  return render(request, "index.html", context)
+def v1_study(request, study_id):
+  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}".format(study_id)
+
+  if request.method == "GET":
+    response = requests.get(url)
+
+    tirals_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials".format(
+        study_id)
+    tirals_response = requests.get(tirals_url)
+
+    if response.ok and tirals_response.ok:
+      study = json.loads(response.content.decode("utf-8"))["data"]
+      trials = json.loads(tirals_response.content.decode("utf-8"))["data"]
+
+      #import ipdb;ipdb.set_trace()
+
+      context = {"success": True, "study": study, "trials": trials}
+      return render(request, "study_detail.html", context)
+    else:
+      response = {
+          "error": True,
+          "message": "Fail to request the url: {}".format(url)
+      }
+      return JsonResponse(response, status=405)
+  elif request.method == "DELETE" or request.method == "POST":
+    response = requests.delete(url)
+    messages.info(request, response.content)
+    return redirect("index")
+  else:
+    response = {
+        "error": True,
+        "message": "{} method not allowed".format(request.method)
+    }
+    return JsonResponse(response, status=405)
 
 
 @csrf_exempt
@@ -81,5 +116,28 @@ def v1_trials(request):
 
 @csrf_exempt
 def v1_trial(request, study_id, trial_id):
-  context = {}
-  return render(request, "index.html", context)
+  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}".format(
+      study_id, trial_id)
+
+  if request.method == "GET":
+    response = requests.get(url)
+    if response.ok:
+      trial = json.loads(response.content.decode("utf-8"))["data"]
+      context = {"success": True, "trial": trial}
+      return render(request, "trial_detail.html", context)
+    else:
+      response = {
+          "error": True,
+          "message": "Fail to request the url: {}".format(url)
+      }
+      return JsonResponse(response, status=405)
+  elif request.method == "DELETE" or request.method == "POST":
+    response = requests.delete(url)
+    messages.info(request, response.content)
+    return redirect("index")
+  else:
+    response = {
+        "error": True,
+        "message": "{} method not allowed".format(request.method)
+    }
+    return JsonResponse(response, status=405)

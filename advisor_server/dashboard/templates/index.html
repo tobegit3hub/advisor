@@ -30,19 +30,19 @@
                           <th class="warning">Study Configuration</th>
                           <th class="danger">Status</th>
                           <th class="info">Created Time</th>
-                          <th class="active">Updated time</th>
+                          <th class="active">Updated Time</th>
                           <th class="success">Operation</th>
 
                           {% for study in studies %}
                             <tr>
-                              <td class="active"><a href="/dashboard/trainjobs/{{ job.org_id }}/{{ job.job_name }}">{{ study.id }}</a></td>
+                              <td class="active"><a href="/dashboard/v1/studies/{{ study.id }}">{{ study.id }}</a></td>
                               <td class="success">{{ study.name }}</td>
                               <td class="warning">{{ study.study_configuration }}</td>
                               <td class="danger">{{ study.status }}</td>
                               <td class="info">{{ study.created_time }}</td>
                               <td class="active">{{ study.updated_time }}</td>
                               <td class="warning">
-                                <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/devenvs/{{ dev.org_id }}/{{ dev.dev_name }}')"/>
+                                <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/v1/studies/{{ study.id }}')"/>
                               </td>
                             </tr>
                           {% endfor %}
@@ -90,7 +90,7 @@
 
                           {% for trial in trials %}
                             <tr>
-                              <td class="active"><a href="/dashboard/trainjobs/{{ job.org_id }}/{{ job.job_name }}">{{ trial.id }}</a></td>
+                              <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
                               <td class="success">{{ trial.study_id }}</td>
                               <td class="warning">{{ trial.name }}</td>
                               <td class="danger">{{ trial.parameter_values }}</td>
@@ -99,7 +99,7 @@
                               <td class="success">{{ trial.created_time }}</td>
                               <td class="warning">{{ trial.updated_time }}</td>
                               <td class="danger">
-                                <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/trainjobs/{{ job.org_id }}/{{ job.job_name }}')"/>
+                                <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}')"/>
                               </td>
                             </tr>
                           {% endfor %}
