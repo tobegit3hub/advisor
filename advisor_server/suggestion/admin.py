@@ -3,4 +3,8 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-# Register your models here.
+from suggestion.models import Study
+from suggestion.models import Trial
+
+admin.site.register(Study)
+admin.site.register(Trial)
