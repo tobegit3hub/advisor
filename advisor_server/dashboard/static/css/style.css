@@ -1,0 +1,183 @@
+@charset "utf-8";
+
+/* footer style */
+.footer ul li a {
+	padding: 0 0 5px 0;
+	display: block;
+	text-align: center;
+}
+
+.footer h3 {
+	border-bottom: 1px solid #BAC1C8;
+	color: #54697E;
+	font-size: 18px;
+	font-weight: 600;
+	line-height: 27px;
+	padding: 20px 0 10px;
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.footer ul {
+	font-size: 13px;
+	list-style-type: none;
+	margin-left: 0;
+	padding-left: 0;
+	margin-top: 15px;
+	color: #7F8C8D;
+}
+/* end of footer style */
+
+
+/* water fall style */
+#main ul{ *overflow:hidden; _height:1%;}
+
+#main ul li{ border:1px solid #CCC; border-bottom:2px solid #CCC; border-top:1px solid #DBDBDB; float:left; display:inline; list-style:none; margin:6px 0; background:#FFF; width:216px;}
+#main ul li.hover{ border:1px solid #fa3241; border-bottom:2px solid #fa3241;}
+#main ul li img{ width:196px; display:block;}
+#main ul li img.hover{ filter: Alpha(opacity=90); -moz-opacity:.9; opacity:0.9;}
+#main ul li h3,#main ul li p{ padding:0 5px 0 5px; font-weight:normal;}
+
+.img_block{ position:relative; padding: 5px;}
+/* end of water fall style */
+
+
+/* appointment form style */
+
+/*custom font*/
+@import url(http://fonts.googleapis.com/css?family=Montserrat);
+
+/*form styles*/
+#appointment_form {
+	width: 400px;
+	margin: 50px auto;
+	text-align: center;
+	position: relative;
+}
+#appointment_form fieldset {
+	background: white;
+	border: 0 none;
+	border-radius: 3px;
+	box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+	padding: 20px 30px;
+	box-sizing: border-box;
+	width: 80%;
+	margin: 0 10%;
+	
+	/*stacking fieldsets above each other*/
+	position: relative;
+}
+/*Hide all except first fieldset*/
+#appointment_form fieldset:not(:first-of-type) {
+	display: none;
+}
+/*inputs*/
+#appointment_form input, #appointment_form textarea {
+	padding: 15px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	margin-bottom: 10px;
+	width: 100%;
+	box-sizing: border-box;
+	font-family: montserrat;
+	color: #2C3E50;
+	font-size: 13px;
+}
+/*buttons*/
+#appointment_form .action-button {
+	width: 100px;
+	background: #27AE60;
+	font-weight: bold;
+	color: white;
+	border: 0 none;
+	border-radius: 1px;
+	cursor: pointer;
+	padding: 10px 5px;
+	margin: 10px 5px;
+}
+#appointment_form .action-button:hover, #appointment_form .action-button:focus {
+	box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+}
+/*headings*/
+.fs-title {
+	font-size: 15px;
+	text-transform: uppercase;
+	color: #2C3E50;
+	margin-bottom: 10px;
+}
+.fs-subtitle {
+	font-weight: normal;
+	font-size: 13px;
+	color: #666;
+	margin-bottom: 20px;
+}
+/*progressbar*/
+#progressbar {
+	margin-bottom: 30px;
+	overflow: hidden;
+	/*CSS counters to number the steps*/
+	counter-reset: step;
+}
+#progressbar li {
+	list-style-type: none;
+	color: white;
+	text-transform: uppercase;
+	font-size: 9px;
+	/* width: 33.33%; */
+	width: 25%;
+	float: left;
+	position: relative;
+}
+#progressbar li:before {
+	content: counter(step);
+	counter-increment: step;
+	width: 20px;
+	line-height: 20px;
+	display: block;
+	font-size: 10px;
+	color: #333;
+	background: white;
+	border-radius: 3px;
+	margin: 0 auto 5px auto;
+	/* margin: 0 0 0 13px; */
+}
+/*progressbar connectors*/
+#progressbar li:after {
+	content: '';
+	width: 100%;
+	height: 2px;
+	background: white;
+	position: absolute;
+	left: -50%;
+	top: 9px;
+	z-index: -1; /*put it behind the numbers*/
+}
+#progressbar li:first-child:after {
+	/*connector not needed before the first step*/
+	content: none; 
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,  #progressbar li.active:after{
+	background: #27AE60;
+	color: white;
+}
+
+/* end of appointment form style */
+
+
+
+/* image radio style */
+label > input{ /* HIDE RADIO */
+	display:none;
+}
+
+label > input + img{ /* IMAGE STYLES */
+	cursor:pointer;
+	border:2px solid transparent;
+}
+label > input:checked + img{ /* (CHECKED) IMAGE STYLES */
+	border:2px solid #f00;
+}
+
+/* end of image radio style */
