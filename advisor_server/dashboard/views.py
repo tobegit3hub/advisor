@@ -74,9 +74,6 @@ def v1_study(request, study_id):
     if response.ok and tirals_response.ok:
       study = json.loads(response.content.decode("utf-8"))["data"]
       trials = json.loads(tirals_response.content.decode("utf-8"))["data"]
-
-      #import ipdb;ipdb.set_trace()
-
       context = {"success": True, "study": study, "trials": trials}
       return render(request, "study_detail.html", context)
     else:
