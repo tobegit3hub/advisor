@@ -49,10 +49,11 @@ def v1_studies(request):
   if request.method == "POST":
     name = request.POST.get("name", "")
     study_configuration = request.POST.get("study_configuration", "")
+    algorighm = request.POST.get("algorithm", "RandomSearchAlgorithm")
 
     # Remove the charactors like \t and \"
     study_configuration_json = json.loads(study_configuration)
-    data = {"name": name, "study_configuration": study_configuration_json}
+    data = {"name": name, "study_configuration": study_configuration_json, "algorithm": algorighm}
 
     url = "http://127.0.0.1:8000/suggestion/v1/studies"
     response = requests.post(url, json=data)

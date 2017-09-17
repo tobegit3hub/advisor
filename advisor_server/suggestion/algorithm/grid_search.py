@@ -24,7 +24,10 @@ class GridSearchAlgorithm(BaseSuggestionAlgorithm):
         min_value = param["minValue"]
         max_value = param["maxValue"]
 
-        value_step = (max_value - min_value) / (number - 1)
+        if number > 1:
+          value_step = (max_value - min_value) / (number - 1)
+        else:
+          value_step = max_value - min_value
         parameter_value = min_value + value_step * i
         parameter_values_json[param["parameterName"]] = parameter_value
 

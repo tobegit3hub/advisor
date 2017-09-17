@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import json
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.http import QueryDict
@@ -11,8 +13,7 @@ from django.db import IntegrityError, transaction
 from suggestion.models import Study
 from suggestion.models import Trial
 from suggestion.algorithm.random_search import RandomSearchAlgorithm
-
-import json
+from suggestion.algorithm.grid_search import GridSearchAlgorithm
 
 
 def index(request):
@@ -28,8 +29,9 @@ def v1_studies(request):
     data = json.loads(request.body)
     name = data["name"]
     study_configuration = json.dumps(data["study_configuration"])
+    algorithm = data.get("algorithm", "RandomSearchAlgorithm")
 
-    study = Study.create(name, study_configuration)
+    study = Study.create(name, study_configuration, algorithm)
     return JsonResponse({"data": study.to_json()})
 
   # List the studies
@@ -84,14 +86,16 @@ def v1_study_suggestions(request, study_id):
     trials = [trial for trial in trials]
 
     if study.algorithm == "RandomSearchAlgorithm":
-      randomSearchAlgorithm = RandomSearchAlgorithm()
-      new_trials = randomSearchAlgorithm.get_new_suggestions(
-          study.id, trials, trials_number)
+      algorithm = RandomSearchAlgorithm()
+    elif study.algorithm == "GridSearchAlgorithm":
+      algorithm = GridSearchAlgorithm()
     else:
       return JsonResponse({
           "error":
           "Unknown algorithm: {}".format(study.algorithm)
       })
+
+    new_trials = algorithm.get_new_suggestions(study.id, trials, trials_number)
 
     return JsonResponse({"data": [trial.to_json() for trial in new_trials]})
   else:
