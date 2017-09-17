@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import json
 import requests
+import platform
 
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -34,7 +35,12 @@ def index(request):
   except Study.DoesNotExist:
     trials = []
 
-  context = {"success": True, "studies": studies, "trials": trials}
+  context = {
+      "success": True,
+      "studies": studies,
+      "trials": trials,
+      "platform": platform
+  }
   return render(request, "index.html", context)
 
 
@@ -97,12 +103,14 @@ def v1_study(request, study_id):
 @csrf_exempt
 def v1_study_suggestions(request, study_id):
   if request.method == "POST":
-    data = {}
+    trials_number_string = request.POST.get("trials_number", "1")
+    trials_number = int(trials_number_string)
+
+    data = {"trials_number": trials_number}
     url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/suggestions".format(
-      study_id)
+        study_id)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
-    #return redirect("v1_study")
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
   else:
     return JsonResponse({"error": "Unsupported http method"})

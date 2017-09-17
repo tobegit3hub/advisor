@@ -57,25 +57,26 @@
 
             <form action="/dashboard/v1/studies" method="post" onsubmit="return confirm('Do you want to create the
                   resource?');">
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Name </label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" placeholder="study" required="required">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Name </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" placeholder="study" required="required">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Study Configuration
-                </label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="study_configuration" placeholder=""
-                           required="required">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Study
+                        Configuration
+                    </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="study_configuration" placeholder=""
+                               required="required">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div align="center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group row">
+                    <div align="center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                 </div>
-            </div>
             </form>
 
         </div>
@@ -96,7 +97,8 @@
 
                 {% for trial in trials %}
                 <tr>
-                    <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
+                    <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{
+                        trial.id }}</a></td>
                     <td class="success">{{ trial.study_id }}</td>
                     <td class="warning">{{ trial.name }}</td>
                     <td class="danger">{{ trial.parameter_values }}</td>
@@ -118,23 +120,24 @@
 
             <form action="/dashboard/v1/trials" method="post" onsubmit="return confirm('Do you want to create the
                   resource?');">
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Study Id </label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="study_id" placeholder="1" required="required">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Study Id
+                    </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="study_id" placeholder="1" required="required">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Name </label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="name" placeholder="trial" required="required">
+                <div class="form-group row">
+                    <label for="inputEmail3" class="col-sm-2 col-form-label"><font color="red">*</font> Name </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="name" placeholder="trial" required="required">
+                    </div>
                 </div>
-            </div>
-            <div class="form-group row">
-                <div align="center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="form-group row">
+                    <div align="center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
                 </div>
-            </div>
             </form>
 
         </div>
@@ -144,59 +147,29 @@
             <h2> Configuration </h2>
 
             <table class="table table-striped table-hover table-condensed">
-                <th class="active">Org id</th>
-                <th class="success">Org name</th>
-                <th class="warning">Resource Type</th>
-                <th class="danger">Memory / Used</th>
-                <th class="info">CPU / Used</th>
-                <th class="active">GPU / Used</th>
-
-                {% for quota in quotas %}
-                <tr>
-                    <td class="active">{{ quota.org_id }}</td>
-                    <td class="success">{{ quota.org_name }}</td>
-                    <td class="warning">DevEnv</td>
-                    <td class="danger">{{ quota.dev_memory_quota }} / {{ quota.dev_memory_used }}</td>
-                    <td class="info">{{ quota.dev_cpu_quota }} / {{ quota.dev_cpu_used }}</td>
-                    <td class="active">{{ quota.dev_gpu_quota }} / {{ quota.dev_gpu_used }}</td>
-                </tr>
+                <th class="active">Attribute</th>
+                <th class="success">Value</th>
 
                 <tr>
-                    <td class="active"></td>
-                    <td class="success"></td>
-                    <td class="warning">TrainJob</td>
-                    <td class="danger">{{ quota.train_memory_quota }} / {{ quota.train_memory_used }}</td>
-                    <td class="info">{{ quota.train_cpu_quota }} / {{ quota.train_cpu_used }}</td>
-                    <td class="active">{{ quota.train_gpu_quota }} / {{ quota.train_gpu_used }}</td>
+                    <td class="active">System</td>
+                    <td class="success">{{ platform.system }}</td>
                 </tr>
-
                 <tr>
-                    <td class="active"></td>
-                    <td class="success"></td>
-                    <td class="warning">ModelService</td>
-                    <td class="danger">{{ quota.model_memory_quota }} / {{ quota.model_memory_used }}</td>
-                    <td class="info">{{ quota.model_cpu_quota }} / {{ quota.model_cpu_used }}</td>
-                    <td class="active">{{ quota.model_gpu_quota }} / {{ quota.model_gpu_used }}</td>
+                    <td class="active">Platform</td>
+                    <td class="success">{{ platform.platform }}</td>
                 </tr>
-
                 <tr>
-                    <td class="active"></td>
-                    <td class="success"></td>
-                    <td class="warning">Total</td>
-                    <td class="danger">{{ quota.total_memory_quota }} / {{ quota.total_memory_used }}</td>
-                    <td class="info">{{ quota.total_cpu_quota }} / {{ quota.total_cpu_used }}</td>
-                    <td class="active">{{ quota.total_gpu_quota }} / {{ quota.total_gpu_used }}</td>
+                    <td class="active">Machine</td>
+                    <td class="success">{{ platform.machine }}</td>
                 </tr>
-
+                <tr>
+                    <td class="active">Version</td>
+                    <td class="success">{{ platform.version }}</td>
                 </tr>
-                <td class="active"></td>
-                <td class="success"></td>
-                <td class="warning">TensorBoardService</td>
-                <td class="danger">{{ quota.tensorboard_quota }} / {{ quota.tensorboard_used }}</td>
+                <tr>
+                    <td class="active">Processor</td>
+                    <td class="success">{{ platform.processor }}</td>
                 </tr>
-
-                {% endfor %}
-
             </table>
 
         </div>
