@@ -17,7 +17,11 @@ class Study(models.Model):
     return "{}-{}".format(self.id, self.name)
 
   @classmethod
-  def create(cls, name, study_configuration, algorithm="RandomSearchAlgorithm", status="PENDING"):
+  def create(cls,
+             name,
+             study_configuration,
+             algorithm="RandomSearchAlgorithm",
+             status="PENDING"):
     study = cls()
     study.name = name
     study.study_configuration = study_configuration

@@ -66,15 +66,16 @@ def v1_study(request, study_id):
   else:
     return JsonResponse({"error": "Unsupported http method"})
 
+
 @csrf_exempt
 def v1_study_suggestions(request, study_id):
   # Create the trial
   if request.method == "POST":
     data = json.loads(request.body)
-    trial_number = 1
+    trials_number = 1
     trial_name = "Trial"
-    if "trial_number" in data:
-      trial_number = data["trial_number"]
+    if "trials_number" in data:
+      trials_number = data["trials_number"]
     if "trial_name" in data:
       trial_name = data["trial_name"]
 
@@ -84,9 +85,13 @@ def v1_study_suggestions(request, study_id):
 
     if study.algorithm == "RandomSearchAlgorithm":
       randomSearchAlgorithm = RandomSearchAlgorithm()
-      new_trials = randomSearchAlgorithm.get_new_suggestions(study.id, trials, trial_number)
+      new_trials = randomSearchAlgorithm.get_new_suggestions(
+          study.id, trials, trials_number)
     else:
-      return JsonResponse({"error": "Unknown algorithm: {}".format(study.algorithm)})
+      return JsonResponse({
+          "error":
+          "Unknown algorithm: {}".format(study.algorithm)
+      })
 
     return JsonResponse({"data": [trial.to_json() for trial in new_trials]})
   else:

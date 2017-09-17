@@ -38,7 +38,8 @@ class RandomSearchAlgorithmTest(TestCase):
 
   def test_get_new_suggestions(self):
     randomSearchAlgorithm = RandomSearchAlgorithm()
-    new_trials = randomSearchAlgorithm.get_new_suggestions(self.study.id, self.trials)
+    new_trials = randomSearchAlgorithm.get_new_suggestions(
+        self.study.id, self.trials)
 
     # Assert getting one trial
     self.assertEqual(len(new_trials), 1)
