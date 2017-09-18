@@ -30,21 +30,64 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 
 ## Usage
 
-Install the dependencies.
-
-```shell
-pip install -r requirements.txt
-```
+### Advisor Server
 
 Run the advisor server.
 
-```shell
+```
+pip install -r ./requirements.txt
+
 ./manage.py runserver 0.0.0.0:8000
 ```
 
 Open `http://127.0.0.1:8000` in the browser.
 
-## Screenshot
+### Advisor Client
+
+Install with `pip`.
+
+```
+pip install advisor_client
+```
+
+Run with Python SDK.
+
+```
+client = AdvisorClient()
+
+# Create the study
+study_configuration = {
+        "goal": "MAXIMIZE",
+        "maxTrials": 5,
+        "maxParallelTrials": 1,
+        "params": [
+                {
+                        "parameterName": "hidden1",
+                        "type": "INTEGER",
+                        "minValue": 40,
+                        "maxValue": 400,
+                        "scallingType": "LINEAR"
+                }
+        ]
+}
+study = client.create_study("Study", study_configuration)
+
+# Get suggested trials
+trials = client.get_suggestions(study, 3)
+
+# Complete the trial
+client.complete_trial(trial, trial_metrics)
+```
+
+Run with command-line tool.
+
+```
+advisor study list
+
+advisor trial list --study_id 1
+```
+
+## Screenshots
 
 List all the studies and create/delete the studies easily.
 
