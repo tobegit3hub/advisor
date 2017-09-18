@@ -1,0 +1,59 @@
+/**
+ * jQuery Json Presenter Plugin v1.0.0
+ *
+ * Copyright 2014 Steven Pease
+ * Released under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ */
+.parsed-json {
+	font-size: 11px !important;
+	font-family: Menlo, monospace;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.parsed-json-expandable-ellipsis:hover,
+.parsed-json-property-expandable:hover,
+.parsed-json-property-toggleable:hover,
+.parsed-json-has-alternate-value:hover {
+	cursor: hand;
+	cursor: pointer;
+}
+
+.parsed-json-property-name {
+	color: rgb(136, 19, 145);
+}
+
+.parsed-json-object-comma {
+	color: #333;
+}
+
+.parsed-json-value-boolean {
+	color: #0000ff;
+}
+
+.parsed-json-value-function,
+.parsed-json-array-bracket,
+.parsed-json-object-bracket {
+	color: #333;
+}
+
+.parsed-json-value-null,
+.parsed-json-value-undefined {
+	color: rgb(128, 128, 128);
+}
+
+.parsed-json-value-number {
+	color: #5FB526;
+}
+
+.parsed-json-value-regexp,
+.parsed-json-value-string {
+	color: rgb(196, 26, 22);
+	white-space: pre;
+	unicode-bidi: -webkit-isolate;
+}
+
+.parsed-json .hidden {
+	display: none;
+}
