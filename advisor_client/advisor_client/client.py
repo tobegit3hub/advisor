@@ -6,11 +6,10 @@ from .model import Study
 from .model import Trial
 from .model import TrialMetric
 
-class AdvisorClient(object):
 
+class AdvisorClient(object):
   def __init__(self, endpoint="http://127.0.0.1:8000"):
     self.endpoint = endpoint
-
 
   def create_study(self, name, study_configuration):
     url = "{}/suggestion/v1/studies".format(self.endpoint)
@@ -20,9 +19,8 @@ class AdvisorClient(object):
     study = None
     if response.ok:
       study = Study.from_dict(response.json()["data"])
-    
+
     return study
-    
 
   def list_studies(self):
     url = "{}/suggestion/v1/studies".format(self.endpoint)
@@ -37,7 +35,6 @@ class AdvisorClient(object):
 
     return studies
 
-
   # TODO: Support load study by configuration and name
   def get_study(self, study_id):
     url = "{}/suggestion/v1/studies/{}".format(self.endpoint, study_id)
@@ -49,14 +46,13 @@ class AdvisorClient(object):
 
     return study
 
-
   # TODO: Implement this method by status's status
   def is_study_done(self):
     return False
 
-
-  def get_suggestions(self, study, trials_number=1):
-    url = "{}/suggestion/v1/studies/{}/suggestions".format(self.endpoint, study.id)
+  def get_suggestions(self, study_id, trials_number=1):
+    url = "{}/suggestion/v1/studies/{}/suggestions".format(
+        self.endpoint, study_id)
     request_data = {"trials_number": trials_number}
     response = requests.post(url, json=request_data)
     trials = []
@@ -69,9 +65,8 @@ class AdvisorClient(object):
 
     return trials
 
-
-  def list_trials(self, study):
-    url = "{}/suggestion/v1/studies/{}/trials".format(self.endpoint, study.id)
+  def list_trials(self, study_id):
+    url = "{}/suggestion/v1/studies/{}/trials".format(self.endpoint, study_id)
     response = requests.get(url)
     trials = []
 
@@ -83,9 +78,9 @@ class AdvisorClient(object):
 
     return trials
 
-
   def list_trial_metrics(self, study_id, trial_id):
-    url = "{}/suggestion/v1/studies/{}/trials/{}/metrics".format(self.endpoint, study_id)
+    url = "{}/suggestion/v1/studies/{}/trials/{}/metrics".format(
+        self.endpoint, study_id)
     response = requests.get(url)
     trial_metrics = []
 
@@ -97,10 +92,6 @@ class AdvisorClient(object):
 
     return trial_metrics
 
-
   # TODO: Implement this by uploading multiple trial metrics and updating status
   def complete_trial(trial, trial_metrics):
     return
-    
-
-

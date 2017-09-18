@@ -27,5 +27,6 @@ setup(name="advisor_client",
       packages=["advisor_client"],
       entry_points={
           "console_scripts": [
+              "advisor=advisor_client.command:main"
           ],
       })

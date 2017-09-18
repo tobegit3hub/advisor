@@ -36,14 +36,14 @@
 
                 {% for study in studies %}
                 <tr>
-                    <td class="active"><a href="/dashboard/v1/studies/{{ study.id }}">{{ study.id }}</a></td>
-                    <td class="success">{{ study.name }}</td>
-                    <td class="warning">{{ study.study_configuration }}</td>
-                    <td class="danger">{{ study.algorithm }}</td>
-                    <td class="info">{{ study.status }}</td>
-                    <td class="active">{{ study.created_time }}</td>
-                    <td class="success">{{ study.updated_time }}</td>
-                    <td class="warning">
+                    <td class="text-center active"><a href="/dashboard/v1/studies/{{ study.id }}">{{ study.id }}</a></td>
+                    <td class="text-center success">{{ study.name }}</td>
+                    <td class="text-center warning">{{ study.study_configuration }}</td>
+                    <td class="text-center danger">{{ study.algorithm }}</td>
+                    <td class="text-center info">{{ study.status }}</td>
+                    <td class="text-center active">{{ study.created_time }}</td>
+                    <td class="text-center success">{{ study.updated_time }}</td>
+                    <td class="text-center warning">
                         <input type="image" width="22px" src="/static/images/delete-icon.png" alt="Delete"
                                onclick="delete_resource('/dashboard/v1/studies/{{ study.id }}')"/>
                     </td>
@@ -161,24 +161,24 @@
                 <th class="text-center success">Value</th>
 
                 <tr>
-                    <td class="active">System</td>
-                    <td class="success">{{ platform.system }}</td>
+                    <td class="text-center active">System</td>
+                    <td class="text-center success">{{ platform.system }}</td>
                 </tr>
                 <tr>
-                    <td class="active">Platform</td>
-                    <td class="success">{{ platform.platform }}</td>
+                    <td class="text-center active">Platform</td>
+                    <td class="text-center success">{{ platform.platform }}</td>
                 </tr>
                 <tr>
-                    <td class="active">Machine</td>
-                    <td class="success">{{ platform.machine }}</td>
+                    <td class="text-center active">Machine</td>
+                    <td class="text-center success">{{ platform.machine }}</td>
                 </tr>
                 <tr>
-                    <td class="active">Version</td>
-                    <td class="success">{{ platform.version }}</td>
+                    <td class="text-center active">Version</td>
+                    <td class="text-center success">{{ platform.version }}</td>
                 </tr>
                 <tr>
-                    <td class="active">Processor</td>
-                    <td class="success">{{ platform.processor }}</td>
+                    <td class="text-center active">Processor</td>
+                    <td class="text-center success">{{ platform.processor }}</td>
                 </tr>
             </table>
 

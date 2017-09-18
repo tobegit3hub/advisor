@@ -1,7 +1,12 @@
-
 class Study(object):
-
-  def __init__(self, name, study_configuration, algorithm="RandomSearchAlgorithm", id=None, status=None, created_time=None, updated_time=None):
+  def __init__(self,
+               name,
+               study_configuration,
+               algorithm="RandomSearchAlgorithm",
+               id=None,
+               status=None,
+               created_time=None,
+               updated_time=None):
     self.id = id
     self.name = name
     self.study_configuration = study_configuration
@@ -10,19 +15,30 @@ class Study(object):
     self.created_time = created_time
     self.updated_time = updated_time
 
-
   def to_dict(self):
-    return {"name": self.name, "study_configuration": self.study_configuration, "algorithm": self.algorithm}
-
+    return {
+        "name": self.name,
+        "study_configuration": self.study_configuration,
+        "algorithm": self.algorithm
+    }
 
   @classmethod
   def from_dict(self, dict):
-    return Study(dict["name"], dict["study_configuration"], dict["algorithm"], dict["id"], dict["status"], dict["created_time"], dict["updated_time"])
+    return Study(dict["name"], dict["study_configuration"], dict["algorithm"],
+                 dict["id"], dict["status"], dict["created_time"],
+                 dict["updated_time"])
 
 
 class Trial(object):
-
-  def __init__(self, study_id, name, parameter_values=None, objective_value=None, id=None, status=None, created_time=None, updated_time=None):
+  def __init__(self,
+               study_id,
+               name,
+               parameter_values=None,
+               objective_value=None,
+               id=None,
+               status=None,
+               created_time=None,
+               updated_time=None):
     self.id = id
     self.study_id = study_id
     self.name = name
@@ -32,19 +48,24 @@ class Trial(object):
     self.created_time = created_time
     self.updated_time = updated_time
 
-
   def to_dict(self):
     return {"study_id": self.study_id, "name": self.name}
 
-
   @classmethod
   def from_dict(self, dict):
-    return Trial(dict["study_id"], dict["name"], dict["parameter_values"], dict["objective_value"], dict["id"], dict["status"], dict["created_time"], dict["updated_time"])
+    return Trial(dict["study_id"], dict["name"], dict["parameter_values"],
+                 dict["objective_value"], dict["id"], dict["status"],
+                 dict["created_time"], dict["updated_time"])
 
 
 class TrialMetric(object):
-
-  def __init__(self, trial_id, training_step, objective_value, id=None, created_time=None, updated_time=None):
+  def __init__(self,
+               trial_id,
+               training_step,
+               objective_value,
+               id=None,
+               created_time=None,
+               updated_time=None):
     self.id = id
     self.trial_id = trial_id
     self.training_step = training_step
@@ -53,10 +74,15 @@ class TrialMetric(object):
     self.updated_time = updated_time
 
   def to_dict(self):
-    return {"trial_id": self.trial_id, "training_step": self.training_step, "objective_value": self.objective_value}
-
+    return {
+        "trial_id": self.trial_id,
+        "training_step": self.training_step,
+        "objective_value": self.objective_value
+    }
 
   @classmethod
   def from_dict(self, dict):
-    return TrialMetric(dict["study_id"], dict["name"], dict["parameter_values"], dict["objective_value"], dict["id"], dict["status"], dict["created_time"], dict["updated_time"])
-
+    return TrialMetric(dict["study_id"], dict["name"],
+                       dict["parameter_values"], dict["objective_value"],
+                       dict["id"], dict["status"], dict["created_time"],
+                       dict["updated_time"])

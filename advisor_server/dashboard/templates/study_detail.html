@@ -17,23 +17,23 @@
     </div>
 
     <table class="table table-striped table-hover table-condensed">
-      <th class="active">Attribute</th>
-      <th class="success">Value</th>
+      <th class="text-center active">Attribute</th>
+      <th class="text-center success">Value</th>
 
       <tr>
-        <td class="active">Id</td>
-        <td class="success">{{ study.id }}</td>
+        <td class="text-center active">Id</td>
+        <td class="text-center success">{{ study.id }}</td>
       </tr>
       <tr>
-        <td class="active">Name</td>
-        <td class="success">{{ study.name }}</td>
+        <td class="text-center active">Name</td>
+        <td class="text-center success">{{ study.name }}</td>
       </tr>
       <tr>
-        <td class="active">Study Configuration</td>
+        <td class="text-center active">Study Configuration</td>
         <td class="success">
           <textarea id="json-input" class="hidden">{{ study.study_configuration }}</textarea>
           <div id="json-container"></div>
-          <div class="demo-options">
+          <div class="text-center demo-options">
             <button id="expand-all" class="btn btn-primary">Expand All</button>
             <button id="collapse-all" class="btn btn-success">Collapse All</button>
             <!-- No need to enable expend with levels
@@ -45,20 +45,20 @@
         </td>
       </tr>
       <tr>
-        <td class="active">Algorithm</td>
-        <td class="success">{{ study.algorithm }}</td>
+        <td class="text-center active">Algorithm</td>
+        <td class="text-center success">{{ study.algorithm }}</td>
       </tr>
       <tr>
-        <td class="active">Status</td>
-        <td class="success">{{ study.status }}</td>
+        <td class="text-center active">Status</td>
+        <td class="text-center success">{{ study.status }}</td>
       </tr>
       <tr>
-        <td class="active">Created Time</td>
-        <td class="success">{{ study.created_time }}</td>
+        <td class="text-center active">Created Time</td>
+        <td class="text-center success">{{ study.created_time }}</td>
       </tr>
       <tr>
-        <td class="active">Updated Time</td>
-        <td class="success">{{ study.updated_time }}</td>
+        <td class="text-center active">Updated Time</td>
+        <td class="text-center success">{{ study.updated_time }}</td>
       </tr>
     </table>
 
@@ -96,15 +96,15 @@
 
       {% for trial in trials %}
       <tr>
-        <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
-        <td class="success">{{ trial.study_id }}</td>
-        <td class="warning">{{ trial.name }}</td>
-        <td class="danger">{{ trial.parameter_values }}</td>
-        <td class="info">{{ trial.objective_value }}</td>
-        <td class="active">{{ trial.status }}</td>
-        <td class="success">{{ trial.created_time }}</td>
-        <td class="warning">{{ trial.updated_time }}</td>
-        <td class="danger">
+        <td class="text-center active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
+        <td class="text-center success">{{ trial.study_id }}</td>
+        <td class="text-center warning">{{ trial.name }}</td>
+        <td class="text-center danger">{{ trial.parameter_values }}</td>
+        <td class="text-center info">{{ trial.objective_value }}</td>
+        <td class="text-center active">{{ trial.status }}</td>
+        <td class="text-center success">{{ trial.created_time }}</td>
+        <td class="text-center warning">{{ trial.updated_time }}</td>
+        <td class="text-center danger">
           <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}')"/>
         </td>
       </tr>

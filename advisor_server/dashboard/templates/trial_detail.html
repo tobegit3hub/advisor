@@ -21,41 +21,41 @@
       <th class="text-center success">Value</th>
 
       <tr>
-        <td class="active">Id</td>
-        <td class="success">{{ trial.id }}</td>
+        <td class="text-center active">Id</td>
+        <td class="text-center success">{{ trial.id }}</td>
       </tr>
       <tr>
-        <td class="active">Study Id</td>
-        <td class="success">{{ trial.study_id }}</td>
+        <td class="text-center active">Study Id</td>
+        <td class="text-center success">{{ trial.study_id }}</td>
       </tr>
       <tr>
-        <td class="active">Name</td>
-        <td class="success">{{ trial.name }}</td>
+        <td class="text-center active">Name</td>
+        <td class="text-center success">{{ trial.name }}</td>
       </tr>
       <tr>
-        <td class="active">Parameter Values</td>
-        <td class="success">{{ trial.parameter_values }}</td>
+        <td class="text-center active">Parameter Values</td>
+        <td class="text-center success">{{ trial.parameter_values }}</td>
       </tr>
       <tr>
-        <td class="active">	Objective Value</td>
-        <td class="success">{{ trial.objective_value }}</td>
+        <td class="text-center active">	Objective Value</td>
+        <td class="text-center success">{{ trial.objective_value }}</td>
       </tr>
       <tr>
-        <td class="active">Status</td>
-        <td class="success">{{ trial.status }}</td>
+        <td class="text-center active">Status</td>
+        <td class="text-center success">{{ trial.status }}</td>
       </tr>
       <tr>
-        <td class="active">Created Time</td>
-        <td class="success">{{ trial.updated_time }}</td>
+        <td class="text-center active">Created Time</td>
+        <td class="text-center success">{{ trial.updated_time }}</td>
       </tr>
       <tr>
-        <td class="active">Updated Time</td>
-        <td class="success">{{ trial.updated_time }}</td>
+        <td class="text-center active">Updated Time</td>
+        <td class="text-center success">{{ trial.updated_time }}</td>
       </tr>
     </table>
 
 
-    <form action="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}/metrics" method="post" onsubmit="return confirm('Do you want to create trial metric?');">
+    <form action="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}/metrics" method="post" onsubmit="return confirm('Do you want to add trial metric?');">
       <div class="form-group row">
         <label for="inputEmail3" class="col-sm-2 col-form-label"> Training step </label>
         <div class="col-sm-10">
@@ -70,7 +70,7 @@
       </div>
       <div class="form-group row">
         <div align="center">
-          <button type="submit" class="btn btn-primary">Create Trial Metric</button>
+          <button type="submit" class="btn btn-primary">Add Metric</button>
         </div>
       </div>
     </form>
@@ -92,12 +92,12 @@
 
       {% for trial_metric in trial_metrics %}
       <tr>
-        <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial_metric.id }}</a></td>
-        <td class="success">{{ trial_metric.training_step }}</td>
-        <td class="warning">{{ trial_metric.objective_value }}</td>
-        <td class="danger">{{ trial.created_time }}</td>
-        <td class="info">{{ trial.updated_time }}</td>
-        <td class="active">
+        <td class="text-center active">{{ trial_metric.id }}</td>
+        <td class="text-center success">{{ trial_metric.training_step }}</td>
+        <td class="text-center warning">{{ trial_metric.objective_value }}</td>
+        <td class="text-center danger">{{ trial.created_time }}</td>
+        <td class="text-center info">{{ trial.updated_time }}</td>
+        <td class="text-center active">
           <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}/metrics/{{ trial_metric.id }}')"/>
         </td>
       </tr>

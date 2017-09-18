@@ -29,6 +29,6 @@ study = client.create_study(name, study_configuration)
 print(study)
 print(client.list_studies())
 
-trials = client.get_suggestions(study, 3)
+trials = client.get_suggestions(study.id, 3)
 print(trials)
-print(client.list_trials(study))
+print(client.list_trials(study.id))
