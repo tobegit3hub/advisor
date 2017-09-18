@@ -46,3 +46,19 @@ Open `http://127.0.0.1:8000` in the browser.
 
 ## Screenshot
 
+List all the studies and create/delete the studies easily.
+
+![study_list.png](./images/study_list.png)
+
+List the detail of study and all the related trials.
+
+![study_detail.png](./images/study_detail.png)
+
+List all the trials and create/delete the trials easily.
+
+![trial_list.png](./images/trial_list.png)
+
+List the detail of trial and all the related metrics.
+
+![trial_detail.png](./images/trial_detail.png)
+
