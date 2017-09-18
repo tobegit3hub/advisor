@@ -74,8 +74,7 @@ def v1_study(request, study_id):
   if request.method == "GET":
     response = requests.get(url)
 
-    tirals_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials".format(
-        study_id)
+    tirals_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials".format(study_id)
     tirals_response = requests.get(tirals_url)
 
     if response.ok and tirals_response.ok:
@@ -141,9 +140,14 @@ def v1_trial(request, study_id, trial_id):
 
   if request.method == "GET":
     response = requests.get(url)
-    if response.ok:
+
+    tiral_metrics_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics".format(study_id, trial_id)
+    tiral_metrics_response = requests.get(tiral_metrics_url)
+
+    if response.ok and tiral_metrics_response.ok:
       trial = json.loads(response.content.decode("utf-8"))["data"]
-      context = {"success": True, "trial": trial}
+      trial_metrics = json.loads(tiral_metrics_response.content.decode("utf-8"))["data"]
+      context = {"success": True, "trial": trial, "trial_metrics": trial_metrics}
       return render(request, "trial_detail.html", context)
     else:
       response = {
@@ -161,3 +165,21 @@ def v1_trial(request, study_id, trial_id):
         "message": "{} method not allowed".format(request.method)
     }
     return JsonResponse(response, status=405)
+
+
+@csrf_exempt
+def v1_study_trial_metrics(request, study_id, trial_id):
+  if request.method == "POST":
+    training_step_string = request.POST.get("training_step", "1")
+    training_step = int(training_step_string)
+    objective_value_string = request.POST.get("objective_value", "1.0")
+    objective_value = float(objective_value_string)
+
+    data = {"training_step": training_step, "objective_value": objective_value}
+    url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics".format(
+      study_id, trial_id)
+    response = requests.post(url, json=data)
+    messages.info(request, response.content)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+  else:
+    return JsonResponse({"error": "Unsupported http method"})

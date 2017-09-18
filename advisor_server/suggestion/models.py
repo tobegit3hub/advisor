@@ -77,6 +77,36 @@ class Trial(models.Model):
     }
 
 
+class TrialMetric(models.Model):
+  trial_id = models.IntegerField(blank=False)
+  training_step = models.IntegerField(blank=False)
+  objective_value = models.FloatField(blank=True, null=True)
+
+  created_time = models.DateTimeField(auto_now_add=True)
+  updated_time = models.DateTimeField(auto_now=True)
+
+  def __str__(self):
+    return "Id: {}, trial id: {}, training_step: {}".format(
+        self.id, self.trial_id, self.training_step)
+
+  @classmethod
+  def create(cls, trial_id, training_step, objective_value):
+    trial_metric = cls()
+    trial_metric.trial_id = trial_id
+    trial_metric.training_step = training_step
+    trial_metric.objective_value = objective_value
+    trial_metric.save()
+    return trial_metric
+
+  def to_json(self):
+    return {
+        "id": self.id,
+        "trial_id": self.trial_id,
+        "training_step": self.training_step,
+        "objective_value": self.objective_value
+    }
+
+
 class Algorithm(models.Model):
   name = models.CharField(max_length=128, blank=False)
 
@@ -91,8 +121,9 @@ class Algorithm(models.Model):
   def create(cls, name):
     algorithm = cls()
     algorithm.name = name
+    algorithm.status = "AVAIABLE"
     algorithm.save()
     return algorithm
 
-  def as_json(self):
+  def to_json(self):
     return {"name": self.name}

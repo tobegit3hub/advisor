@@ -5,6 +5,8 @@ from django.contrib import admin
 
 from suggestion.models import Study
 from suggestion.models import Trial
+from suggestion.models import TrialMetric
 
 admin.site.register(Study)
 admin.site.register(Trial)
+admin.site.register(TrialMetric)

@@ -12,6 +12,7 @@ from django.db import IntegrityError, transaction
 
 from suggestion.models import Study
 from suggestion.models import Trial
+from suggestion.models import TrialMetric
 from suggestion.algorithm.random_search import RandomSearchAlgorithm
 from suggestion.algorithm.grid_search import GridSearchAlgorithm
 
@@ -103,7 +104,7 @@ def v1_study_suggestions(request, study_id):
 
 
 @csrf_exempt
-def v1_trials(request, study_id):
+def v1_study_trials(request, study_id):
 
   # Create the trial
   if request.method == "POST":
@@ -123,7 +124,7 @@ def v1_trials(request, study_id):
 
 
 @csrf_exempt
-def v1_trial(request, study_id, trial_id):
+def v1_study_trial(request, study_id, trial_id):
 
   # Describe the trial
   if request.method == "GET":
@@ -142,6 +143,55 @@ def v1_trial(request, study_id, trial_id):
   # Delete the trial
   elif request.method == "DELETE":
     trial = Trial.objects.get(study_id=study_id, id=trial_id)
+    trial.delete()
+    return JsonResponse({"message": "Success to delete"})
+  else:
+    return JsonResponse({"error": "Unsupported http method"})
+
+
+@csrf_exempt
+def v1_study_trial_metrics(request, study_id, trial_id):
+
+  # Create the trial metric
+  if request.method == "POST":
+    data = json.loads(request.body)
+    training_step = data["training_step"]
+    objective_value = data["objective_value"]
+
+    trial_metric = TrialMetric.create(trial_id, training_step, objective_value)
+    return JsonResponse({"data": trial_metric.to_json()})
+
+  # List the trial metrics
+  elif request.method == "GET":
+    trial_metrics = TrialMetric.objects.filter(trial_id=trial_id)
+    response_data = [trial_metric.to_json() for trial_metric in trial_metrics]
+    return JsonResponse({"data": response_data})
+  else:
+    return JsonResponse({"error": "Unsupported http method"})
+
+
+@csrf_exempt
+def v1_study_trial_metric(request, study_id, trial_id, metric_id):
+
+  # Describe the trial metric
+  if request.method == "GET":
+    trial_metric = TrialMetric.objects.get(id=metric_id)
+    return JsonResponse({"data": trial_metric.to_json()})
+
+  # Update the trial metric
+  elif request.method == "PATCH":
+    trial_metric = TrialMetric.objects.get(id=metric_id)
+    data = json.loads(request.body)
+    if "training_step" in data:
+      trial_metric.training_step = data["training_step"]
+    if "objective_value" in data:
+      trial_metric.objective_value = data["objective_value"]
+    trial_metric.save()
+    return JsonResponse({"data": trial_metric.to_json()})
+
+  # Delete the trial metric
+  elif request.method == "DELETE":
+    trial = Trial.objects.get(id=metric_id)
     trial.delete()
     return JsonResponse({"message": "Success to delete"})
   else:
