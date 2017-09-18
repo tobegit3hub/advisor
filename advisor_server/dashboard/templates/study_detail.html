@@ -30,7 +30,19 @@
       </tr>
       <tr>
         <td class="active">Study Configuration</td>
-        <td class="success">{{ study.study_configuration }}</td>
+        <td class="success">
+          <textarea id="json-input" class="hidden">{{ study.study_configuration }}</textarea>
+          <div id="json-container"></div>
+          <div class="demo-options">
+            <button id="expand-all" class="btn btn-primary">Expand All</button>
+            <button id="collapse-all" class="btn btn-success">Collapse All</button>
+            <!-- No need to enable expend with levels
+            <button id="expand-levels" class="btn btn-danger">Expand Levels</button>
+            Levels: <input type="text" id="levels" value="1" />
+            -->
+          </div>
+
+        </td>
       </tr>
       <tr>
         <td class="active">Algorithm</td>
@@ -49,8 +61,6 @@
         <td class="success">{{ study.updated_time }}</td>
       </tr>
     </table>
-
-
 
     <form action="/dashboard/v1/studies/{{ study.id }}/suggestions" method="post" onsubmit="return confirm('Do you want to generate the suggestions?');">
       <div class="form-group row">
@@ -104,5 +114,43 @@
   </div>
 
 </div><!-- end of container div -->
+
+<script>
+    $(function() {
+        var jsonContainer = $('#json-container');
+
+        var error = false;
+        try {
+            var json = JSON.parse($('#json-input').val());
+        }
+        catch (e) {
+            error = true;
+        }
+
+        $('.error').toggleClass('hidden', !error);
+        $('#output-container').toggleClass('hidden', error);
+
+        jsonContainer
+            .jsonPresenter('destroy') // Clear any previous JSON being presented through this plugin for this container
+            .jsonPresenter({ // Use the jquery.jsonPresenter plugin using the input from the textarea above
+                json: json
+            })
+            .jsonPresenter('expand', 0); // Expand all JSON properties so that none of them are collapsed
+
+
+        $('#expand-all').on('click', function() {
+            jsonContainer.jsonPresenter('expandAll');
+        });
+
+        $('#collapse-all').on('click', function() {
+            jsonContainer.jsonPresenter('collapseAll');
+        });
+
+        $('#expand-levels').on('click', function() {
+            var levels = parseInt($('#levels').val());
+            jsonContainer.jsonPresenter('expand', levels);
+        });
+    });
+</script>
 
 {% include "footer.html" %}

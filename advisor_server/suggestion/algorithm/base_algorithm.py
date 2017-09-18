@@ -39,8 +39,3 @@ class BaseSuggestionAlgorithm(object):
 class BaseEarlyStopAlgorithm(object):
   def get_early_stop_trials(self, trials):
     pass
-
-
-class NoEarlyStopAlgorithm(object):
-  def get_early_stop_trials(self, trials):
-    return trials
