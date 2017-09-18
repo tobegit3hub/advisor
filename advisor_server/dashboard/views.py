@@ -183,3 +183,33 @@ def v1_study_trial_metrics(request, study_id, trial_id):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
   else:
     return JsonResponse({"error": "Unsupported http method"})
+
+
+@csrf_exempt
+def v1_study_trial_metric(request, study_id, trial_id, metric_id):
+  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics/{}".format(study_id, trial_id, metric_id)
+
+  if request.method == "GET":
+    response = requests.get(url)
+
+    if response.ok:
+      trial_metric = json.loads(response.content.decode("utf-8"))["data"]
+      context = {"success": True, "trial_metric": trial_metric}
+      # TODO: Add the detail page of trial metric
+      return render(request, "trial_detail.html", context)
+    else:
+      response = {
+        "error": True,
+        "message": "Fail to request the url: {}".format(url)
+      }
+      return JsonResponse(response, status=405)
+  elif request.method == "DELETE" or request.method == "POST":
+    response = requests.delete(url)
+    messages.info(request, response.content)
+    return redirect("index")
+  else:
+    response = {
+      "error": True,
+      "message": "{} method not allowed".format(request.method)
+    }
+    return JsonResponse(response, status=405)

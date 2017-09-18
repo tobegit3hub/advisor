@@ -191,8 +191,8 @@ def v1_study_trial_metric(request, study_id, trial_id, metric_id):
 
   # Delete the trial metric
   elif request.method == "DELETE":
-    trial = Trial.objects.get(id=metric_id)
-    trial.delete()
+    trial_metric = TrialMetric.objects.get(id=metric_id)
+    trial_metric.delete()
     return JsonResponse({"message": "Success to delete"})
   else:
     return JsonResponse({"error": "Unsupported http method"})

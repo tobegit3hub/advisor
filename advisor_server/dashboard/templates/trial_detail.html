@@ -98,7 +98,7 @@
         <td class="danger">{{ trial.created_time }}</td>
         <td class="info">{{ trial.updated_time }}</td>
         <td class="active">
-          <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}')"/>
+          <input type="image"  width="22px" src="/static/images/delete-icon.png" alt="Delete" onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}/metrics/{{ trial_metric.id }}')"/>
         </td>
       </tr>
       {% endfor %}
