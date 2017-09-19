@@ -46,10 +46,6 @@ class AdvisorClient(object):
 
     return study
 
-  # TODO: Implement this method by status's status
-  def is_study_done(self):
-    return False
-
   def get_suggestions(self, study_id, trials_number=1):
     url = "{}/suggestion/v1/studies/{}/suggestions".format(
         self.endpoint, study_id)
@@ -64,6 +60,24 @@ class AdvisorClient(object):
         trials.append(trial)
 
     return trials
+
+  def is_study_done(self, study_id):
+    study = self.get_study(study_id)
+    is_completed = True
+
+    if study.status == "Completed":
+      return True
+
+    trials = self.list_trials(study_id)
+    for trial in trials:
+      if trial.status != "Completed":
+        return False
+
+    url = "{}/suggestion/v1/studies/{}".format(self.endpoint, trial.study_id)
+    request_data = {"status": "Completed"}
+    response = requests.put(url, json=request_data)
+
+    return is_completed
 
   def list_trials(self, study_id):
     url = "{}/suggestion/v1/studies/{}/trials".format(self.endpoint, study_id)
@@ -91,6 +105,39 @@ class AdvisorClient(object):
         trial_metrics.append(trial_metric)
 
     return trial_metrics
+
+  def get_best_trial(self, study_id):
+    if not self.is_study_done:
+      return None
+
+    study = self.get_study(study_id)
+    study_configuration_dict = json.loads(study.study_configuration)
+    study_goal = study_configuration_dict["goal"]
+    trials = self.list_trials(study_id)
+    best_trial = trials[0]
+
+    for trial in trials:
+      if study_goal == "MAXIMIZE":
+        if trial.objective_value > best_trial.objective_value:
+          best_trial = trial
+      elif study_goal == "MINIMIZE":
+        if trial.objective_value < best_trial.objective_value:
+          best_trail = trial
+      else:
+        return None
+
+    return best_trial
+
+  def get_trial(self, study_id, trial_id):
+    url = "{}/suggestion/v1/studies/{}/trials/{}".format(
+        self.endpoint, study_id, trial_id)
+    response = requests.get(url)
+    trial = None
+
+    if response.ok:
+      trial = Trial.from_dict(response.json()["data"])
+
+    return trial
 
   def create_trial_metric(self, study_id, trial_id, training_step,
                           objective_value):

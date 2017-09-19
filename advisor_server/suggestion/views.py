@@ -53,7 +53,7 @@ def v1_study(request, study_id):
     return JsonResponse({"data": study.to_json()})
 
   # Update the study
-  elif request.method == "PATCH":
+  elif request.method == "PUT":
     study = Study.objects.get(id=study_id)
     data = json.loads(request.body)
     if "status" in data:

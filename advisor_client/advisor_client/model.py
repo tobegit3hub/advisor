@@ -15,6 +15,10 @@ class Study(object):
     self.created_time = created_time
     self.updated_time = updated_time
 
+  def __str__(self):
+    return "Id: {}, name: {}, study_configuration: {}, algorithm: {}".format(
+        self.id, self.name, self.study_configuration, self.algorithm)
+
   def to_dict(self):
     return {
         "name": self.name,
@@ -48,6 +52,11 @@ class Trial(object):
     self.created_time = created_time
     self.updated_time = updated_time
 
+  def __str__(self):
+    return "Id: {}, study_id: {}, name: {}, parameter_values: {}, objective_value: {}".format(
+        self.id, self.study_id, self.name, self.parameter_values,
+        self.objective_value)
+
   def to_dict(self):
     return {"study_id": self.study_id, "name": self.name}
 
@@ -72,6 +81,10 @@ class TrialMetric(object):
     self.objective_value = objective_value
     self.created_time = created_time
     self.updated_time = updated_time
+
+  def __str__(self):
+    return "Id: {}, trial_id: {}, training_step: {}, objective_value: {}".format(
+        self.id, self.trial_id, self.training_step, self.objective_value)
 
   def to_dict(self):
     return {

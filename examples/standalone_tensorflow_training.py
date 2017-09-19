@@ -67,6 +67,12 @@ def main():
     tensorboard_metrics = tensorboard_util.get_hyperparameters_metric(logdir)
     client.complete_trial(trial, tensorboard_metrics)
 
+  # Check if study done
+  is_done = client.is_study_done(study.id)
+  best_trial = client.get_best_trial(study.id)
+  print("The study: {}, if it is done: {}, best trial: {}".format(
+      study, is_done, best_trial))
+
 
 if __name__ == "__main__":
   main()
