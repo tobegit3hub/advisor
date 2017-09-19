@@ -21,7 +21,7 @@ class Study(models.Model):
              name,
              study_configuration,
              algorithm="RandomSearchAlgorithm",
-             status="PENDING"):
+             status="Pending"):
     study = cls()
     study.name = name
     study.study_configuration = study_configuration
@@ -60,7 +60,7 @@ class Trial(models.Model):
     trial = cls()
     trial.study_id = study_id
     trial.name = name
-    trial.status = "PENDING"
+    trial.status = "Pending"
     trial.save()
     return trial
 

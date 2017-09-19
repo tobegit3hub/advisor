@@ -8,7 +8,6 @@ from advisor_client.model import Study
 from advisor_client.model import Trial
 from advisor_client.model import TrialMetric
 from advisor_client.client import AdvisorClient
-
 import tensorboard_util
 
 
@@ -19,7 +18,7 @@ def main():
   name = "Study"
   study_configuration = {
       "goal":
-      "MAXIMIZE",
+      "MINIMIZE",
       "maxTrials":
       5,
       "maxParallelTrials":
@@ -32,7 +31,6 @@ def main():
           "scallingType": "LINEAR"
       }]
   }
-
   study = client.create_study(name, study_configuration)
 
   # Get suggested trials
@@ -42,7 +40,7 @@ def main():
   commandline_parameters = []
   i = 0
   for trial in trials:
-    parameter = "--output_path=output{}".format(i)
+    parameter = "--output_path=output/{}".format(i)
     parameter_value_dict = json.loads(trial.parameter_values)
 
     # Example: {"learning_rate": 0.05943265431983244}
@@ -60,12 +58,12 @@ def main():
     # Example: python -m trainer.task --output_path=0 --learning_rate=0.0796523079087
     shell_command = "python -m {} {}".format(module_name, module_args)
     print(shell_command)
-    #subprocess.call(shell_command, shell=True)
+    subprocess.call(shell_command, shell=True)
 
   # Complete the trial
   for i in range(3):
     trial = trials[i]
-    logdir = "output{}".format(i)
+    logdir = "output/{}".format(i)
     tensorboard_metrics = tensorboard_util.get_hyperparameters_metric(logdir)
     client.complete_trial(trial, tensorboard_metrics)
 

@@ -116,7 +116,9 @@ class AdvisorClient(object):
 
     url = "{}/suggestion/v1/studies/{}/trials/{}".format(
         self.endpoint, trial.study_id, trial.id)
-    request_data = {"status": "SUCCESS"}
+    objective_value = tensorboard_metrics[-1].value
+    request_data = {"status": "Completed", "objective_value": objective_value}
+
     response = requests.put(url, json=request_data)
 
     if response.ok:

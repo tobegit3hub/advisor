@@ -137,6 +137,8 @@ def v1_study_trial(request, study_id, trial_id):
     data = json.loads(request.body)
     if "status" in data:
       trial.status = data["status"]
+    if "objective_value" in data:
+      trial.objective_value = data["objective_value"]
     trial.save()
     return JsonResponse({"data": trial.to_json()})
 
