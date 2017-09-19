@@ -103,7 +103,9 @@ class TrialMetric(models.Model):
         "id": self.id,
         "trial_id": self.trial_id,
         "training_step": self.training_step,
-        "objective_value": self.objective_value
+        "objective_value": self.objective_value,
+        "created_time": self.created_time,
+        "updated_time": self.updated_time
     }
 
 

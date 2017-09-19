@@ -82,7 +82,6 @@ class TrialMetric(object):
 
   @classmethod
   def from_dict(self, dict):
-    return TrialMetric(dict["study_id"], dict["name"],
-                       dict["parameter_values"], dict["objective_value"],
-                       dict["id"], dict["status"], dict["created_time"],
-                       dict["updated_time"])
+    return TrialMetric(dict["trial_id"],
+                       dict["training_step"], dict["objective_value"],
+                       dict["id"], dict["created_time"], dict["updated_time"])

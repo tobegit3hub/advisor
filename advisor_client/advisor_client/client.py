@@ -92,6 +92,34 @@ class AdvisorClient(object):
 
     return trial_metrics
 
-  # TODO: Implement this by uploading multiple trial metrics and updating status
-  def complete_trial(trial, trial_metrics):
-    return
+  def create_trial_metric(self, study_id, trial_id, training_step,
+                          objective_value):
+    url = "{}/suggestion/v1/studies/{}/trials/{}/metrics".format(
+        self.endpoint, study_id, trial_id)
+    request_data = {
+        "training_step": training_step,
+        "objective_value": objective_value
+    }
+    response = requests.post(url, json=request_data)
+
+    study = None
+    if response.ok:
+      trial_metric = TrialMetric.from_dict(response.json()["data"])
+
+    return trial_metric
+
+  def complete_trial(self, trial, tensorboard_metrics):
+    for tensorboard_metric in tensorboard_metrics:
+      self.create_trial_metric(trial.study_id, trial.id,
+                               tensorboard_metric.step,
+                               tensorboard_metric.value)
+
+    url = "{}/suggestion/v1/studies/{}/trials/{}".format(
+        self.endpoint, trial.study_id, trial.id)
+    request_data = {"status": "SUCCESS"}
+    response = requests.put(url, json=request_data)
+
+    if response.ok:
+      trial = Trial.from_dict(response.json()["data"])
+
+    return trial

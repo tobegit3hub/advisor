@@ -132,7 +132,7 @@ def v1_study_trial(request, study_id, trial_id):
     return JsonResponse({"data": trial.to_json()})
 
   # Update the trial
-  elif request.method == "PATCH":
+  elif request.method == "PUT":
     trial = Trial.objects.get(study_id=study_id, id=trial_id)
     data = json.loads(request.body)
     if "status" in data:
