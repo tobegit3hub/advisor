@@ -18,6 +18,7 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 * [x] Random Search Algorithm
 * [ ] 2x Random Search Algorithm
 * [x] Grid Search Algorithm
+* [x] Baysian Optimization
 * [ ] Gaussian Process Bandit
 * [ ] Batched Gaussian Process Bandits
 * [ ] SMAC Algorithm

@@ -33,9 +33,9 @@ class BaseSuggestionAlgorithm(object):
     Returns:
       The array of trial objects.
     """
-    return []
+    return None
 
 
 class BaseEarlyStopAlgorithm(object):
   def get_early_stop_trials(self, trials):
-    pass
+    return None
