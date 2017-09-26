@@ -15,8 +15,10 @@ class GridSearchAlgorithm(BaseSuggestionAlgorithm):
 
     result = []
     for i in range(number):
-      trial = Trial.create(study.id, "RandomSearchTrial")
+      trial = Trial.create(study.id, "GridSearchTrial")
       parameter_values_json = {}
+
+      # TODO: Support different type of parameters
 
       study_configuration_json = json.loads(study.study_configuration)
       params = study_configuration_json["params"]
