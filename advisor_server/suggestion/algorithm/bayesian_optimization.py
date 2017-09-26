@@ -187,11 +187,18 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
       x_max = x_tries[acquisition_fucntion_values.argmax()]
       max_acquision_fucntion_value = acquisition_fucntion_values.max()
 
+      # Example: [3993.864683994805, 44.15441513231316]
       x_max = np.clip(x_max, bounds[:, 0], bounds[:, 1])
       print("Current max acquision function choose: {}".format(x_max))
 
-      # TODO: Support to generate parameter values
-      parameter_values_json = {"hidden1": x_max[0]}
+      # Example: {"hidden2": 3993.864683994805, "hidden1": 44.15441513231316}
+      parameter_values_json = {}
+
+      index = 0
+      for key in bound_dict.keys():
+        parameter_values_json[key] = x_max[index]
+        index += 1
+
       return_trial.parameter_values = json.dumps(parameter_values_json)
       return_trial.save()
 
