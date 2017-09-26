@@ -88,6 +88,63 @@ advisor study list
 advisor trial list --study_id 1
 ```
 
+## Concepts
+
+Study configuration describe the search space of parameters. It supports four types and here is the example.
+
+```
+{
+  "goal": "MAXIMIZE",
+  "randomInitTrials": 1,
+  "maxTrials": 5,
+  "maxParallelTrials": 1,
+  "params": [
+    {
+      "parameterName": "hidden1",
+      "type": "INTEGER",
+      "minValue": 1,
+      "maxValue": 10,
+      "scallingType": "LINEAR"
+    },
+    {
+      "parameterName": "learning_rate",
+      "type": "DOUBLE",
+      "minValue": 0.01,
+      "maxValue": 0.5,
+      "scallingType": "LINEAR"
+    },
+    {
+      "parameterName": "hidden2",
+      "type": "DISCRETE",
+      "minValue": 0,
+      "maxValue": 0,
+      "feasiblePoints": "1.5, -1.5, 2.5, 4.5",
+      "scallingType": "LINEAR"
+    },
+    {
+      "parameterName": "optimizer",
+      "type": "CATEGORICAL",
+      "minValue": 0,
+      "maxValue": 0,
+      "feasiblePoints": "sgd, adagrad, adam, ftrl",
+      "scallingType": "LINEAR"
+    },
+    {
+      "parameterName": "batch_normalization",
+      "type": "CATEGORICAL",
+      "minValue": 0,
+      "maxValue": 0,
+      "feasiblePoints": "true, false",
+      "scallingType": "LINEAR"
+    }
+  ]
+}
+```
+
+## Visualization
+
+You can visualize one-dimentation Bayesian Optimization with the notebooks in [visualization](./visualization).
+
 ## Screenshots
 
 List all the studies and create/delete the studies easily.
