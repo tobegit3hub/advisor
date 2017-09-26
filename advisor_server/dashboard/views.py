@@ -155,10 +155,21 @@ def v1_trial(request, study_id, trial_id):
           "message": "Fail to request the url: {}".format(url)
       }
       return JsonResponse(response, status=405)
-  elif request.method == "DELETE" or request.method == "POST":
+  elif request.method == "DELETE":
     response = requests.delete(url)
     messages.info(request, response.content)
     return redirect("index")
+  elif request.method == "PUT" or request.method == "POST":
+    objective_value_string = request.POST.get("objective_value", "1.0")
+    objective_value = float(objective_value_string)
+    status = request.POST.get("status", "Completed")
+    data = {"objective_value": objective_value, "status": status}
+    response = requests.put(url, json=data)
+    messages.info(request, response.content)
+
+    trial = json.loads(response.content.decode("utf-8"))["data"]
+    context = {"success": True, "trial": trial, "trial_metrics": []}
+    return render(request, "trial_detail.html", context)
   else:
     response = {
         "error": True,
