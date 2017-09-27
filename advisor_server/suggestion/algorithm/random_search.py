@@ -53,7 +53,6 @@ class RandomSearchAlgorithm(BaseSuggestionAlgorithm):
           selected_value = int(round(random_value))
           parameter_values_json[param["parameterName"]] = selected_value
         elif param["type"] == "DISCRETE":
-          #import ipdb;ipdb.set_trace()
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
               float(value.strip()) for value in feasible_points_string.split(",")

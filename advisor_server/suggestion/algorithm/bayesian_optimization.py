@@ -17,6 +17,14 @@ from random_search import RandomSearchAlgorithm
 
 
 class BayesianOptimizationDemo(object):
+
+  def find_closest_value_in_list(self, the_list, objective_value):
+    closest_value = the_list[0]
+    for current_value in the_list:
+      if abs(current_value - objective_value) < abs(closest_value - objective_value):
+        closest_value = current_value
+    return closest_value
+
   def test_function2(self, x, y):
     return -x**2 - (y - 1)**2 + 1
 
@@ -252,11 +260,23 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
 
       for param in params:
 
-        if param["type"] == "DOUBLE" or param["type"] == "INTEGER" or param["type"] == "DISCRETE":
+        if param["type"] == "DOUBLE" or param["type"] == "DISCRETE":
           suggested_parameter_values_json[param["parameterName"]] = x_max[
               index]
           index += 1
-
+        elif param["type"] == "INTEGER":
+          suggested_parameter_values_json[param["parameterName"]] = int(round(x_max[index]))
+          index += 1
+        elif param["type"] == "DISCRETE":
+          feasible_points_string = param["feasiblePoints"]
+          feasible_points = [
+            float(value.strip()) for value in feasible_points_string.split(",")
+          ]
+          feasible_points.sort()
+          selected_value = self.find_closest_value_in_list(
+            feasible_points, x_max[index])
+          suggested_parameter_values_json[param["parameterName"]] = selected_value
+          index += 1
         elif param["type"] == "CATEGORICAL":
           feasible_points_string = param["feasiblePoints"]
           # Example: ["sgd", "adagrad", "adam", "ftrl"]
