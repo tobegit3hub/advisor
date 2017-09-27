@@ -65,7 +65,7 @@ def main():
     trial = trials[i]
     logdir = "output/{}".format(i)
     tensorboard_metrics = tensorboard_util.get_hyperparameters_metric(logdir)
-    client.complete_trial(trial, tensorboard_metrics)
+    client.complete_trial_with_tensorboard_metrics(trial, tensorboard_metrics)
 
   # Check if study done
   is_done = client.is_study_done(study.id)
