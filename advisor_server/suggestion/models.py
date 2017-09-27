@@ -79,7 +79,7 @@ class Trial(models.Model):
 
 class TrialMetric(models.Model):
   trial_id = models.IntegerField(blank=False)
-  training_step = models.IntegerField(blank=False)
+  training_step = models.IntegerField(blank=True, null=True)
   objective_value = models.FloatField(blank=True, null=True)
 
   created_time = models.DateTimeField(auto_now_add=True)

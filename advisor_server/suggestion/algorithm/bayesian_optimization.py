@@ -153,7 +153,7 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
         elif param["type"] == "DISCRETE":
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
-              float(value) for value in feasible_points_string.split(",")
+              float(value.strip()) for value in feasible_points_string.split(",")
           ]
           feasible_points.sort()
           min_value = feasible_points[0]
@@ -162,7 +162,7 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
         elif param["type"] == "CATEGORICAL":
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
-              value for value in feasible_points_string.split(",")
+              value.strip() for value in feasible_points_string.split(",")
           ]
           for feasible_point in feasible_points:
             parameter_name = "{}_{}".format(param["parameterName"],
@@ -203,7 +203,7 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
             feasible_points_string = param["feasiblePoints"]
             # Example: ["sgd", "adagrad", "adam", "ftrl"]
             feasible_points = [
-                value for value in feasible_points_string.split(",")
+                value.strip() for value in feasible_points_string.split(",")
             ]
             # Example: "ftrl"
             parameter_value = parameter_values_json[param["parameterName"]]
@@ -261,7 +261,7 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
           feasible_points_string = param["feasiblePoints"]
           # Example: ["sgd", "adagrad", "adam", "ftrl"]
           feasible_points = [
-              value for value in feasible_points_string.split(",")
+              value.strip() for value in feasible_points_string.split(",")
           ]
 
           # 记录这4个值中数最大的，然后取到对应的字符串

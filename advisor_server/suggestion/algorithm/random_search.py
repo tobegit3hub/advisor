@@ -56,7 +56,7 @@ class RandomSearchAlgorithm(BaseSuggestionAlgorithm):
           #import ipdb;ipdb.set_trace()
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
-              float(value) for value in feasible_points_string.split(",")
+              float(value.strip()) for value in feasible_points_string.split(",")
           ]
           feasible_points.sort()
           min_value = feasible_points[0]
@@ -68,7 +68,7 @@ class RandomSearchAlgorithm(BaseSuggestionAlgorithm):
         elif param["type"] == "CATEGORICAL":
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
-              value for value in feasible_points_string.split(",")
+              value.strip() for value in feasible_points_string.split(",")
           ]
           random_value = random.randint(0, len(feasible_points) - 1)
           selected_value = feasible_points[random_value]

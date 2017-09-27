@@ -2,7 +2,7 @@ class Study(object):
   def __init__(self,
                name,
                study_configuration,
-               algorithm="RandomSearchAlgorithm",
+               algorithm="BayesianOptimization",
                id=None,
                status=None,
                created_time=None,

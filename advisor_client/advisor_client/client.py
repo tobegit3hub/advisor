@@ -11,9 +11,9 @@ class AdvisorClient(object):
   def __init__(self, endpoint="http://127.0.0.1:8000"):
     self.endpoint = endpoint
 
-  def create_study(self, name, study_configuration):
+  def create_study(self, name, study_configuration, algorithm="BayesianOptimization"):
     url = "{}/suggestion/v1/studies".format(self.endpoint)
-    request_data = {"name": name, "study_configuration": study_configuration}
+    request_data = {"name": name, "study_configuration": study_configuration, "algorithm": algorithm}
     response = requests.post(url, json=request_data)
 
     study = None
@@ -36,7 +36,7 @@ class AdvisorClient(object):
     return studies
 
   # TODO: Support load study by configuration and name
-  def get_study(self, study_id):
+  def get_study_by_id(self, study_id):
     url = "{}/suggestion/v1/studies/{}".format(self.endpoint, study_id)
     response = requests.get(url)
     study = None
@@ -62,7 +62,7 @@ class AdvisorClient(object):
     return trials
 
   def is_study_done(self, study_id):
-    study = self.get_study(study_id)
+    study = self.get_study_by_id(study_id)
     is_completed = True
 
     if study.status == "Completed":
@@ -110,7 +110,7 @@ class AdvisorClient(object):
     if not self.is_study_done:
       return None
 
-    study = self.get_study(study_id)
+    study = self.get_study_by_id(study_id)
     study_configuration_dict = json.loads(study.study_configuration)
     study_goal = study_configuration_dict["goal"]
     trials = self.list_trials(study_id)
@@ -155,7 +155,7 @@ class AdvisorClient(object):
 
     return trial_metric
 
-  def complete_trial(self, trial, tensorboard_metrics):
+  def complete_trial_with_tensorboard_metrics(self, trial, tensorboard_metrics):
     for tensorboard_metric in tensorboard_metrics:
       self.create_trial_metric(trial.study_id, trial.id,
                                tensorboard_metric.step,
@@ -164,6 +164,21 @@ class AdvisorClient(object):
     url = "{}/suggestion/v1/studies/{}/trials/{}".format(
         self.endpoint, trial.study_id, trial.id)
     objective_value = tensorboard_metrics[-1].value
+    request_data = {"status": "Completed", "objective_value": objective_value}
+
+    response = requests.put(url, json=request_data)
+
+    if response.ok:
+      trial = Trial.from_dict(response.json()["data"])
+
+    return trial
+
+  def complete_trial_with_one_metric(self, trial, metric):
+    self.create_trial_metric(trial.study_id, trial.id, None, metric)
+
+    url = "{}/suggestion/v1/studies/{}/trials/{}".format(
+        self.endpoint, trial.study_id, trial.id)
+    objective_value = metric
     request_data = {"status": "Completed", "objective_value": objective_value}
 
     response = requests.put(url, json=request_data)
