@@ -58,8 +58,9 @@ def main(train_function):
           },
       ]
   }
-  study = client.create_study("Study", study_configuration, "BayesianOptimization")
-  #study = client.get_study_by_id(24)
+  study = client.create_study("Study", study_configuration,
+                              "BayesianOptimization")
+  #study = client.get_study_by_id(6)
 
   # Get suggested trials
   trials = client.get_suggestions(study.id, 3)
