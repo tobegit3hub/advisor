@@ -1,0 +1,18 @@
+
+{% block content %}
+
+  <h2>Login</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+  <br>
+
+
+  <h2>Login with Github</h2>
+
+  <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+
+{% endblock %}

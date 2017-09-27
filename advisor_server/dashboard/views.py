@@ -23,6 +23,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 from suggestion.models import Study
 from suggestion.models import Trial
 
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def home(request):
+  print(request.user.username)
+  return render(request, "home.html")
+
 
 def index(request):
   try:
