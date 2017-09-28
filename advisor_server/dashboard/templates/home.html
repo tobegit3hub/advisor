@@ -3,8 +3,13 @@
 
 {% block content %}
 
-  <h2>Homepage</h2>
-  <p>Hello {{ user.username }}!</p>
+  <div class="container">
+
+    <div class="text-center"><h2>Welcome to Advisor</h2></div>
+
+    <div class="text-center"><p>Your are logging as <strong>{{ user.username }}</strong></p></div>
+
+  </div>
 
 {% endblock %}
 

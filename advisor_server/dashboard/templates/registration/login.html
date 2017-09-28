@@ -3,19 +3,27 @@
 
 {% block content %}
 
-  <h2>Login</h2>
+<div class="container">
+
+  <div class="text-center">
+
+  <h2>Login with password</h2>
 
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+    <button type="submit" class="btn btn-primary">Login</button>
   </form>
   <br>
 
 
   <h2>Login with Github</h2>
 
-  <a href="{% url 'social:begin' 'github' %}">Login with GitHub</a><br>
+  <a href="{% url 'social:begin' 'github' %}"><img height="32px" alt="Login with GitHub" src="/static/images/sign_in_with_github.png"></a><br>
+
+  </div>
+
+</div>
 
 {% endblock %}
 
