@@ -43,6 +43,14 @@ pip install -r ./requirements.txt
 
 Open `http://127.0.0.1:8000` in the browser.
 
+### Docker Server
+
+You can run the server with `docker` as well.
+
+```
+docker run -d -p 8000:8000 tobegit3hub/advisor
+```
+
 ### Advisor Client
 
 Install with `pip`.
@@ -87,6 +95,8 @@ advisor study list
 
 advisor trial list --study_id 1
 ```
+
+Please checkout [examples](./examples) for more usage.
 
 ## Concepts
 

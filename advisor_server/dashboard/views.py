@@ -32,7 +32,6 @@ def home(request):
   return render(request, "home.html")
 
 
-@login_required
 def index(request):
   try:
     studies = [study.to_json() for study in Study.objects.all()]
@@ -62,7 +61,11 @@ def v1_studies(request):
 
     # Remove the charactors like \t and \"
     study_configuration_json = json.loads(study_configuration)
-    data = {"name": name, "study_configuration": study_configuration_json, "algorithm": algorighm}
+    data = {
+        "name": name,
+        "study_configuration": study_configuration_json,
+        "algorithm": algorighm
+    }
 
     url = "http://127.0.0.1:8000/suggestion/v1/studies"
     response = requests.post(url, json=data)
@@ -83,7 +86,8 @@ def v1_study(request, study_id):
   if request.method == "GET":
     response = requests.get(url)
 
-    tirals_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials".format(study_id)
+    tirals_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials".format(
+        study_id)
     tirals_response = requests.get(tirals_url)
 
     if response.ok and tirals_response.ok:
@@ -150,13 +154,19 @@ def v1_trial(request, study_id, trial_id):
   if request.method == "GET":
     response = requests.get(url)
 
-    tiral_metrics_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics".format(study_id, trial_id)
+    tiral_metrics_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics".format(
+        study_id, trial_id)
     tiral_metrics_response = requests.get(tiral_metrics_url)
 
     if response.ok and tiral_metrics_response.ok:
       trial = json.loads(response.content.decode("utf-8"))["data"]
-      trial_metrics = json.loads(tiral_metrics_response.content.decode("utf-8"))["data"]
-      context = {"success": True, "trial": trial, "trial_metrics": trial_metrics}
+      trial_metrics = json.loads(
+          tiral_metrics_response.content.decode("utf-8"))["data"]
+      context = {
+          "success": True,
+          "trial": trial,
+          "trial_metrics": trial_metrics
+      }
       return render(request, "trial_detail.html", context)
     else:
       response = {
@@ -197,7 +207,7 @@ def v1_study_trial_metrics(request, study_id, trial_id):
 
     data = {"training_step": training_step, "objective_value": objective_value}
     url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics".format(
-      study_id, trial_id)
+        study_id, trial_id)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -207,7 +217,8 @@ def v1_study_trial_metrics(request, study_id, trial_id):
 
 @csrf_exempt
 def v1_study_trial_metric(request, study_id, trial_id, metric_id):
-  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics/{}".format(study_id, trial_id, metric_id)
+  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics/{}".format(
+      study_id, trial_id, metric_id)
 
   if request.method == "GET":
     response = requests.get(url)
@@ -219,8 +230,8 @@ def v1_study_trial_metric(request, study_id, trial_id, metric_id):
       return render(request, "trial_detail.html", context)
     else:
       response = {
-        "error": True,
-        "message": "Fail to request the url: {}".format(url)
+          "error": True,
+          "message": "Fail to request the url: {}".format(url)
       }
       return JsonResponse(response, status=405)
   elif request.method == "DELETE" or request.method == "POST":
@@ -229,7 +240,7 @@ def v1_study_trial_metric(request, study_id, trial_id, metric_id):
     return redirect("index")
   else:
     response = {
-      "error": True,
-      "message": "{} method not allowed".format(request.method)
+        "error": True,
+        "message": "{} method not allowed".format(request.method)
     }
     return JsonResponse(response, status=405)

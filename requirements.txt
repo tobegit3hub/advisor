@@ -1,6 +1,6 @@
 django>=1.10
-pycurl>=7.43.0
 numpy
 scikit-learn
 scipy
 requests
+social-auth-app-django

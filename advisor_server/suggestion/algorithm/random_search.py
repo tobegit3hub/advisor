@@ -55,7 +55,8 @@ class RandomSearchAlgorithm(BaseSuggestionAlgorithm):
         elif param["type"] == "DISCRETE":
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
-              float(value.strip()) for value in feasible_points_string.split(",")
+              float(value.strip())
+              for value in feasible_points_string.split(",")
           ]
           feasible_points.sort()
           min_value = feasible_points[0]
