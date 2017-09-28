@@ -67,7 +67,7 @@ def v1_studies(request):
         "algorithm": algorighm
     }
 
-    url = "http://127.0.0.1:8000/suggestion/v1/studies"
+    url = "/suggestion/v1/studies"
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return redirect("index")
@@ -81,13 +81,14 @@ def v1_studies(request):
 
 @csrf_exempt
 def v1_study(request, study_id):
-  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}".format(study_id)
+  url = "http://127.0.0.1:{}/suggestion/v1/studies/{}".format(
+      request.META.get("SERVER_PORT"), study_id)
 
   if request.method == "GET":
     response = requests.get(url)
 
-    tirals_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials".format(
-        study_id)
+    tirals_url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials".format(
+        request.META.get("SERVER_PORT"), study_id)
     tirals_response = requests.get(tirals_url)
 
     if response.ok and tirals_response.ok:
@@ -120,8 +121,8 @@ def v1_study_suggestions(request, study_id):
     trials_number = int(trials_number_string)
 
     data = {"trials_number": trials_number}
-    url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/suggestions".format(
-        study_id)
+    url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/suggestions".format(
+        request.META.get("SERVER_PORT"), study_id)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -137,8 +138,8 @@ def v1_trials(request):
 
     data = {"name": name}
 
-    url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials".format(
-        study_id)
+    url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials".format(
+        request.META.get("SERVER_PORT"), study_id)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return redirect("index")
@@ -148,14 +149,14 @@ def v1_trials(request):
 
 @csrf_exempt
 def v1_trial(request, study_id, trial_id):
-  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}".format(
-      study_id, trial_id)
+  url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}".format(
+      request.META.get("SERVER_PORT"), study_id, trial_id)
 
   if request.method == "GET":
     response = requests.get(url)
 
-    tiral_metrics_url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics".format(
-        study_id, trial_id)
+    tiral_metrics_url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}/metrics".format(
+        request.META.get("SERVER_PORT"), study_id, trial_id)
     tiral_metrics_response = requests.get(tiral_metrics_url)
 
     if response.ok and tiral_metrics_response.ok:
@@ -206,8 +207,8 @@ def v1_study_trial_metrics(request, study_id, trial_id):
     objective_value = float(objective_value_string)
 
     data = {"training_step": training_step, "objective_value": objective_value}
-    url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics".format(
-        study_id, trial_id)
+    url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}/metrics".format(
+        request.META.get("SERVER_PORT"), study_id, trial_id)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -217,8 +218,8 @@ def v1_study_trial_metrics(request, study_id, trial_id):
 
 @csrf_exempt
 def v1_study_trial_metric(request, study_id, trial_id, metric_id):
-  url = "http://127.0.0.1:8000/suggestion/v1/studies/{}/trials/{}/metrics/{}".format(
-      study_id, trial_id, metric_id)
+  url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}/metrics/{}".format(
+      request.META.get("SERVER_PORT"), study_id, trial_id, metric_id)
 
   if request.method == "GET":
     response = requests.get(url)
