@@ -19,18 +19,20 @@ from django.shortcuts import render_to_response
 from django.conf import settings
 from django import forms
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 
 from suggestion.models import Study
 from suggestion.models import Trial
 
-from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
-  print(request.user.username)
+  if request.user and request.user.is_authenticated:
+    print(request.user.username)
   return render(request, "home.html")
 
 
+@login_required
 def index(request):
   try:
     studies = [study.to_json() for study in Study.objects.all()]
