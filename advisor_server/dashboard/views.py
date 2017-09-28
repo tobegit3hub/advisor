@@ -67,7 +67,8 @@ def v1_studies(request):
         "algorithm": algorighm
     }
 
-    url = "/suggestion/v1/studies"
+    url = "http://127.0.0.1:{}/suggestion/v1/studies".format(
+        request.META.get("SERVER_PORT"))
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return redirect("index")
