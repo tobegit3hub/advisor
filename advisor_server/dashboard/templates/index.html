@@ -17,6 +17,7 @@
         <li class="active"><a data-toggle="tab" href="#studies">Studies</a></li>
         <li><a data-toggle="tab" href="#trials">Trials</a></li>
         <li><a data-toggle="tab" href="#configuration">Configuration</a></li>
+        <li><a data-toggle="tab" href="#notebook">Notebook</a></li>
     </ul>
 
     <div class="tab-content text-center">
@@ -132,8 +133,7 @@
 
                 {% for trial in trials %}
                 <tr>
-                    <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{
-                        trial.id }}</a></td>
+                    <td class="active"><a href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
                     <td class="text-center success">{{ trial.study_id }}</td>
                     <td class="text-center warning">{{ trial.name }}</td>
                     <td class="text-center danger">{{ trial.parameter_values }}</td>
@@ -207,6 +207,11 @@
                 </tr>
             </table>
 
+        </div>
+
+        <div id="notebook" class="tab-pane fade">
+            <br/>
+            <iframe src="http://127.0.0.1:8888" height="800" width="100%" style="border:none;" scrolling="yes"></iframe>
         </div>
     </div>
 
