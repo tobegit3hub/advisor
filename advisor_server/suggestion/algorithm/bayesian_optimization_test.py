@@ -4,8 +4,8 @@ from django.test import TestCase
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from bayesian_optimization import BayesianOptimizationDemo
-from bayesian_optimization import BayesianOptimization
+from suggestion.algorithm.bayesian_optimization import BayesianOptimizationDemo
+from suggestion.algorithm.bayesian_optimization import BayesianOptimization
 
 
 class BayesianOptimizationDemoTest(TestCase):

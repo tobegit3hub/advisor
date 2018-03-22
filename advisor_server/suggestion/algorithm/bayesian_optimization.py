@@ -12,8 +12,8 @@ from scipy.optimize import minimize
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from base_algorithm import BaseSuggestionAlgorithm
-from random_search import RandomSearchAlgorithm
+from suggestion.algorithm.base_algorithm import BaseSuggestionAlgorithm
+from suggestion.algorithm.random_search import RandomSearchAlgorithm
 
 
 class BayesianOptimizationDemo(object):
