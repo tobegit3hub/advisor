@@ -5,9 +5,9 @@ from django.test import TestCase
 from suggestion.models import Study
 from suggestion.models import Trial
 from suggestion.models import TrialMetric
-from early_stop_algorithm import NoEarlyStopAlgorithm
-from early_stop_algorithm import EarlyStopFirstTrialAlgorithm
-from early_stop_algorithm import EarlyStopDescendingAlgorithm
+from suggestion.algorithm.early_stop_algorithm import NoEarlyStopAlgorithm
+from suggestion.algorithm.early_stop_algorithm import EarlyStopFirstTrialAlgorithm
+from suggestion.algorithm.early_stop_algorithm import EarlyStopDescendingAlgorithm
 
 
 class RandomSearchAlgorithmTest(TestCase):

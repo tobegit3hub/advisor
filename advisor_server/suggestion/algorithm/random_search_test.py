@@ -4,7 +4,7 @@ from django.test import TestCase
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from random_search import RandomSearchAlgorithm
+from suggestion.algorithm.random_search import RandomSearchAlgorithm
 
 
 class RandomSearchAlgorithmTest(TestCase):

@@ -3,7 +3,7 @@ import random
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from base_algorithm import BaseSuggestionAlgorithm
+from suggestion.algorithm.base_algorithm import BaseSuggestionAlgorithm
 
 
 class RandomSearchAlgorithm(BaseSuggestionAlgorithm):

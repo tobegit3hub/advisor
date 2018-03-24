@@ -4,7 +4,7 @@ from django.test import TestCase
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from grid_search import GridSearchAlgorithm
+from suggestion.algorithm.grid_search import GridSearchAlgorithm
 
 
 class GridSearchAlgorithmTest(TestCase):
