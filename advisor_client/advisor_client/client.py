@@ -8,7 +8,7 @@ from .model import TrialMetric
 
 
 class AdvisorClient(object):
-  def __init__(self, endpoint="http://127.0.0.1:8000"):
+  def __init__(self, endpoint="http://0.0.0.0:8000"):
     self.endpoint = endpoint
 
   def create_study(self, name, study_configuration, algorithm="BayesianOptimization"):

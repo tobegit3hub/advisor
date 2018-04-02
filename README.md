@@ -56,7 +56,7 @@ docker run -d -p 8000:8000 tobegit3hub/advisor
 Install with `pip`.
 
 ```
-pip install advisor_client
+pip install advisor_clients
 ```
 
 Run with Python SDK.
