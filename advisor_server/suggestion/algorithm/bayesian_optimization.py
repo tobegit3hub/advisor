@@ -126,7 +126,6 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
     return random.uniform(min_value, max_value)
 
   def get_new_suggestions(self, study_id, trials, number=1):
-    # TODO: Only support retuning one trial
 
     study = Study.objects.get(id=study_id)
     completed_trials = Trial.objects.filter(
@@ -142,11 +141,11 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
     if len(completed_trials) < random_init_trials:
       randomSearchAlgorithm = RandomSearchAlgorithm()
       return_trials = randomSearchAlgorithm.get_new_suggestions(
-          study_id, trials)
+          study_id, trials, number=random_init_trials - len(completed_trials))
       return return_trials
 
     else:
-      return_trial = Trial.create(study.id, "BayesianOptimizationTrial")
+      return_trials = []
       acquisition_fucntion_kappa = 5
 
       # Example: {'x': (-4, 4), 'y': (-3, 3)}
@@ -181,6 +180,7 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
       bounds = []
       for key in bound_dict.keys():
         bounds.append(bound_dict[key])
+      # shape [n_params, 2]
       bounds = np.asarray(bounds)
 
       gp = GaussianProcessRegressor(
@@ -234,23 +234,29 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
       gp.fit(train_features, train_labels)
 
       # Example: [[-3.66909025, -0.84486644], [-1.93270006, -0.95367483], [1.36095631, 0.61358525], ...], shape is [100000, 2]
+      # shape: [10000, n_params]
       x_tries = np.random.uniform(
           bounds[:, 0], bounds[:, 1], size=(100000, bounds.shape[0]))
 
       mean, std = gp.predict(x_tries, return_std=True)
       # Confidence bound criteria
+      # shape: [100000]
       acquisition_fucntion_values = mean + acquisition_fucntion_kappa * std
-      x_max = x_tries[acquisition_fucntion_values.argmax()]
+      # Topn max ac function values
+      # shape: [number]
+      topn_indices = acquisition_fucntion_values.argsort()[-number:][::-1]
+      # shape: [number, n_params]
+      x_max_topn = x_tries[topn_indices]
       max_acquision_fucntion_value = acquisition_fucntion_values.max()
 
-      # Example: [3993.864683994805, 44.15441513231316]
-      x_max = np.clip(x_max, bounds[:, 0], bounds[:, 1])
-      print("Current max acquision function choose: {}".format(x_max))
+      # Example: [[3993.864683994805, 44.15441513231316], ...]
+      # shape: [number, n_params]
+      x_max_topn = np.clip(x_max_topn, bounds[:, 0], bounds[:, 1])
+      print("Current topn max acquision function choose: {}".format(x_max_topn))
 
-      # Example: {"hidden2": 3993.864683994805, "hidden1": 44.15441513231316}
-      suggested_parameter_values_json = {}
+      # Example: [{"hidden2": 3993.864683994805, "hidden1": 44.15441513231316}, ...]
+      suggested_parameter_values_jsons = []
 
-      index = 0
       """
       # Example: [0.1, 0.5, 0.3, 0.9]
       # Example: {"learning_rate": (0.01, 0.5), "hidden1": (40, 400), "optimizer_sgd": (0, 1), "optimizer_ftrl": (0, 1)}
@@ -258,50 +264,57 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
         parameter_values_json[key] = x_max[index]
         index += 1
       """
+      for x_max in x_max_topn:
 
-      for param in params:
+        return_trial = Trial.create(study.id, "BayesianOptimizationTrial")
+        suggested_parameter_values_json = {}
+        index = 0
 
-        if param["type"] == "DOUBLE" or param["type"] == "DISCRETE":
-          suggested_parameter_values_json[param["parameterName"]] = x_max[
-              index]
-          index += 1
-        elif param["type"] == "INTEGER":
-          suggested_parameter_values_json[param["parameterName"]] = int(
-              round(x_max[index]))
-          index += 1
-        elif param["type"] == "DISCRETE":
-          feasible_points_string = param["feasiblePoints"]
-          feasible_points = [
-              float(value.strip())
-              for value in feasible_points_string.split(",")
-          ]
-          feasible_points.sort()
-          selected_value = self.find_closest_value_in_list(
-              feasible_points, x_max[index])
-          suggested_parameter_values_json[param[
-              "parameterName"]] = selected_value
-          index += 1
-        elif param["type"] == "CATEGORICAL":
-          feasible_points_string = param["feasiblePoints"]
-          # Example: ["sgd", "adagrad", "adam", "ftrl"]
-          feasible_points = [
-              value.strip() for value in feasible_points_string.split(",")
-          ]
+        for param in params:
 
-          # 记录这4个值中数最大的，然后取到对应的字符串
-          current_max = x_max[index]
-          suggested_parameter_value = feasible_points[0]
-          for feasible_point in feasible_points:
-            if x_max[index] > current_max:
-              current_max = x_max[index]
-              suggested_parameter_value = feasible_point
+          if param["type"] == "DOUBLE" or param["type"] == "DISCRETE":
+            suggested_parameter_values_json[param["parameterName"]] = x_max[
+                index]
             index += 1
+          elif param["type"] == "INTEGER":
+            suggested_parameter_values_json[param["parameterName"]] = int(
+                round(x_max[index]))
+            index += 1
+          elif param["type"] == "DISCRETE":
+            feasible_points_string = param["feasiblePoints"]
+            feasible_points = [
+                float(value.strip())
+                for value in feasible_points_string.split(",")
+            ]
+            feasible_points.sort()
+            selected_value = self.find_closest_value_in_list(
+                feasible_points, x_max[index])
+            suggested_parameter_values_json[param[
+                "parameterName"]] = selected_value
+            index += 1
+          elif param["type"] == "CATEGORICAL":
+            feasible_points_string = param["feasiblePoints"]
+            # Example: ["sgd", "adagrad", "adam", "ftrl"]
+            feasible_points = [
+                value.strip() for value in feasible_points_string.split(",")
+            ]
 
-          suggested_parameter_values_json[param[
-              "parameterName"]] = suggested_parameter_value
+            # 记录这4个值中数最大的，然后取到对应的字符串
+            current_max = x_max[index]
+            suggested_parameter_value = feasible_points[0]
+            for feasible_point in feasible_points:
+              if x_max[index] > current_max:
+                current_max = x_max[index]
+                suggested_parameter_value = feasible_point
+              index += 1
 
-      return_trial.parameter_values = json.dumps(
-          suggested_parameter_values_json)
-      return_trial.save()
+            suggested_parameter_values_json[param[
+                "parameterName"]] = suggested_parameter_value
 
-    return [return_trial]
+        suggested_parameter_values_jsons.append(suggested_parameter_values_json)
+        return_trial.parameter_values = json.dumps(
+            suggested_parameter_values_json)
+        return_trial.save()
+        return_trials.append(return_trial)
+
+    return return_trials
