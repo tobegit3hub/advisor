@@ -135,6 +135,7 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
 
     random_init_trials = study_configuration_json.get("randomInitTrials", 3)
 
+    # a list: [{}, {}, ...]
     params = study_configuration_json["params"]
 
     # Use random search if it has less dataset
@@ -148,15 +149,15 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
       return_trials = []
       acquisition_fucntion_kappa = 5
 
-      # Example: {'x': (-4, 4), 'y': (-3, 3)}
-      bound_dict = {}
+      # iterate over dict can be dangerous, so abandon bound_dict
+      bounds = []
 
       for param in params:
 
         if param["type"] == "DOUBLE" or param["type"] == "INTEGER":
           min_value = param["minValue"]
           max_value = param["maxValue"]
-          bound_dict[param["parameterName"]] = (min_value, max_value)
+          bounds.append((min_value, max_value))
         elif param["type"] == "DISCRETE":
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
@@ -166,7 +167,7 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
           feasible_points.sort()
           min_value = feasible_points[0]
           max_value = feasible_points[-1]
-          bound_dict[param["parameterName"]] = (min_value, max_value)
+          bounds.append((min_value, max_value))
         elif param["type"] == "CATEGORICAL":
           feasible_points_string = param["feasiblePoints"]
           feasible_points = [
@@ -175,12 +176,8 @@ class BayesianOptimization(BaseSuggestionAlgorithm):
           for feasible_point in feasible_points:
             parameter_name = "{}_{}".format(param["parameterName"],
                                             feasible_point)
-            bound_dict[parameter_name] = (0, 1)
+            bounds.append((0, 1))
 
-      bounds = []
-      for key in bound_dict.keys():
-        bounds.append(bound_dict[key])
-      # shape [n_params, 2]
       bounds = np.asarray(bounds)
 
       gp = GaussianProcessRegressor(
