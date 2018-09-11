@@ -1,12 +1,11 @@
 import json
-import random
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from suggestion.algorithm.base_algorithm import BaseSuggestionAlgorithm
+from suggestion.algorithm.abstract_algorithm import AbstractSuggestionAlgorithm
 
 
-class GridSearchAlgorithm(BaseSuggestionAlgorithm):
+class GridSearchAlgorithm(AbstractSuggestionAlgorithm):
   def get_new_suggestions(self, study_id, trials, number=1):
     """
     Get the new suggested trials with grid search.

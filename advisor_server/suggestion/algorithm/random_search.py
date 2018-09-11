@@ -3,10 +3,10 @@ import random
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from suggestion.algorithm.base_algorithm import BaseSuggestionAlgorithm
+from suggestion.algorithm.abstract_algorithm import AbstractSuggestionAlgorithm
 
 
-class RandomSearchAlgorithm(BaseSuggestionAlgorithm):
+class RandomSearchAlgorithm(AbstractSuggestionAlgorithm):
   def get_random_value(self, min_value, max_value):
     return random.uniform(min_value, max_value)
 

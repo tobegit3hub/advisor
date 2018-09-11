@@ -5,12 +5,10 @@ from django.test import TestCase
 from suggestion.models import Study
 from suggestion.models import Trial
 from suggestion.models import TrialMetric
-from suggestion.algorithm.early_stop_algorithm import NoEarlyStopAlgorithm
-from suggestion.algorithm.early_stop_algorithm import EarlyStopFirstTrialAlgorithm
-from suggestion.algorithm.early_stop_algorithm import EarlyStopDescendingAlgorithm
+from suggestion.early_stop_algorithm.no_early_stop import NoEarlyStopAlgorithm
 
 
-class RandomSearchAlgorithmTest(TestCase):
+class NoEarlyStopAlgorithmTest(TestCase):
   def setUp(self):
     study_configuration_json = {
         "goal":
@@ -40,26 +38,8 @@ class RandomSearchAlgorithmTest(TestCase):
   def tearDown(self):
     pass
 
-  def test_init(self):
-    algorithm = NoEarlyStopAlgorithm()
-    self.assertEqual(algorithm.__class__, NoEarlyStopAlgorithm)
-
   # Test NoEarlyStopAlgorithm
   def test_get_early_stop_trials1(self):
     algorithm = NoEarlyStopAlgorithm()
     early_stop_trials = algorithm.get_early_stop_trials(self.trials)
     self.assertEqual(len(early_stop_trials), 0)
-
-  # Test EarlyStopFirstTrialAlgorithm
-  def test_get_early_stop_trials1(self):
-    algorithm = EarlyStopFirstTrialAlgorithm()
-    early_stop_trials = algorithm.get_early_stop_trials(self.trials)
-    self.assertEqual(len(early_stop_trials), 1)
-    self.assertEqual(early_stop_trials[0].name, "RandomSearchTrial1")
-
-  # Test EarlyStopDescendingAlgorithm
-  def test_get_early_stop_trials1(self):
-    algorithm = EarlyStopDescendingAlgorithm()
-    early_stop_trials = algorithm.get_early_stop_trials(self.trials)
-    self.assertEqual(len(early_stop_trials), 1)
-    self.assertEqual(early_stop_trials[0].name, "RandomSearchTrial2")

@@ -1,23 +1,11 @@
 import json
-import random
 
 from suggestion.models import Study
-from suggestion.models import Trial
 from suggestion.models import TrialMetric
-from suggestion.algorithm.base_algorithm import BaseEarlyStopAlgorithm
+from suggestion.early_stop_algorithm.abstract_early_stop import AbstractEarlyStopAlgorithm
 
 
-class NoEarlyStopAlgorithm(BaseEarlyStopAlgorithm):
-  def get_early_stop_trials(self, trials):
-    return None
-
-
-class EarlyStopFirstTrialAlgorithm(BaseEarlyStopAlgorithm):
-  def get_early_stop_trials(self, trials):
-    return trials[0]
-
-
-class EarlyStopDescendingAlgorithm(BaseEarlyStopAlgorithm):
+class EarlyStopDescendingAlgorithm(AbstractEarlyStopAlgorithm):
   def get_early_stop_trials(self, trials):
     result = []
 

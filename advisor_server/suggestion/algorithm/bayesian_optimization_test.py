@@ -45,6 +45,8 @@ class BayesianOptimizationTest(TestCase):
   def test_get_new_suggestions(self):
     bayesianOptimization = BayesianOptimization()
 
+    #import ipdb;ipdb.set_trace()
+
     new_trials = bayesianOptimization.get_new_suggestions(
         self.study.id, self.trials, 1)
     new_trials[0].status = "Completed"
