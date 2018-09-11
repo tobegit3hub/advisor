@@ -11,9 +11,16 @@ class AdvisorClient(object):
   def __init__(self, endpoint="http://0.0.0.0:8000"):
     self.endpoint = endpoint
 
-  def create_study(self, name, study_configuration, algorithm="BayesianOptimization"):
+  def create_study(self,
+                   name,
+                   study_configuration,
+                   algorithm="BayesianOptimization"):
     url = "{}/suggestion/v1/studies".format(self.endpoint)
-    request_data = {"name": name, "study_configuration": study_configuration, "algorithm": algorithm}
+    request_data = {
+        "name": name,
+        "study_configuration": study_configuration,
+        "algorithm": algorithm
+    }
     response = requests.post(url, json=request_data)
 
     study = None
@@ -156,7 +163,8 @@ class AdvisorClient(object):
 
     return trial_metric
 
-  def complete_trial_with_tensorboard_metrics(self, trial, tensorboard_metrics):
+  def complete_trial_with_tensorboard_metrics(self, trial,
+                                              tensorboard_metrics):
     for tensorboard_metric in tensorboard_metrics:
       self.create_trial_metric(trial.study_id, trial.id,
                                tensorboard_metric.step,

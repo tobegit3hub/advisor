@@ -96,9 +96,8 @@ def main():
           x = np.array([[train_X[0]]])
           y = np.array([[train_Y[0]]])
           summary_value, loss_value, step = sess.run(
-              [summary_op, loss, global_step],
-              feed_dict={X: x,
-                         Y: y})
+              [summary_op, loss, global_step], feed_dict={X: x,
+                                                          Y: y})
           writer.add_summary(summary_value, step)
           print("Epoch: {}, loss: {}".format(i, loss_value))
 
@@ -122,16 +121,16 @@ def main():
     task_index = task_data["index"]
 
     cluster = tf.train.ClusterSpec(cluster_spec)
-    server = tf.train.Server(cluster,
-                             job_name=task_type,
-                             task_index=task_index)
+    server = tf.train.Server(
+        cluster, job_name=task_type, task_index=task_index)
 
     if task_type == "ps":
       server.join()
     elif task_type == "worker" or task_type == "master":
-      with tf.device(tf.train.replica_device_setter(
-          worker_device="/job:{}/task:{}".format(task_type, task_index),
-          cluster=cluster)):
+      with tf.device(
+          tf.train.replica_device_setter(
+              worker_device="/job:{}/task:{}".format(task_type, task_index),
+              cluster=cluster)):
 
         # Define the model
         keys_placeholder = tf.placeholder(tf.int32, shape=[None, 1])
@@ -155,29 +154,35 @@ def main():
         model_exporter.init(
             tf.get_default_graph().as_graph_def(),
             named_graph_signatures={
-                "inputs": exporter.generic_signature({"keys": keys_placeholder,
-                                                      "X": X}),
+                "inputs":
+                exporter.generic_signature({
+                    "keys": keys_placeholder,
+                    "X": X
+                }),
                 "outputs":
-                exporter.generic_signature({"keys": keys,
-                                            "predict": predict_op})
+                exporter.generic_signature({
+                    "keys": keys,
+                    "predict": predict_op
+                })
             })
 
-        sv = tf.train.Supervisor(is_chief=(task_type == "master"),
-                                 logdir=FLAGS.checkpoint_path,
-                                 init_op=init_op,
-                                 #summary_op=summary_op,
-                                 summary_op=None,
-                                 saver=saver,
-                                 global_step=global_step,
-                                 save_model_secs=60)
+        sv = tf.train.Supervisor(
+            is_chief=(task_type == "master"),
+            logdir=FLAGS.checkpoint_path,
+            init_op=init_op,
+            #summary_op=summary_op,
+            summary_op=None,
+            saver=saver,
+            global_step=global_step,
+            save_model_secs=60)
 
         try:
           with sv.managed_session(server.target) as sess:
             print("Save tensorboard files into: {}".format(FLAGS.output_path))
             writer = tf.summary.FileWriter(FLAGS.output_path, sess.graph)
 
-            print("Run training with epoch number: {}".format(
-                FLAGS.max_epochs))
+            print(
+                "Run training with epoch number: {}".format(FLAGS.max_epochs))
             for i in range(FLAGS.max_epochs):
               for (x, y) in zip(train_X, train_Y):
                 x = np.array([[x]])
@@ -188,9 +193,8 @@ def main():
                 x = np.array([[train_X[0]]])
                 y = np.array([[train_Y[0]]])
                 summary_value, loss_value, step = sess.run(
-                    [summary_op, loss, global_step],
-                    feed_dict={X: x,
-                               Y: y})
+                    [summary_op, loss, global_step], feed_dict={X: x,
+                                                                Y: y})
                 print("Epoch: {}, loss: {}".format(i, loss_value))
                 if task_type == "master":
                   writer.add_summary(summary_value, step)
@@ -221,8 +225,8 @@ def export_model(sess, inputs_signature, outputs_signature):
           "inputs": exporter.generic_signature(inputs_signature),
           "outputs": exporter.generic_signature(outputs_signature)
       })
-  model_exporter.export(FLAGS.model_path, tf.constant(FLAGS.model_version),
-                        sess)
+  model_exporter.export(FLAGS.model_path,
+                        tf.constant(FLAGS.model_version), sess)
   print("Done exporting!")
 
 

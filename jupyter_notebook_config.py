@@ -17,6 +17,7 @@ else:
 #c.NotebookApp.tornado_settings = {'headers': {'X-Frame-Options': 'ALLOW-FROM http://127.0.0.1:8000'}}
 c.NotebookApp.tornado_settings = {
     "headers": {
-        "Content-Security-Policy": "frame-ancestors self http://localhost:8000; report-uri /api/security/csp-report"
+        "Content-Security-Policy":
+        "frame-ancestors self http://localhost:8000; report-uri /api/security/csp-report"
     }
 }

@@ -21,10 +21,9 @@ from django.contrib.auth import views as auth_views
 from dashboard import views as dashboard_views
 
 urlpatterns = [
-    # Redirect to dashboard instead of login page
+    # TODO: Redirect to dashboard instead of login page
     # url(r'^$', dashboard_views.home, name='home'),
     url(r'^$', include('dashboard.urls')),
-
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # <--
