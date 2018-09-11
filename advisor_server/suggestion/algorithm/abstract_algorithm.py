@@ -6,7 +6,7 @@ class AbstractSuggestionAlgorithm(object):
   __metaclass__ = abc.ABCMeta
 
   @abc.abstractmethod
-  def get_new_suggestions(self, study_id, trials, number=1):
+  def get_new_suggestions(self, study_id, trials=[], number=1):
     """
     The study's study_configuration is like this.
     {

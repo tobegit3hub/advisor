@@ -125,7 +125,7 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
   def get_random_value(self, min_value, max_value):
     return random.uniform(min_value, max_value)
 
-  def get_new_suggestions(self, study_id, trials, number=1):
+  def get_new_suggestions(self, study_id, trials=[], number=1):
     # TODO: Only support retuning one trial
 
     study = Study.objects.get(id=study_id)

@@ -4,8 +4,7 @@
 
 Advisor is the hyper parameters tuning system for black box optimization.
 
-It is the open-source implementation of [Google Vizier](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46180.pdf) with the features.
-
+It is the open-source implementation of [Google Vizier](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46180.pdf) with these features.
 
 * Get suggestions from API, WEB or CLI
 * Support abstractions of Study and Trial
@@ -16,18 +15,13 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 ## Algorithms
 
 * [x] Random Search Algorithm
-* [ ] 2x Random Search Algorithm
 * [x] Grid Search Algorithm
-* [x] Baysian Optimization
-* [ ] Gaussian Process Bandit
-* [ ] Batched Gaussian Process Bandits
+* [x] Bayesian Optimization
 * [ ] SMAC Algorithm
 * [ ] CMA-ES Algorithm
-* [x] No Early Stop Algorithm
 * [x] Early Stop First Trial Algorithm
 * [x] Early Stop Descending Algorithm
 * [ ] Performance Curve Stop Algorithm
-* [ ] Median Stop Algorithm
 
 ## Usage
 
@@ -126,24 +120,18 @@ Study configuration describe the search space of parameters. It supports four ty
     {
       "parameterName": "hidden2",
       "type": "DISCRETE",
-      "minValue": 0,
-      "maxValue": 0,
-      "feasiblePoints": "1.5, -1.5, 2.5, 4.5",
+      "feasiblePoints": "8, 16, 32, 64",
       "scallingType": "LINEAR"
     },
     {
       "parameterName": "optimizer",
       "type": "CATEGORICAL",
-      "minValue": 0,
-      "maxValue": 0,
       "feasiblePoints": "sgd, adagrad, adam, ftrl",
       "scallingType": "LINEAR"
     },
     {
       "parameterName": "batch_normalization",
       "type": "CATEGORICAL",
-      "minValue": 0,
-      "maxValue": 0,
       "feasiblePoints": "true, false",
       "scallingType": "LINEAR"
     }

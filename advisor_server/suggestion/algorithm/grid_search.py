@@ -6,7 +6,7 @@ from suggestion.algorithm.abstract_algorithm import AbstractSuggestionAlgorithm
 
 
 class GridSearchAlgorithm(AbstractSuggestionAlgorithm):
-  def get_new_suggestions(self, study_id, trials, number=1):
+  def get_new_suggestions(self, study_id, trials=[], number=1):
     """
     Get the new suggested trials with grid search.
     """

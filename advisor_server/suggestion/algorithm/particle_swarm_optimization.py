@@ -90,7 +90,7 @@ class ParticleSwarmOptimization(AbstractSuggestionAlgorithm):
     pso.optimize()
     return
 
-  def get_new_suggestions(self, study_id, trials, number=1):
+  def get_new_suggestions(self, study_id, trials=[], number=1):
     """
     Get the new suggested trials with grid search.
     """

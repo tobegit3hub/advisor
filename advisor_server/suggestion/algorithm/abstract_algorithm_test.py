@@ -3,6 +3,15 @@ from django.test import TestCase
 from suggestion.algorithm.abstract_algorithm import AbstractSuggestionAlgorithm
 
 
+class TestAbstractSuggestionAlgorithm(AbstractSuggestionAlgorithm):
+  """
+  Construct the test class to implement AbstractSuggestionAlgorithm.
+  """
+
+  def get_new_suggestions(self, study_id, trials=[], number=1):
+    return []
+
+
 class RandomSearchAlgorithmTest(TestCase):
   def setUp(self):
     pass
@@ -10,13 +19,21 @@ class RandomSearchAlgorithmTest(TestCase):
   def tearDown(self):
     pass
 
-  def test_init(self):
-    pass
-    """
-    baseSuggestionAlgorithm = BaseSuggestionAlgorithm()
-    self.assertEqual(baseSuggestionAlgorithm.__class__,
-                     BaseSuggestionAlgorithm)
+  def test_subclass(self):
 
-    baseEarlyStopAlgorithm = BaseEarlyStopAlgorithm()
-    self.assertEqual(baseEarlyStopAlgorithm.__class__, BaseEarlyStopAlgorithm)
-    """
+    instance = TestAbstractSuggestionAlgorithm()
+
+    # Test if it is AbstractSuggestionAlgorithm
+    self.assertTrue(isinstance(instance, AbstractSuggestionAlgorithm))
+
+    # Test if it is TestAbstractSuggestionAlgorithm
+    self.assertTrue(isinstance(instance, TestAbstractSuggestionAlgorithm))
+    self.assertEqual(instance.__class__, TestAbstractSuggestionAlgorithm)
+
+  def test_get_new_suggestions(self):
+
+    instance = TestAbstractSuggestionAlgorithm()
+
+    # Test get_new_suggestions function
+    study_id = 0
+    self.assertEqual(len(instance.get_new_suggestions(study_id)), 0)
