@@ -16,6 +16,8 @@ class RandomSearchAlgorithmTest(TestCase):
         5,
         "maxParallelTrials":
         1,
+        "randomInitTrials":
+        1,
         "params": [{
             "parameterName": "hidden1",
             "type": "INTEGER",

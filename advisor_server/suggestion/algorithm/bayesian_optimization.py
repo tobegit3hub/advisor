@@ -26,6 +26,7 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
     random_init_trial_number = study_configuration_json.get(
         "randomInitTrials", 3)
     params = study_configuration_json["params"]
+    study_goal = study_configuration_json["goal"]
 
     # Use random search if it has less dataset
     if len(completed_trials) < random_init_trial_number:
@@ -147,8 +148,19 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
     # Confidence bound criteria
     acquisition_fucntion_values = mean + acquisition_fucntion_kappa * std
 
-    x_max = x_tries[acquisition_fucntion_values.argmax()]
-    # max_acquision_fucntion_value = acquisition_fucntion_values.max()
+    #x_max = x_tries[acquisition_fucntion_values.argmax()]
+    # tobe
+    #x_max = x_tries[acquisition_fucntion_values.argmin()]
+
+    if study_goal == "MAXIMIZE":
+      x_max = x_tries[acquisition_fucntion_values.argmax()]
+      #max_acquision_fucntion_value = acquisition_fucntion_values.max()
+    elif study_goal == "MINIMIZE":
+      x_max = x_tries[acquisition_fucntion_values.argmin()]
+      #max_acquision_fucntion_value = acquisition_fucntion_values.min()
+    else:
+      # TODO: Throw the error
+      x_max = []
 
     # Example: [3993.864683994805, 44.15441513231316]
     x_max = np.clip(x_max, bounds[:, 0], bounds[:, 1])
