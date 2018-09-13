@@ -17,10 +17,19 @@ class GridSearchAlgorithmTest(TestCase):
         "maxParallelTrials":
         1,
         "params": [{
-            "parameterName": "hidden1",
-            "type": "INTEGER",
-            "minValue": 40,
-            "maxValue": 400,
+            "parameterName": "hidden2",
+            "type": "DISCRETE",
+            "feasiblePoints": "8, 16, 32, 64",
+            "scallingType": "LINEAR"
+        }, {
+            "parameterName": "optimizer",
+            "type": "CATEGORICAL",
+            "feasiblePoints": "sgd, adagrad, adam, ftrl",
+            "scallingType": "LINEAR"
+        }, {
+            "parameterName": "batch_normalization",
+            "type": "CATEGORICAL",
+            "feasiblePoints": "true, false",
             "scallingType": "LINEAR"
         }]
     }
@@ -38,6 +47,15 @@ class GridSearchAlgorithmTest(TestCase):
   def test_get_new_suggestions(self):
     gridSearchAlgorithm = GridSearchAlgorithm()
     new_trials = gridSearchAlgorithm.get_new_suggestions(
+        self.study.id, self.trials, 1)
+
+    # Assert getting two trials
+    self.assertEqual(len(new_trials), 1)
+
+
+  def test_get_two_new_suggestions(self):
+    gridSearchAlgorithm = GridSearchAlgorithm()
+    new_trials = gridSearchAlgorithm.get_new_suggestions(
         self.study.id, self.trials, 2)
 
     # Assert getting two trials
@@ -47,38 +65,6 @@ class GridSearchAlgorithmTest(TestCase):
     new_trial = new_trials[0]
     new_parameter_values = new_trial.parameter_values
     new_parameter_values_json = json.loads(new_parameter_values)
-    self.assertEqual(new_parameter_values_json["hidden1"], 40)
-
-    new_trial = new_trials[1]
-    new_parameter_values = new_trial.parameter_values
-    new_parameter_values_json = json.loads(new_parameter_values)
-    self.assertEqual(new_parameter_values_json["hidden1"], 400)
-
-  def test_get_four_new_suggestions(self):
-    gridSearchAlgorithm = GridSearchAlgorithm()
-    new_trials = gridSearchAlgorithm.get_new_suggestions(
-        self.study.id, self.trials, 4)
-
-    # Assert getting two trials
-    self.assertEqual(len(new_trials), 4)
-
-    # Assert getting the trials
-    new_trial = new_trials[0]
-    new_parameter_values = new_trial.parameter_values
-    new_parameter_values_json = json.loads(new_parameter_values)
-    self.assertEqual(new_parameter_values_json["hidden1"], 40)
-
-    new_trial = new_trials[1]
-    new_parameter_values = new_trial.parameter_values
-    new_parameter_values_json = json.loads(new_parameter_values)
-    self.assertEqual(new_parameter_values_json["hidden1"], 160)
-
-    new_trial = new_trials[2]
-    new_parameter_values = new_trial.parameter_values
-    new_parameter_values_json = json.loads(new_parameter_values)
-    self.assertEqual(new_parameter_values_json["hidden1"], 280)
-
-    new_trial = new_trials[3]
-    new_parameter_values = new_trial.parameter_values
-    new_parameter_values_json = json.loads(new_parameter_values)
-    self.assertEqual(new_parameter_values_json["hidden1"], 400)
+    self.assertEqual(new_parameter_values_json["hidden2"], "8")
+    self.assertEqual(new_parameter_values_json["optimizer"], "sgd")
+    self.assertEqual(new_parameter_values_json["batch_normalization"], "true")
