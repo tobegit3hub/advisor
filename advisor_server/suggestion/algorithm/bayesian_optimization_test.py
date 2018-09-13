@@ -23,16 +23,39 @@ class BayesianOptimizationTest(TestCase):
         5,
         "maxParallelTrials":
         1,
+        "randomInitTrials":
+        1,
         "params": [{
             "parameterName": "hidden1",
             "type": "INTEGER",
-            "minValue": 40,
-            "maxValue": 400,
+            "minValue": 1,
+            "maxValue": 10,
+            "scallingType": "LINEAR"
+        }, {
+            "parameterName": "learning_rate",
+            "type": "DOUBLE",
+            "minValue": 0.01,
+            "maxValue": 0.5,
+            "scallingType": "LINEAR"
+        }, {
+            "parameterName": "hidden2",
+            "type": "DISCRETE",
+            "feasiblePoints": "8, 16, 32, 64",
+            "scallingType": "LINEAR"
+        }, {
+            "parameterName": "optimizer",
+            "type": "CATEGORICAL",
+            "feasiblePoints": "sgd, adagrad, adam, ftrl",
+            "scallingType": "LINEAR"
+        }, {
+            "parameterName": "batch_normalization",
+            "type": "CATEGORICAL",
+            "feasiblePoints": "true, false",
             "scallingType": "LINEAR"
         }]
     }
     study_configuration = json.dumps(study_configuration_json)
-    self.study = Study.create("GridSearchStudy", study_configuration)
+    self.study = Study.create("BayesianOptimizationStudy", study_configuration)
     self.trials = []
 
   def tearDown(self):
@@ -47,32 +70,28 @@ class BayesianOptimizationTest(TestCase):
 
     #import ipdb;ipdb.set_trace()
 
-    new_trials = bayesianOptimization.get_new_suggestions(
-        self.study.id, self.trials, 1)
+    new_trials = bayesianOptimization.get_new_suggestions(self.study.id, [], 1)
     new_trials[0].status = "Completed"
-    new_trials[0].parameter_values = '{"hidden1": 50}'
     new_trials[0].objective_value = 0.6
     new_trials[0].save()
-    new_trials = bayesianOptimization.get_new_suggestions(
-        self.study.id, self.trials, 1)
-    new_trials[0].status = "Completed"
-    new_trials[0].parameter_values = '{"hidden1": 150}'
-    new_trials[0].objective_value = 0.8
-    new_trials[0].save()
-    new_trials = bayesianOptimization.get_new_suggestions(
-        self.study.id, self.trials, 1)
-    new_trials[0].status = "Completed"
-    new_trials[0].parameter_values = '{"hidden1": 250}'
-    new_trials[0].objective_value = 0.6
-    new_trials[0].save()
-    new_trials = bayesianOptimization.get_new_suggestions(
-        self.study.id, self.trials, 1)
+
+    new_trials = bayesianOptimization.get_new_suggestions(self.study.id, [], 1)
 
     # Assert getting two trials
     self.assertEqual(len(new_trials), 1)
+
+    #import ipdb;ipdb.set_trace()
 
     # Assert getting the trials
     new_trial = new_trials[0]
     new_parameter_values = new_trial.parameter_values
     new_parameter_values_json = json.loads(new_parameter_values)
-    #self.assertEqual(new_parameter_values_json["hidden1"], 40)
+    self.assertTrue(10 >= new_parameter_values_json["hidden1"] >= 1)
+    self.assertTrue(0.5 >= new_parameter_values_json["learning_rate"] >= 0.01)
+    self.assertTrue(
+        new_parameter_values_json["hidden2"] in ["8", "16", "32", "64"])
+    self.assertTrue(new_parameter_values_json["optimizer"] in [
+        "sgd", "adagrad", "adam", "ftrl"
+    ])
+    self.assertTrue(
+        new_parameter_values_json["batch_normalization"] in ["true", "false"])

@@ -7,24 +7,204 @@ import random
 import numpy as np
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import Matern
-from scipy.stats import norm
-from scipy.optimize import minimize
 
 from suggestion.models import Study
 from suggestion.models import Trial
 from suggestion.algorithm.abstract_algorithm import AbstractSuggestionAlgorithm
 from suggestion.algorithm.random_search import RandomSearchAlgorithm
+from suggestion.algorithm.util import AlgorithmUtil
+
+
+class BayesianOptimization(AbstractSuggestionAlgorithm):
+  def get_new_suggestions(self, study_id, trials=[], number=1):
+    # TODO: Only support returning one trial
+    number = 1
+
+    # Get study and completed data
+    study = Study.objects.get(id=study_id)
+    completed_trials = Trial.objects.filter(
+        study_id=study_id, status="Completed")
+    study_configuration_json = json.loads(study.study_configuration)
+    random_init_trial_number = study_configuration_json.get(
+        "randomInitTrials", 3)
+    params = study_configuration_json["params"]
+
+    # Use random search if it has less dataset
+    if len(completed_trials) < random_init_trial_number:
+      randomSearchAlgorithm = RandomSearchAlgorithm()
+      return_trials = randomSearchAlgorithm.get_new_suggestions(
+          study_id, trials, number)
+      return return_trials
+
+    # Construct the map of name and scope to compute gaussian process
+    acquisition_fucntion_kappa = 5
+
+    # Example: {'x': (-4, 4), 'y': (-3, 3)}
+    name_scope_map = {}
+
+    for param in params:
+
+      if param["type"] == "DOUBLE" or param["type"] == "INTEGER":
+        min_value = param["minValue"]
+        max_value = param["maxValue"]
+        name_scope_map[param["parameterName"]] = (min_value, max_value)
+
+      elif param["type"] == "DISCRETE":
+        feasible_points_string = param["feasiblePoints"]
+        feasible_points = [
+            float(value.strip()) for value in feasible_points_string.split(",")
+        ]
+        feasible_points.sort()
+        min_value = feasible_points[0]
+        max_value = feasible_points[-1]
+        name_scope_map[param["parameterName"]] = (min_value, max_value)
+
+      elif param["type"] == "CATEGORICAL":
+        feasible_points_string = param["feasiblePoints"]
+        feasible_points = [
+            value.strip() for value in feasible_points_string.split(",")
+        ]
+        for feasible_point in feasible_points:
+          parameter_name = "{}_{}".format(param["parameterName"],
+                                          feasible_point)
+          name_scope_map[parameter_name] = (0, 1)
+
+    # Construct the list with only scope, Example: [(40, 400)]
+    bounds = []
+    for key in name_scope_map.keys():
+      bounds.append(name_scope_map[key])
+    bounds = np.asarray(bounds)
+
+    # Construct data to train gaussian process, Example: [[50], [150], [250]]
+    init_points = []
+    # Example: [0.6, 0.8, 0.6]
+    init_labels = []
+
+    # Construct train data with completed trials
+    for trial in completed_trials:
+      # Example: {"learning_rate": 0.01, "optimizer": "ftrl"}
+      parameter_values_json = json.loads(trial.parameter_values)
+
+      # Example: [0.01, "ftrl"]
+      instance_features = []
+      instance_label = trial.objective_value
+
+      for param in params:
+
+        if param["type"] == "DOUBLE" or param["type"] == "INTEGER" or param["type"] == "DISCRETE":
+          instance_feature = parameter_values_json[param["parameterName"]]
+          instance_features.append(instance_feature)
+
+        elif param["type"] == "CATEGORICAL":
+          feasible_points_string = param["feasiblePoints"]
+          # Example: ["sgd", "adagrad", "adam", "ftrl"]
+          feasible_points = [
+              value.strip() for value in feasible_points_string.split(",")
+          ]
+          # Example: "ftrl"
+          parameter_value = parameter_values_json[param["parameterName"]]
+          for feasible_point in feasible_points:
+            if feasible_point == parameter_value:
+              instance_features.append(1)
+            else:
+              instance_features.append(0)
+
+      init_points.append(instance_features)
+      init_labels.append(instance_label)
+
+    # Example: ndarray([[ 50], [150], [250]])
+    train_features = np.asarray(init_points)
+    # Example: ndarray([0.6, 0.8, 0.6])
+    train_labels = np.asarray(init_labels)
+    # current_max_label = train_labels.max()
+
+    # Train with gaussian process
+    gp = GaussianProcessRegressor(
+        kernel=Matern(nu=2.5),
+        n_restarts_optimizer=25, )
+
+    gp.fit(train_features, train_labels)
+
+    # Example: [[-3.66909025, -0.84486644], [-1.93270006, -0.95367483], [1.36095631, 0.61358525], ...], shape is [100000, 2]
+    x_tries = np.random.uniform(
+        bounds[:, 0], bounds[:, 1], size=(100000, bounds.shape[0]))
+
+    mean, std = gp.predict(x_tries, return_std=True)
+
+    # Confidence bound criteria
+    acquisition_fucntion_values = mean + acquisition_fucntion_kappa * std
+
+    x_max = x_tries[acquisition_fucntion_values.argmax()]
+    # max_acquision_fucntion_value = acquisition_fucntion_values.max()
+
+    # Example: [3993.864683994805, 44.15441513231316]
+    x_max = np.clip(x_max, bounds[:, 0], bounds[:, 1])
+    print("Current max acquision function choose: {}".format(x_max))
+
+    # Example: {"hidden2": 3993.864683994805, "hidden1": 44.15441513231316}
+    suggested_parameter_values_json = {}
+
+    index = 0
+    """
+    Construct the suggested params according to the result of gaussian process
+    # Example prior result: [0.1, 0.5, 0.3, 0.9]
+    # Example param scope: {"learning_rate": (0.01, 0.5), "hidden1": (40, 400), "optimizer_sgd": (0, 1), "optimizer_ftrl": (0, 1)}
+    for key in bound_dict.keys():
+      parameter_values_json[key] = x_max[index]
+      index += 1
+    """
+
+    for param in params:
+
+      if param["type"] == "DOUBLE" or param["type"] == "DISCRETE":
+        suggested_parameter_values_json[param["parameterName"]] = x_max[index]
+        index += 1
+
+      elif param["type"] == "INTEGER":
+        suggested_parameter_values_json[param["parameterName"]] = int(
+            round(x_max[index]))
+        index += 1
+
+      elif param["type"] == "DISCRETE":
+        feasible_points_string = param["feasiblePoints"]
+        feasible_points = [
+            float(value.strip()) for value in feasible_points_string.split(",")
+        ]
+        # feasible_points.sort()
+        selected_value = AlgorithmUtil.get_closest_value_in_list(
+            feasible_points, x_max[index])
+        suggested_parameter_values_json[param[
+            "parameterName"]] = selected_value
+        index += 1
+
+      elif param["type"] == "CATEGORICAL":
+        feasible_points_string = param["feasiblePoints"]
+        # Example: ["sgd", "adagrad", "adam", "ftrl"]
+        feasible_points = [
+            value.strip() for value in feasible_points_string.split(",")
+        ]
+
+        # Find the max value of these and get its string
+        current_max = x_max[index]
+        suggested_parameter_value = feasible_points[0]
+
+        for feasible_point in feasible_points:
+          if x_max[index] > current_max:
+            current_max = x_max[index]
+            suggested_parameter_value = feasible_point
+          index += 1
+
+        suggested_parameter_values_json[param[
+            "parameterName"]] = suggested_parameter_value
+
+    return_trial = Trial.create(study.id, "BayesianOptimizationTrial")
+    return_trial.parameter_values = json.dumps(suggested_parameter_values_json)
+    return_trial.save()
+
+    return [return_trial]
 
 
 class BayesianOptimizationDemo(object):
-  def find_closest_value_in_list(self, the_list, objective_value):
-    closest_value = the_list[0]
-    for current_value in the_list:
-      if abs(current_value - objective_value) < abs(closest_value -
-                                                    objective_value):
-        closest_value = current_value
-    return closest_value
-
   def test_function2(self, x, y):
     return -x**2 - (y - 1)**2 + 1
 
@@ -119,189 +299,3 @@ class BayesianOptimizationDemo(object):
       x_max = np.clip(x_max, bounds[:, 0], bounds[:, 1])
       print("Max label: {}, current label: {}, acquision function choose: {}".
             format(current_max_label, train_labels[-1], x_max))
-
-
-class BayesianOptimization(AbstractSuggestionAlgorithm):
-  def get_random_value(self, min_value, max_value):
-    return random.uniform(min_value, max_value)
-
-  def get_new_suggestions(self, study_id, trials=[], number=1):
-    # TODO: Only support retuning one trial
-
-    study = Study.objects.get(id=study_id)
-    completed_trials = Trial.objects.filter(
-        study_id=study_id, status="Completed")
-
-    study_configuration_json = json.loads(study.study_configuration)
-
-    random_init_trials = study_configuration_json.get("randomInitTrials", 3)
-
-    params = study_configuration_json["params"]
-
-    # Use random search if it has less dataset
-    if len(completed_trials) < random_init_trials:
-      randomSearchAlgorithm = RandomSearchAlgorithm()
-      return_trials = randomSearchAlgorithm.get_new_suggestions(
-          study_id, trials)
-      return return_trials
-
-    else:
-      return_trial = Trial.create(study.id, "BayesianOptimizationTrial")
-      acquisition_fucntion_kappa = 5
-
-      # Example: {'x': (-4, 4), 'y': (-3, 3)}
-      bound_dict = {}
-
-      for param in params:
-
-        if param["type"] == "DOUBLE" or param["type"] == "INTEGER":
-          min_value = param["minValue"]
-          max_value = param["maxValue"]
-          bound_dict[param["parameterName"]] = (min_value, max_value)
-        elif param["type"] == "DISCRETE":
-          feasible_points_string = param["feasiblePoints"]
-          feasible_points = [
-              float(value.strip())
-              for value in feasible_points_string.split(",")
-          ]
-          feasible_points.sort()
-          min_value = feasible_points[0]
-          max_value = feasible_points[-1]
-          bound_dict[param["parameterName"]] = (min_value, max_value)
-        elif param["type"] == "CATEGORICAL":
-          feasible_points_string = param["feasiblePoints"]
-          feasible_points = [
-              value.strip() for value in feasible_points_string.split(",")
-          ]
-          for feasible_point in feasible_points:
-            parameter_name = "{}_{}".format(param["parameterName"],
-                                            feasible_point)
-            bound_dict[parameter_name] = (0, 1)
-
-      bounds = []
-      for key in bound_dict.keys():
-        bounds.append(bound_dict[key])
-      bounds = np.asarray(bounds)
-
-      gp = GaussianProcessRegressor(
-          kernel=Matern(nu=2.5),
-          n_restarts_optimizer=25, )
-
-      init_points = []
-      init_labels = []
-      """
-      parametername_type_map = {}
-      for param in params:
-        parametername_type_map[param["parameterName"]] = param["type"]
-      """
-
-      for trial in completed_trials:
-        # Example: {"learning_rate": 0.01, "optimizer": "ftrl"}
-        parameter_values_json = json.loads(trial.parameter_values)
-        # Example: [0.01]
-
-        instance_features = []
-        instance_label = trial.objective_value
-
-        for param in params:
-
-          if param["type"] == "DOUBLE" or param["type"] == "INTEGER" or param["type"] == "DISCRETE":
-            instance_feature = parameter_values_json[param["parameterName"]]
-            instance_features.append(instance_feature)
-          elif param["type"] == "CATEGORICAL":
-            feasible_points_string = param["feasiblePoints"]
-            # Example: ["sgd", "adagrad", "adam", "ftrl"]
-            feasible_points = [
-                value.strip() for value in feasible_points_string.split(",")
-            ]
-            # Example: "ftrl"
-            parameter_value = parameter_values_json[param["parameterName"]]
-            for feasible_point in feasible_points:
-              if feasible_point == parameter_value:
-                instance_features.append(1)
-              else:
-                instance_features.append(0)
-
-        init_points.append(instance_features)
-        init_labels.append(instance_label)
-
-      #import ipdb;ipdb.set_trace()
-
-      train_features = np.asarray(init_points)
-      train_labels = np.asarray(init_labels)
-      current_max_label = train_labels.max()
-
-      gp.fit(train_features, train_labels)
-
-      # Example: [[-3.66909025, -0.84486644], [-1.93270006, -0.95367483], [1.36095631, 0.61358525], ...], shape is [100000, 2]
-      x_tries = np.random.uniform(
-          bounds[:, 0], bounds[:, 1], size=(100000, bounds.shape[0]))
-
-      mean, std = gp.predict(x_tries, return_std=True)
-      # Confidence bound criteria
-      acquisition_fucntion_values = mean + acquisition_fucntion_kappa * std
-      x_max = x_tries[acquisition_fucntion_values.argmax()]
-      max_acquision_fucntion_value = acquisition_fucntion_values.max()
-
-      # Example: [3993.864683994805, 44.15441513231316]
-      x_max = np.clip(x_max, bounds[:, 0], bounds[:, 1])
-      print("Current max acquision function choose: {}".format(x_max))
-
-      # Example: {"hidden2": 3993.864683994805, "hidden1": 44.15441513231316}
-      suggested_parameter_values_json = {}
-
-      index = 0
-      """
-      # Example: [0.1, 0.5, 0.3, 0.9]
-      # Example: {"learning_rate": (0.01, 0.5), "hidden1": (40, 400), "optimizer_sgd": (0, 1), "optimizer_ftrl": (0, 1)}
-      for key in bound_dict.keys():
-        parameter_values_json[key] = x_max[index]
-        index += 1
-      """
-
-      for param in params:
-
-        if param["type"] == "DOUBLE" or param["type"] == "DISCRETE":
-          suggested_parameter_values_json[param["parameterName"]] = x_max[
-              index]
-          index += 1
-        elif param["type"] == "INTEGER":
-          suggested_parameter_values_json[param["parameterName"]] = int(
-              round(x_max[index]))
-          index += 1
-        elif param["type"] == "DISCRETE":
-          feasible_points_string = param["feasiblePoints"]
-          feasible_points = [
-              float(value.strip())
-              for value in feasible_points_string.split(",")
-          ]
-          feasible_points.sort()
-          selected_value = self.find_closest_value_in_list(
-              feasible_points, x_max[index])
-          suggested_parameter_values_json[param[
-              "parameterName"]] = selected_value
-          index += 1
-        elif param["type"] == "CATEGORICAL":
-          feasible_points_string = param["feasiblePoints"]
-          # Example: ["sgd", "adagrad", "adam", "ftrl"]
-          feasible_points = [
-              value.strip() for value in feasible_points_string.split(",")
-          ]
-
-          # 记录这4个值中数最大的，然后取到对应的字符串
-          current_max = x_max[index]
-          suggested_parameter_value = feasible_points[0]
-          for feasible_point in feasible_points:
-            if x_max[index] > current_max:
-              current_max = x_max[index]
-              suggested_parameter_value = feasible_point
-            index += 1
-
-          suggested_parameter_values_json[param[
-              "parameterName"]] = suggested_parameter_value
-
-      return_trial.parameter_values = json.dumps(
-          suggested_parameter_values_json)
-      return_trial.save()
-
-    return [return_trial]
