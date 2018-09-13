@@ -121,16 +121,29 @@ class AdvisorClient(object):
     study_configuration_dict = json.loads(study.study_configuration)
     study_goal = study_configuration_dict["goal"]
     trials = self.list_trials(study_id)
-    # TODO: Check if the first trial has objective value
-    best_trial = trials[0]
+
+    best_trial = None
+    best_objective_value = None
+
+    # Get the first not null trial
+    for trial in trials:
+      if trial.objective_value:
+        best_objective_value = trial.objective_value
+        best_trial = trial
+        break
+
+    if best_trial == None:
+      return None
 
     for trial in trials:
       if study_goal == "MAXIMIZE":
-        if trial.objective_value and trial.objective_value > best_trial.objective_value:
+        if trial.objective_value and trial.objective_value > best_objective_value:
           best_trial = trial
+          best_objective_value = trial.objective_value
       elif study_goal == "MINIMIZE":
-        if trial.objective_value and trial.objective_value < best_trial.objective_value:
-          best_trail = trial
+        if trial.objective_value and trial.objective_value < best_objective_value:
+          best_trial = trial
+          best_objective_value = trial.objective_value
       else:
         return None
 
