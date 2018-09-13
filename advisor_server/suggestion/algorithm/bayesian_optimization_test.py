@@ -68,8 +68,6 @@ class BayesianOptimizationTest(TestCase):
   def test_get_new_suggestions(self):
     bayesianOptimization = BayesianOptimization()
 
-    #import ipdb;ipdb.set_trace()
-
     new_trials = bayesianOptimization.get_new_suggestions(self.study.id, [], 1)
     new_trials[0].status = "Completed"
     new_trials[0].objective_value = 0.6
@@ -80,16 +78,13 @@ class BayesianOptimizationTest(TestCase):
     # Assert getting two trials
     self.assertEqual(len(new_trials), 1)
 
-    #import ipdb;ipdb.set_trace()
-
     # Assert getting the trials
     new_trial = new_trials[0]
     new_parameter_values = new_trial.parameter_values
     new_parameter_values_json = json.loads(new_parameter_values)
     self.assertTrue(10 >= new_parameter_values_json["hidden1"] >= 1)
     self.assertTrue(0.5 >= new_parameter_values_json["learning_rate"] >= 0.01)
-    self.assertTrue(
-        new_parameter_values_json["hidden2"] in ["8", "16", "32", "64"])
+    self.assertTrue(new_parameter_values_json["hidden2"] in [8, 16, 32, 64])
     self.assertTrue(new_parameter_values_json["optimizer"] in [
         "sgd", "adagrad", "adam", "ftrl"
     ])

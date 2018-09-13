@@ -3,7 +3,6 @@ from __future__ import print_function
 from __future__ import division
 
 import json
-import random
 import numpy as np
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels import Matern
@@ -12,7 +11,6 @@ from suggestion.models import Study
 from suggestion.models import Trial
 from suggestion.algorithm.abstract_algorithm import AbstractSuggestionAlgorithm
 from suggestion.algorithm.random_search import RandomSearchAlgorithm
-from suggestion.algorithm.util import AlgorithmUtil
 
 
 class BayesianOptimization(AbstractSuggestionAlgorithm):
@@ -40,24 +38,28 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
     acquisition_fucntion_kappa = 5
 
     # Example: {'x': (-4, 4), 'y': (-3, 3)}
-    name_scope_map = {}
+    # name_scope_map = {}
+    # Construct the list with only scope, Example: [(40, 400)]
+    bounds = []
 
     for param in params:
 
       if param["type"] == "DOUBLE" or param["type"] == "INTEGER":
         min_value = param["minValue"]
         max_value = param["maxValue"]
-        name_scope_map[param["parameterName"]] = (min_value, max_value)
+        # name_scope_map[param["parameterName"]] = (min_value, max_value)
+        bounds.append((min_value, max_value))
 
       elif param["type"] == "DISCRETE":
         feasible_points_string = param["feasiblePoints"]
         feasible_points = [
             float(value.strip()) for value in feasible_points_string.split(",")
         ]
-        feasible_points.sort()
-        min_value = feasible_points[0]
-        max_value = feasible_points[-1]
-        name_scope_map[param["parameterName"]] = (min_value, max_value)
+        for feasible_point in feasible_points:
+          parameter_name = "{}_{}".format(param["parameterName"],
+                                          feasible_point)
+          # name_scope_map[parameter_name] = (0, 1)
+          bounds.append((0, 1))
 
       elif param["type"] == "CATEGORICAL":
         feasible_points_string = param["feasiblePoints"]
@@ -67,12 +69,10 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
         for feasible_point in feasible_points:
           parameter_name = "{}_{}".format(param["parameterName"],
                                           feasible_point)
-          name_scope_map[parameter_name] = (0, 1)
+          # name_scope_map[parameter_name] = (0, 1)
+          bounds.append((0, 1))
 
-    # Construct the list with only scope, Example: [(40, 400)]
-    bounds = []
-    for key in name_scope_map.keys():
-      bounds.append(name_scope_map[key])
+    # Make sure it is numpy ndarry
     bounds = np.asarray(bounds)
 
     # Construct data to train gaussian process, Example: [[50], [150], [250]]
@@ -91,9 +91,22 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
 
       for param in params:
 
-        if param["type"] == "DOUBLE" or param["type"] == "INTEGER" or param["type"] == "DISCRETE":
+        if param["type"] == "DOUBLE" or param["type"] == "INTEGER":
           instance_feature = parameter_values_json[param["parameterName"]]
           instance_features.append(instance_feature)
+
+        elif param["type"] == "DISCRETE":
+          feasible_points_string = param["feasiblePoints"]
+          feasible_points = [
+              float(value.strip())
+              for value in feasible_points_string.split(",")
+          ]
+          parameter_value = parameter_values_json[param["parameterName"]]
+          for feasible_point in feasible_points:
+            if feasible_point == parameter_value:
+              instance_features.append(1)
+            else:
+              instance_features.append(0)
 
         elif param["type"] == "CATEGORICAL":
           feasible_points_string = param["feasiblePoints"]
@@ -156,13 +169,13 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
 
     for param in params:
 
-      if param["type"] == "DOUBLE" or param["type"] == "DISCRETE":
+      if param["type"] == "DOUBLE":
         suggested_parameter_values_json[param["parameterName"]] = x_max[index]
         index += 1
 
       elif param["type"] == "INTEGER":
         suggested_parameter_values_json[param["parameterName"]] = int(
-            round(x_max[index]))
+            x_max[index])
         index += 1
 
       elif param["type"] == "DISCRETE":
@@ -170,12 +183,19 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
         feasible_points = [
             float(value.strip()) for value in feasible_points_string.split(",")
         ]
-        # feasible_points.sort()
-        selected_value = AlgorithmUtil.get_closest_value_in_list(
-            feasible_points, x_max[index])
+
+        # Find the max value of these and get its string
+        current_max = x_max[index]
+        suggested_parameter_value = feasible_points[0]
+
+        for feasible_point in feasible_points:
+          if x_max[index] > current_max:
+            current_max = x_max[index]
+            suggested_parameter_value = feasible_point
+          index += 1
+
         suggested_parameter_values_json[param[
-            "parameterName"]] = selected_value
-        index += 1
+            "parameterName"]] = suggested_parameter_value
 
       elif param["type"] == "CATEGORICAL":
         feasible_points_string = param["feasiblePoints"]
