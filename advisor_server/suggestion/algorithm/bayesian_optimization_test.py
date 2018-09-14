@@ -30,28 +30,28 @@ class BayesianOptimizationTest(TestCase):
             "type": "INTEGER",
             "minValue": 1,
             "maxValue": 10,
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }, {
             "parameterName": "learning_rate",
             "type": "DOUBLE",
             "minValue": 0.01,
             "maxValue": 0.5,
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }, {
             "parameterName": "hidden2",
             "type": "DISCRETE",
             "feasiblePoints": "8, 16, 32, 64",
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }, {
             "parameterName": "optimizer",
             "type": "CATEGORICAL",
             "feasiblePoints": "sgd, adagrad, adam, ftrl",
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }, {
             "parameterName": "batch_normalization",
             "type": "CATEGORICAL",
             "feasiblePoints": "true, false",
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }]
     }
     study_configuration = json.dumps(study_configuration_json)

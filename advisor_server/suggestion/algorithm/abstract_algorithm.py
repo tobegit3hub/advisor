@@ -19,7 +19,7 @@ class AbstractSuggestionAlgorithm(object):
                   "type": "INTEGER",
                   "minValue": 40,
                   "maxValue": 400,
-                  "scallingType": "LINEAR"
+                  "scalingType": "LINEAR"
               }
           ]
       }

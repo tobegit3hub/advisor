@@ -16,21 +16,23 @@ class GridSearchAlgorithmTest(TestCase):
         5,
         "maxParallelTrials":
         1,
+        "randomInitTrials":
+        1,
         "params": [{
             "parameterName": "hidden2",
             "type": "DISCRETE",
             "feasiblePoints": "8, 16, 32, 64",
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }, {
             "parameterName": "optimizer",
             "type": "CATEGORICAL",
             "feasiblePoints": "sgd, adagrad, adam, ftrl",
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }, {
             "parameterName": "batch_normalization",
             "type": "CATEGORICAL",
             "feasiblePoints": "true, false",
-            "scallingType": "LINEAR"
+            "scalingType": "LINEAR"
         }]
     }
     study_configuration = json.dumps(study_configuration_json)

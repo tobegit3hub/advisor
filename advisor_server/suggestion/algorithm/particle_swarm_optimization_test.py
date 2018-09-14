@@ -22,7 +22,7 @@ class RandomSearchAlgorithmTest(TestCase):
             "type": "INTEGER",
             "minValue": 40,
             "maxValue": 400,
-            "scallingType": "LtINEAR"
+            "scalingType": "LtINEAR"
         }]
     }
     study_configuration = json.dumps(study_configuration_json)

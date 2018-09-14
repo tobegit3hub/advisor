@@ -28,7 +28,7 @@ def main(train_function):
               "minValue": 1,
               "maxValue": 20,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "max_depth",
@@ -36,7 +36,7 @@ def main(train_function):
               "minValue": 5,
               "maxValue": 15,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "gamma",
@@ -44,7 +44,7 @@ def main(train_function):
               "minValue": 0.0,
               "maxValue": 10.0,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "alpha",
@@ -52,7 +52,7 @@ def main(train_function):
               "minValue": 0.0,
               "maxValue": 10.0,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
       ]
   }

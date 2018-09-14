@@ -25,7 +25,7 @@ def main(train_function):
               "minValue": 16,
               "maxValue": 32,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "convolution_kernel_size0",
@@ -33,7 +33,7 @@ def main(train_function):
               "minValue": 3,
               "maxValue": 5,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "max_polling_size0",
@@ -41,7 +41,7 @@ def main(train_function):
               "minValue": 2,
               "maxValue": 3,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "filter_number1",
@@ -49,7 +49,7 @@ def main(train_function):
               "minValue": 16,
               "maxValue": 32,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "convolution_kernel_size1",
@@ -57,7 +57,7 @@ def main(train_function):
               "minValue": 3,
               "maxValue": 5,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "max_polling_size1",
@@ -65,7 +65,7 @@ def main(train_function):
               "minValue": 2,
               "maxValue": 3,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
       ]
   }

@@ -30,7 +30,7 @@ def main(train_function):
               "minValue": 0.001,
               "maxValue": 0.01,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "C",
@@ -38,7 +38,7 @@ def main(train_function):
               "minValue": 0.5,
               "maxValue": 1.0,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "kernel",
@@ -46,7 +46,7 @@ def main(train_function):
               "minValue": 0,
               "maxValue": 0,
               "feasiblePoints": "linear, poly, rbf, sigmoid, precomputed",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
           {
               "parameterName": "coef0",
@@ -54,7 +54,7 @@ def main(train_function):
               "minValue": 0.0,
               "maxValue": 0.5,
               "feasiblePoints": "",
-              "scallingType": "LINEAR"
+              "scalingType": "LINEAR"
           },
       ]
   }
