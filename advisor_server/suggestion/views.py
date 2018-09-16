@@ -13,6 +13,7 @@ from suggestion.models import TrialMetric
 from suggestion.algorithm.random_search import RandomSearchAlgorithm
 from suggestion.algorithm.grid_search import GridSearchAlgorithm
 from suggestion.algorithm.bayesian_optimization import BayesianOptimization
+from suggestion.algorithm.tpe import TpeAlgorithm
 
 
 def index(request):
@@ -90,6 +91,8 @@ def v1_study_suggestions(request, study_id):
       algorithm = GridSearchAlgorithm()
     elif study.algorithm == "BayesianOptimization":
       algorithm = BayesianOptimization()
+    elif study.algorithm == "TpeAlgorithm":
+      algorithm = TpeAlgorithm()
     else:
       return JsonResponse({
           "error":
