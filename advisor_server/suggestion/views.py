@@ -93,6 +93,8 @@ def v1_study_suggestions(request, study_id):
       algorithm = BayesianOptimization()
     elif study.algorithm == "TpeAlgorithm":
       algorithm = TpeAlgorithm()
+    elif study.algorithm == "SimulateAnnealAlgorithm":
+      algorithm = TpeAlgorithm()
     else:
       return JsonResponse({
           "error":

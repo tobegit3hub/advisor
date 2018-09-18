@@ -14,9 +14,11 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 
 ## Algorithms
 
-* [x] Random Search Algorithm
-* [x] Grid Search Algorithm
+* [x] Grid Search
+* [x] Random Search
 * [x] Bayesian Optimization
+* [x] TPE(Tree-structured Parzen Estimator)
+* [x] SA(Simulate anneal)
 * [ ] SMAC Algorithm
 * [ ] CMA-ES Algorithm
 * [x] Early Stop First Trial Algorithm
