@@ -122,8 +122,14 @@ class TpeAlgorithm(AbstractSuggestionAlgorithm):
       hyperopt_trial_miscs.append(hyperopt_trial_misc)
 
       # TODO: Use negative objective value for loss or not
+
+      loss_for_hyperopt = advisor_trial.objective_value
+      if study_configuration_json["goal"] == "MAXIMIZE":
+        # Now hyperopt only supports fmin and we need to reverse objective value for maximization
+        loss_for_hyperopt = -1 * advisor_trial.objective_value
+
       hyperopt_trial_result = {
-          "loss": advisor_trial.objective_value,
+          "loss": loss_for_hyperopt,
           "status": hyperopt.STATUS_OK
       }
       hyperopt_trial_results.append(hyperopt_trial_result)
@@ -174,8 +180,6 @@ class TpeAlgorithm(AbstractSuggestionAlgorithm):
           pass
 
         elif param["type"] == "DOUBLE":
-          # TODO: Get the specified value from hyperopt
-          #suggest_value = vals["x"][0]
           suggest_value = vals[param["parameterName"]][0]
           parameter_values_json[param["parameterName"]] = suggest_value
 
