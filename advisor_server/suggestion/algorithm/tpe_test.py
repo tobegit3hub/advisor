@@ -30,6 +30,16 @@ class TpeAlgorithmTest(TestCase):
             "minValue": 0.01,
             "maxValue": 0.5,
             "scalingType": "LINEAR"
+        }, {
+            "parameterName": "hidden2",
+            "type": "DISCRETE",
+            "feasiblePoints": "8, 16, 32, 64",
+            "scalingType": "LINEAR"
+        }, {
+            "parameterName": "optimizer",
+            "type": "CATEGORICAL",
+            "feasiblePoints": "sgd, adagrad, adam, ftrl",
+            "scalingType": "LINEAR"
         }]
     }
     study_configuration = json.dumps(study_configuration_json)
@@ -53,11 +63,10 @@ class TpeAlgorithmTest(TestCase):
     new_trial = new_trials[0]
     new_parameter_values_json = json.loads(new_trial.parameter_values)
 
-    #self.assertTrue(0.99 >= new_parameter_values_json["l1_normalization"] >= 0.01)
-    #self.assertTrue(0.5 >= new_parameter_values_json["learning_rate"] >= 0.01)
-    self.assertTrue(new_parameter_values_json["l1_normalization"] >= 0.01)
-    self.assertTrue(new_parameter_values_json["learning_rate"] >= 0.01)
-
+    self.assertTrue(0.99 >= new_parameter_values_json["l1_normalization"] >= 0.01)
+    self.assertTrue(0.5 >= new_parameter_values_json["learning_rate"] >= 0.01)
+    self.assertTrue(new_parameter_values_json["hidden2"] in [8, 16, 32, 64])
+    self.assertTrue(new_parameter_values_json["optimizer"] in ["sgd", "adagrad", "adam", "ftrl"])
 
   def test_get_multiple_new_suggestions(self):
     tpeAlgorithm = TpeAlgorithm()
