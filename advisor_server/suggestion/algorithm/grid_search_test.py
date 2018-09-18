@@ -54,7 +54,6 @@ class GridSearchAlgorithmTest(TestCase):
     # Assert getting two trials
     self.assertEqual(len(new_trials), 1)
 
-
   def test_get_two_new_suggestions(self):
     gridSearchAlgorithm = GridSearchAlgorithm()
     new_trials = gridSearchAlgorithm.get_new_suggestions(
