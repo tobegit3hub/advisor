@@ -32,10 +32,16 @@ study_configuration = {
     }]
 }
 
+#algorithm = "RandomSearch"
 algorithm = "BayesianOptimization"
-#algorithm = "RandomSearchAlgorithm"
-#algorithm = "TpeAlgorithm"
-#algorithm = "SimulateAnnealAlgorithm"
+#algorithm = "TPE"
+#algorithm = "SimulateAnneal"
+#algorithm = "QuasiRandomSearch"
+#algorithm = "ChocolateRandomSearch"
+#algorithm = "ChocolateBayes"
+#algorithm = "CMAES"
+#algorithm = "MOCMAES"
+
 study = client.create_study(name, study_configuration, algorithm=algorithm)
 print(study)
 

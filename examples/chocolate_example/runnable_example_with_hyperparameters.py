@@ -24,6 +24,12 @@ def main():
   sampler.update(token, loss)
   print("Token: {}, loss: {}".format(token, loss))
 
+  """
+  token = {'_chocolate_id': 2}
+  chocolate_params = {'y': -4.666666666666667, 'x': 3.0}
+  entry = {"_chocolate_id": 3, 'y': -4.666666666666667, 'x': 3.0, "_loss": 100}
+  conn.insert_result(entry)
+  """
 
 if __name__ == "__main__":
   main()

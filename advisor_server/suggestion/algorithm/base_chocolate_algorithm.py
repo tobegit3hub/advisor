@@ -55,7 +55,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
     elif self.algorithm_name == "CMAES":
       sampler = choco.CMAES(conn, chocolate_search_space, clear_db=True)
     elif self.algorithm_name == "MOCMAES":
-      mu = 0.1
+      mu = 1
       sampler = choco.MOCMAES(
           conn, chocolate_search_space, mu=mu, clear_db=True)
 

@@ -14,6 +14,14 @@ from suggestion.algorithm.random_search import RandomSearchAlgorithm
 from suggestion.algorithm.grid_search import GridSearchAlgorithm
 from suggestion.algorithm.bayesian_optimization import BayesianOptimization
 from suggestion.algorithm.tpe import TpeAlgorithm
+from suggestion.algorithm.simulate_anneal import SimulateAnnealAlgorithm
+from suggestion.algorithm.hyperopt_random_search import HyperoptRandomSearchAlgorithm
+from suggestion.algorithm.quasi_random_search import QuasiRandomSearchAlgorithm
+from suggestion.algorithm.chocolate_random_search import ChocolateRandomSearchAlgorithm
+from suggestion.algorithm.chocolate_grid_search import ChocolateGridSearchAlgorithm
+from suggestion.algorithm.chocolate_bayes import ChocolateBayesAlgorithm
+from suggestion.algorithm.cmaes import CmaesAlgorithm
+from suggestion.algorithm.mocmaes import MocmaesAlgorithm
 
 
 def index(request):
@@ -85,16 +93,30 @@ def v1_study_suggestions(request, study_id):
     trials = Trial.objects.filter(study_id=study_id)
     trials = [trial for trial in trials]
 
-    if study.algorithm == "RandomSearchAlgorithm":
+    if study.algorithm == "RandomSearch":
       algorithm = RandomSearchAlgorithm()
-    elif study.algorithm == "GridSearchAlgorithm":
+    elif study.algorithm == "GridSearch":
       algorithm = GridSearchAlgorithm()
     elif study.algorithm == "BayesianOptimization":
       algorithm = BayesianOptimization()
-    elif study.algorithm == "TpeAlgorithm":
+    elif study.algorithm == "TPE":
       algorithm = TpeAlgorithm()
-    elif study.algorithm == "SimulateAnnealAlgorithm":
-      algorithm = TpeAlgorithm()
+    elif study.algorithm == "HyperoptRandomSearch":
+      algorithm = HyperoptRandomSearchAlgorithm
+    elif study.algorithm == "SimulateAnneal":
+      algorithm = SimulateAnnealAlgorithm()
+    elif study.algorithm == "QuasiRandomSearch":
+      algorithm = QuasiRandomSearchAlgorithm()
+    elif study.algorithm == "ChocolateRandomSearch":
+      algorithm = ChocolateRandomSearchAlgorithm()
+    elif study.algorithm == "ChocolateGridSearch":
+      algorithm = ChocolateGridSearchAlgorithm()
+    elif study.algorithm == "ChocolateBayes":
+      algorithm = ChocolateBayesAlgorithm()
+    elif study.algorithm == "CMAES":
+      algorithm = CmaesAlgorithm()
+    elif study.algorithm == "MOCMAES":
+      algorithm = MocmaesAlgorithm()
     else:
       return JsonResponse({
           "error":

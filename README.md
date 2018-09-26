@@ -17,10 +17,16 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 * [x] Grid Search
 * [x] Random Search
 * [x] Bayesian Optimization
-* [x] TPE(Tree-structured Parzen Estimator)
-* [x] SA(Simulate anneal)
+* [x] TPE(Hyperopt)
+* [x] Random Search(Hyperopt)
+* [x] Simulate Anneal(Hyperopt)
+* [x] Quasi Random(Chocolate)
+* [x] Grid Search(Chocolate)
+* [x] Random Search(Chocolate)
+* [x] Bayes(Chocolate)
+* [x] CMAES(Chocolate)
+* [x] MOCMAES(Chocolate)
 * [ ] SMAC Algorithm
-* [ ] CMA-ES Algorithm
 * [x] Early Stop First Trial Algorithm
 * [x] Early Stop Descending Algorithm
 * [ ] Performance Curve Stop Algorithm
