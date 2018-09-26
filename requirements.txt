@@ -4,3 +4,5 @@ scikit-learn
 scipy
 requests
 social-auth-app-django
+hyperopt
+chocolate
