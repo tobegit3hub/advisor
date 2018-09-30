@@ -1,0 +1,24 @@
+{ 
+ "search_space": {
+      "goal": "MINIMIZE",
+      "randomInitTrials": 1,
+      "maxTrials": 5,
+      "maxParallelTrials": 1,
+      "params": [
+          {
+              "parameterName": "x",
+              "type": "DOUBLE",
+              "minValue": -10.0,
+              "maxValue": 10.0,
+              "scalingType": "LINEAR"
+          }
+      ]
+  },
+  "name": "simple1",
+  "algorithm": "RandomSearch",
+  "runner": "local_runner",
+  "trialNumber": 3,
+  "concurrency": 1,
+  "path": "~/code/advisor/advisor_client/examples/python_function/",
+  "command": "./min_function.py"
+}
