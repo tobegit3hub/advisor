@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 
-import tensorflow as tf
+import argparse
 
-flags = tf.app.flags
-flags.DEFINE_float("x", 1.0, "The float input")
-FLAGS = flags.FLAGS
+parser = argparse.ArgumentParser()
+parser.add_argument("-x", type=float, default=0.0)
+args = parser.parse_args()
 
 
 def main():
   # Read parameters
-  x = FLAGS.x
+  x = args.x
 
   # Compute or learning
-  y = x * x - 3 * x + 2
-  print("Formula: {}, input: {}, output: {}".format("y = x * x - 3 * x + 2", x,
+  y = x * x - 2 * x + 1
+  print("Formula: {}, input: {}, output: {}".format("y = x * x - 2 * x + 1", x,
                                                     y))
 
   # Output the metrics

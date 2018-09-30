@@ -30,7 +30,7 @@ class RunnerLauncher():
       run_config_dict = json.load(f)
 
       self.run_config_dict = run_config_dict
-      logging.debug("Run with config: {}".format(self.run_config_dict))
+      logging.info("Run with config: {}".format(self.run_config_dict))
 
   def run(self):
     client = AdvisorClient()
@@ -52,6 +52,8 @@ class RunnerLauncher():
     logging.info("Create study: {}".format(study))
 
     for i in range(self.run_config_dict["trialNumber"]):
+
+      logging.info("-------------------- Start Trial --------------------")
 
       # Get suggested trials
       trials = client.get_suggestions(study.id, 1)
@@ -90,12 +92,16 @@ class RunnerLauncher():
         # Example: '0.0\n'
         # Example: 'Compute y = x * x - 3 * x + 2\nIput x is: 1.0\nOutput is: 0.0\n0.0\n'
         command_output = subprocess.check_output(command_string, shell=True)
-        logging.info("Get output of command: {}".format(command_output))
+        # TODO: Log the output in the directory
+        #logging.info("Get output of command: {}".format(command_output))
+
 
         metric = float(command_output.split("\n")[-2].strip())
         # Complete the trial
         client.complete_trial_with_one_metric(trial, metric)
         logging.info("Update the trial with metrics: {}".format(metric))
+
+      logging.info("--------------------- End Trial ---------------------")
 
     is_done = client.is_study_done(study.id)
     best_trial = client.get_best_trial(study.id)
