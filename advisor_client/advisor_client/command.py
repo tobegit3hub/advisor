@@ -25,6 +25,7 @@ from advisor_client.model import Study
 from advisor_client.model import Trial
 from advisor_client.model import TrialMetric
 from advisor_client.client import AdvisorClient
+from advisor_client.runner.runner_launcher import RunnerLauncher
 
 logging.basicConfig(level=logging.DEBUG)
 # Disable debug log from requests and urllib3
@@ -37,8 +38,10 @@ def print_studies(studies):
       "ID", "NAME", "CONFIGURATION", "STATUS", "CREATED", "UPDATED"))
 
   for study in studies:
+    # TODO: Need to encode non-ascii string
     print("{:16} {:16} {:16} {:16} {:32} {:32}".format(
-        study.id, study.name, study.study_configuration, study.status,
+        study.id,
+        study.name.encode('utf-8'), study.study_configuration, study.status,
         study.created_time, study.updated_time))
 
 
@@ -61,6 +64,11 @@ def list_studies(args):
 def list_trials(args):
   client = AdvisorClient()
   print_trials(client.list_trials(args.study_id))
+
+
+def run_with_file(args):
+  launcher = RunnerLauncher(args.run_file)
+  launcher.run()
 
 
 def main():
@@ -100,6 +108,17 @@ def main():
       help="The id of the resource",
       required=True)
   trial_list_parser.set_defaults(func=list_trials)
+
+  # subcommand: run
+  run_parser = main_subparser.add_parser(
+          "run", help="Commands about run")
+  run_parser.add_argument(
+          "-f",
+          "--file",
+          dest="run_file",
+          help="The run file",
+          required=True)
+  run_parser.set_defaults(func=run_with_file)
 
   # Display help information by default
   if len(sys.argv) == 1:
