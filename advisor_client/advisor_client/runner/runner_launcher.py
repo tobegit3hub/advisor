@@ -80,7 +80,7 @@ class RunnerLauncher():
         parameter_string = ""
 
         for k, v in parameters_dict.items():
-          parameter_string += "-{}={}".format(k, v)
+          parameter_string += " -{}={}".format(k, v)
 
         command_string = "cd {} && {} {}".format(
             self.run_config_dict["path"], self.run_config_dict["command"],

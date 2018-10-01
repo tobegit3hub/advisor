@@ -1,0 +1,48 @@
+{
+  "name": "scikitlearn1",
+  "algorithm": "RandomSearch",
+  "trialNumber": 3,
+  "concurrency": 1,
+  "path": "~/code/advisor/advisor_client/examples/scikitlearn_mnist/",
+  "command": "./mnist_classifier.py",
+  "search_space": {
+    "goal": "MINIMIZE",
+    "randomInitTrials": 1,
+    "maxTrials": 5,
+    "maxParallelTrials": 1,
+    "params": [
+      {
+        "parameterName": "gamma",
+        "type": "DOUBLE",
+        "minValue": 0.001,
+        "maxValue": 0.01,
+        "feasiblePoints": "",
+        "scalingType": "LINEAR"
+      },
+      {
+        "parameterName": "C",
+        "type": "DOUBLE",
+        "minValue": 0.5,
+        "maxValue": 1.0,
+        "feasiblePoints": "",
+        "scalingType": "LINEAR"
+      },
+      {
+        "parameterName": "kernel",
+        "type": "CATEGORICAL",
+        "minValue": 0,
+        "maxValue": 0,
+        "feasiblePoints": "linear, poly, rbf, sigmoid",
+        "scalingType": "LINEAR"
+      },
+      {
+        "parameterName": "coef0",
+        "type": "DOUBLE",
+        "minValue": 0.0,
+        "maxValue": 0.5,
+        "feasiblePoints": "",
+        "scalingType": "LINEAR"
+      }
+    ]
+  }
+}
