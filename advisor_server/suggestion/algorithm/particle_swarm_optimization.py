@@ -1,3 +1,4 @@
+from __future__ import print_function
 import json
 import random
 
@@ -59,7 +60,7 @@ class ParticleSwarmOptimizer:
 
   def optimize(self):
     for i in range(iterations):
-      print "iteration ", i
+      print("iteration ", i)
       #Get the global best particle
       gBest = self.swarm[0]
       for j in range(swarmSize):

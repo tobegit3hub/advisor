@@ -25,7 +25,7 @@ def main():
       algo=hyperopt.tpe.suggest,
       max_evals=100,
       trials=trials)
-  print best
+  print(best)
 
 
 if __name__ == "__main__":
