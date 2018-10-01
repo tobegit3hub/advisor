@@ -1,6 +1,7 @@
 import os
 from IPython.lib import passwd
 
+c = c  # noqa: Global 'c' is created by the IPython runtime
 c.NotebookApp.ip = '*'
 c.NotebookApp.port = int(os.getenv('PORT', 8888))
 c.NotebookApp.open_browser = False
