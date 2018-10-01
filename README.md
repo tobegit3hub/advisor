@@ -63,7 +63,7 @@ pip install advisor_clients
 
 Run with Python SDK.
 
-```
+```python
 client = AdvisorClient()
 
 # Create the study
@@ -104,7 +104,7 @@ Please checkout [examples](./examples) for more usage.
 
 Study configuration describe the search space of parameters. It supports four types and here is the example.
 
-```
+```json
 {
   "goal": "MAXIMIZE",
   "randomInitTrials": 1,
