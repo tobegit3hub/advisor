@@ -1,0 +1,40 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: advisor
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: advisor
+    spec:
+      containers:
+      - name: advisor
+        image: tobegit3hub/advisor
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 1024Mi
+          limits:
+            cpu: 1000m
+            memory: 1024Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: advisor-service
+  labels:
+    app: advisor
+spec:
+  selector:
+    app: advisor
+  ports:
+  - port: 8000
+    protocol: TCP
+    nodePort: 30010
+  type: NodePort
+---
