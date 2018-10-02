@@ -1,3 +1,4 @@
 requests>=2.6.0
 pyOpenSSL>=16.1.0
 argcomplete>=1.4.1
+PTable

@@ -20,6 +20,7 @@ import argparse
 import logging
 import pkg_resources
 import sys
+from prettytable import PrettyTable
 
 from advisor_client.model import Study
 from advisor_client.model import Trial
@@ -44,6 +45,14 @@ def print_studies(studies):
         study.name.encode('utf-8'), study.study_configuration, study.status,
         study.created_time, study.updated_time))
 
+def print_studies_as_table(studies):
+  table = PrettyTable()
+  table.field_names = ["Id", "Name", "Configuration", "Status", "Create", "Updated"]
+
+  for study in studies:
+    table.add_row([study.id, study.name.encode('utf-8'), study.study_configuration, study.status, study.created_time, study.updated_time])
+
+  print(table)
 
 def print_trials(trials):
   print("{:16} {:16} {:16} {:16} {:16} {:16} {:32} {:32}".format(
@@ -55,15 +64,33 @@ def print_trials(trials):
         trial.id, trial.study_name, trial.name, trial.parameter_values, trial.
         objective_value, trial.status, trial.created_time, trial.updated_time))
 
+def print_trials_as_table(trials):
+  table = PrettyTable()
+  table.field_names = ["Id", "Study", "Name", "PARAMETER", "Objective", "Status", "Create", "Updated"]
+
+  for trial in trials:
+    table.add_row([trial.id, trial.study_name, trial.name, trial.parameter_values, trial.
+                  objective_value, trial.status, trial.created_time, trial.updated_time])
+  print(table)
+
 
 def list_studies(args):
   client = AdvisorClient()
-  print_studies(client.list_studies())
+  print_studies_as_table(client.list_studies())
+
+
+
+def describe_studie(args):
+  client = AdvisorClient()
+
+  args.study_name
+  print_trials_as_table(client.list_trials(args.study_name))
+
 
 
 def list_trials(args):
   client = AdvisorClient()
-  print_trials(client.list_trials(args.study_name))
+  print_trials_as_table(client.list_trials(args.study_name))
 
 
 def run_with_file(args):
@@ -92,6 +119,16 @@ def main():
   # subcommand: study list
   study_list_parser = study_subparser.add_parser("list", help="List studies")
   study_list_parser.set_defaults(func=list_studies)
+
+  # subcommand: study describe
+  study_describe_parser = study_subparser.add_parser("describe", help="Describe studiy")
+  study_describe_parser.add_argument(
+          "-s",
+          "--study_name",
+          dest="study_name",
+          help="The id of the resource",
+          required=True)
+  study_describe_parser.set_defaults(func=describe_studie)
 
   # subcommand: trial
   trial_parser = main_subparser.add_parser(
