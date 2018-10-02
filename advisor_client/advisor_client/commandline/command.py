@@ -27,7 +27,6 @@ from prettytable import PrettyTable
 from advisor_client.client import AdvisorClient
 from advisor_client.runner.runner_launcher import RunnerLauncher
 
-
 logging.basicConfig(level=logging.DEBUG)
 # Disable debug log from requests and urllib3
 logging.getLogger("requests").setLevel(logging.WARNING)

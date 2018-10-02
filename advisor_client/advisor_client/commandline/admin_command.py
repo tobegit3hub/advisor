@@ -35,6 +35,7 @@ if PY2:
 else:
   raw_input = input
 
+
 def start_server(args):
 
   choice = raw_input("Are you sure to run server container(Y/N): ").lower()
@@ -90,10 +91,16 @@ def main():
 
   main_subparser = parser.add_subparsers(dest="command_group", help="Commands")
 
-  # subcommand: starta_server
-  start_server_parser = main_subparser.add_parser(
-      "start_server", help="Commands about start_server")
-  start_server_parser.add_argument(
+  # subcommand: study
+  server_parser = main_subparser.add_parser(
+      "server", help="Commands about server")
+  server_subparser = server_parser.add_subparsers(
+      dest="server_command", help="Subcommands of server")
+
+  # subcommand: server start
+  server_start_parser = server_subparser.add_parser(
+      "start", help="Commands about server start")
+  server_start_parser.add_argument(
       "-p",
       "--port",
       dest="port",
@@ -103,18 +110,17 @@ def main():
       type=int,
       help="The port",
       required=False)
-  start_server_parser.add_argument(
+  server_start_parser.add_argument(
       "--command_args",
       dest="command_args",
       help="The extrs command args",
       required=False)
+  server_start_parser.set_defaults(func=start_server)
 
-  # subcommand: stop_server
-  stop_server_parser = main_subparser.add_parser(
-      "stop_server", help="Commands about stop_server")
-  stop_server_parser.set_defaults(func=stop_server)
-
-  start_server_parser.set_defaults(func=start_server)
+  # subcommand: server stop
+  server_stop_parser = server_subparser.add_parser(
+      "stop", help="Commands about server stop")
+  server_stop_parser.set_defaults(func=stop_server)
 
   # Display help information by default
   if len(sys.argv) == 1:
