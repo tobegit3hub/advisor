@@ -41,10 +41,9 @@ def print_studies(studies):
       "ID", "NAME", "CONFIGURATION", "STATUS", "CREATED", "UPDATED"))
 
   for study in studies:
-    # TODO: Need to encode non-ascii string
     print("{:16} {:16} {:16} {:16} {:32} {:32}".format(
         study.id,
-        study.name.encode('utf-8'), study.study_configuration, study.status,
+        study.name, study.study_configuration, study.status,
         study.created_time, study.updated_time))
 
 
@@ -57,7 +56,7 @@ def print_studies_as_table(studies):
   for study in studies:
     table.add_row([
         study.id,
-        study.name.encode('utf-8'), study.study_configuration, study.status,
+        study.name, study.study_configuration, study.status,
         study.created_time, study.updated_time
     ])
 
@@ -107,7 +106,7 @@ def describe_studie(args):
   ]
   table.add_row([
       study.id,
-      study.name.encode('utf-8'), study.algorithm, study.status,
+      study.name, study.algorithm, study.status,
       study.created_time, study.updated_time
   ])
   print(table)

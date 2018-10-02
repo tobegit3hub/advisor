@@ -8,7 +8,7 @@ class Study(object):
                created_time=None,
                updated_time=None):
     self.id = id
-    self.name = name
+    self.name = name.encode("utf-8")
     self.study_configuration = study_configuration
     self.algorithm = algorithm
     self.status = status
@@ -44,7 +44,7 @@ class Trial(object):
                created_time=None,
                updated_time=None):
     self.id = id
-    self.study_name = study_name
+    self.study_name = study_name.encode("utf-8")
     self.name = name
     self.parameter_values = parameter_values
     self.objective_value = objective_value

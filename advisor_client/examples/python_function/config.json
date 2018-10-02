@@ -8,8 +8,6 @@
   "search_space": {
       "goal": "MINIMIZE",
       "randomInitTrials": 1,
-      "maxTrials": 5,
-      "maxParallelTrials": 1,
       "params": [
           {
               "parameterName": "x",
