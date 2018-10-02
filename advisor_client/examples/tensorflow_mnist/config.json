@@ -1,0 +1,48 @@
+{
+  "name": "simple1",
+  "algorithm": "RandomSearch",
+  "trialNumber": 3,
+  "concurrency": 1,
+  "path": "~/code/advisor/advisor_client/examples/tensorflow_mnist/",
+  "command": "./tensorflow_mnist.py",
+  "search_space": {
+      "goal": "MINIMIZE",
+      "randomInitTrials": 1,
+      "maxTrials": 5,
+      "maxParallelTrials": 1,
+      "params": [
+        {
+          "parameterName": "batch_size",
+          "type": "DISCRETE",
+          "minValue": 0,
+          "maxValue": 0,
+          "feasiblePoints": "16, 32, 64, 128, 256",
+          "scalingType": "LINEAR"
+        },
+        {
+          "parameterName": "batch_number",
+          "type": "INTEGER",
+          "minValue": 500,
+          "maxValue": 3000,
+          "feasiblePoints": "",
+          "scalingType": "LINEAR"
+        },
+        {
+          "parameterName": "optimizer",
+          "type": "CATEGORICAL",
+          "minValue": 0,
+          "maxValue": 0,
+          "feasiblePoints": "sgd, adagrad, adam, ftrl",
+          "scalingType": "LINEAR"
+        },
+        {
+          "parameterName": "learning_rate",
+          "type": "DOUBLE",
+          "minValue": 0.01,
+          "maxValue": 0.1,
+          "feasiblePoints": "",
+          "scalingType": "LINEAR"
+        }
+      ]
+  }
+}
