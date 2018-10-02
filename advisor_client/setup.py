@@ -15,15 +15,19 @@
 # twine upload dist/advisor_client-0.1.1.tar.gz -r test
 # pip install --index-url https://test.pypi.org/simple/ --upgrade advisor_client
 
+
 try:
   from setuptools import setup
   setup()
 except ImportError:
   from distutils.core import setup
 
+# TODO: Remove the code of try-except
+from setuptools import setup, find_packages
+
 setup(
     name="advisor_clients",
-    version="0.1.1",
+    version="0.1.2",
     author="tobe",
     author_email="tobeg3oogle@gmail.com",
     url="https://github.com/tobegit3hub/advisor",
@@ -32,7 +36,8 @@ setup(
     install_requires=[],
     description=
     "Advisor is the hyper parameters tuning system for black box optimization",
-    packages=["advisor_client"],
+    #packages=["advisor_client"],
+    packages=find_packages(),
     zip_safe=False,
     entry_points={
         "console_scripts": ["advisor=advisor_client.command:main"],
