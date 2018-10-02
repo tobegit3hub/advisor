@@ -37,7 +37,7 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 
 Run the advisor server.
 
-```
+```bash
 pip install -r ./requirements.txt
 
 ./manage.py runserver 0.0.0.0:8000
@@ -49,7 +49,7 @@ Open `http://127.0.0.1:8000` in the browser.
 
 You can run the server with `docker` as well.
 
-```
+```bash
 docker run -d -p 8000:8000 tobegit3hub/advisor
 ```
 
@@ -57,7 +57,7 @@ docker run -d -p 8000:8000 tobegit3hub/advisor
 
 Install with `pip`.
 
-```
+```bash
 pip install advisor_clients
 ```
 
@@ -92,7 +92,7 @@ client.complete_trial(trial, trial_metrics)
 
 Run with command-line tool.
 
-```
+```bash
 advisor study list
 
 advisor trial list --study_id 1
