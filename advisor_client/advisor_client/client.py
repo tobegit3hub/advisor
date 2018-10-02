@@ -1,5 +1,5 @@
+import os
 import json
-import logging
 import requests
 
 from .model import Study
@@ -8,8 +8,17 @@ from .model import TrialMetric
 
 
 class AdvisorClient(object):
-  def __init__(self, endpoint="http://0.0.0.0:8000"):
-    self.endpoint = endpoint
+
+  def __init__(self, endpoint=None):
+    # TODO: Read endpoint from configuration file
+    if endpoint != None:
+      self.endpoint = endpoint
+
+    elif "ADVISOR_ENDPOINT" in os.environ:
+      self.endpoint = os.environ.get("ADVISOR_ENDPOINT")
+
+    else:
+      self.endpoint = "http://0.0.0.0:8000"
 
   def create_study(self,
                    study_name,
