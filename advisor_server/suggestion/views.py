@@ -52,16 +52,16 @@ def v1_studies(request):
 
 
 @csrf_exempt
-def v1_study(request, study_id):
+def v1_study(request, study_name):
 
   # Describe the study
   if request.method == "GET":
-    study = Study.objects.get(id=study_id)
+    study = Study.objects.get(name=study_name)
     return JsonResponse({"data": study.to_json()})
 
   # Update the study
   elif request.method == "PUT":
-    study = Study.objects.get(id=study_id)
+    study = Study.objects.get(name=study_name)
     data = json.loads(request.body)
     if "status" in data:
       study.status = data["status"]
@@ -70,7 +70,7 @@ def v1_study(request, study_id):
 
   # Delete the study
   elif request.method == "DELETE":
-    study = Study.objects.get(id=study_id)
+    study = Study.objects.get(name=study_name)
     study.delete()
     return JsonResponse({"message": "Success to delete"})
   else:
@@ -78,19 +78,21 @@ def v1_study(request, study_id):
 
 
 @csrf_exempt
-def v1_study_suggestions(request, study_id):
+def v1_study_suggestions(request, study_name):
   # Create the trial
   if request.method == "POST":
     data = json.loads(request.body)
     trials_number = 1
+
+    # TODO: Use the trial name to create trial object
     trial_name = "Trial"
     if "trials_number" in data:
       trials_number = data["trials_number"]
     if "trial_name" in data:
       trial_name = data["trial_name"]
 
-    study = Study.objects.get(id=study_id)
-    trials = Trial.objects.filter(study_id=study_id)
+    study = Study.objects.get(name=study_name)
+    trials = Trial.objects.filter(study_name=study_name)
     trials = [trial for trial in trials]
 
     if study.algorithm == "RandomSearch":
@@ -123,7 +125,7 @@ def v1_study_suggestions(request, study_id):
           "Unknown algorithm: {}".format(study.algorithm)
       })
 
-    new_trials = algorithm.get_new_suggestions(study.id, trials, trials_number)
+    new_trials = algorithm.get_new_suggestions(study.name, trials, trials_number)
 
     return JsonResponse({"data": [trial.to_json() for trial in new_trials]})
   else:
@@ -131,36 +133,37 @@ def v1_study_suggestions(request, study_id):
 
 
 @csrf_exempt
-def v1_study_trials(request, study_id):
+def v1_study_trials(request, study_name):
 
   # Create the trial
   if request.method == "POST":
     data = json.loads(request.body)
     name = data["name"]
 
-    trial = Trial.create(study_id, name)
+    trial = Trial.create(study_name, name)
     return JsonResponse({"data": trial.to_json()})
 
   # List the studies
   elif request.method == "GET":
-    trials = Trial.objects.filter(study_id=study_id)
+    trials = Trial.objects.filter(study_name=study_name)
     response_data = [trial.to_json() for trial in trials]
+
     return JsonResponse({"data": response_data})
   else:
     return JsonResponse({"error": "Unsupported http method"})
 
 
 @csrf_exempt
-def v1_study_trial(request, study_id, trial_id):
+def v1_study_trial(request, study_name, trial_id):
 
   # Describe the trial
   if request.method == "GET":
-    trial = Trial.objects.get(study_id=study_id, id=trial_id)
+    trial = Trial.objects.get(study_name=study_name, id=trial_id)
     return JsonResponse({"data": trial.to_json()})
 
   # Update the trial
   elif request.method == "PUT":
-    trial = Trial.objects.get(study_id=study_id, id=trial_id)
+    trial = Trial.objects.get(study_name=study_name, id=trial_id)
     data = json.loads(request.body)
     if "status" in data:
       trial.status = data["status"]
@@ -171,7 +174,7 @@ def v1_study_trial(request, study_id, trial_id):
 
   # Delete the trial
   elif request.method == "DELETE":
-    trial = Trial.objects.get(study_id=study_id, id=trial_id)
+    trial = Trial.objects.get(study_name=study_name, id=trial_id)
     trial.delete()
     return JsonResponse({"message": "Success to delete"})
   else:
@@ -179,7 +182,7 @@ def v1_study_trial(request, study_id, trial_id):
 
 
 @csrf_exempt
-def v1_study_trial_metrics(request, study_id, trial_id):
+def v1_study_trial_metrics(request, study_name, trial_id):
 
   # Create the trial metric
   if request.method == "POST":
@@ -200,7 +203,7 @@ def v1_study_trial_metrics(request, study_id, trial_id):
 
 
 @csrf_exempt
-def v1_study_trial_metric(request, study_id, trial_id, metric_id):
+def v1_study_trial_metric(request, study_name, trial_id, metric_id):
 
   # Describe the trial metric
   if request.method == "GET":

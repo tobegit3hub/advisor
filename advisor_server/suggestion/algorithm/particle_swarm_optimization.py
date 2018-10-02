@@ -91,15 +91,15 @@ class ParticleSwarmOptimization(AbstractSuggestionAlgorithm):
     pso.optimize()
     return
 
-  def get_new_suggestions(self, study_id, trials=[], number=1):
+  def get_new_suggestions(self, study_name, trials=[], number=1):
     """
     Get the new suggested trials with grid search.
     """
-    study = Study.objects.get(id=study_id)
+    study = Study.objects.get(id=study_name)
 
     result = []
     for i in range(number):
-      trial = Trial.create(study.id, "RandomSearchTrial")
+      trial = Trial.create(study.name, "RandomSearchTrial")
       parameter_values_json = {}
 
       study_configuration_json = json.loads(study.study_configuration)

@@ -86,7 +86,7 @@
 
         <table class="table table-striped table-hover table-condensed">
             <th class="text-center active">Id</th>
-            <th class="text-center success">Study Id</th>
+            <th class="text-center success">Study Name</th>
             <th class="text-center warning">Name</th>
             <th class="text-center danger">Parameter Values</th>
             <th class="text-center info">Objective Value</th>
@@ -98,8 +98,8 @@
             {% for trial in trials %}
             <tr>
                 <td class="text-center active"><a
-                        href="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
-                <td class="text-center success">{{ trial.study_id }}</td>
+                        href="/dashboard/v1/studies/{{ trial.study_name }}/trials/{{ trial.id }}">{{ trial.id }}</a></td>
+                <td class="text-center success">{{ trial.study_name }}</td>
                 <td class="text-center warning">{{ trial.name }}</td>
                 <td class="text-center danger">{{ trial.parameter_values }}</td>
                 <td class="text-center info">{{ trial.objective_value }}</td>
@@ -108,7 +108,7 @@
                 <td class="text-center warning">{{ trial.updated_time }}</td>
                 <td class="text-center danger">
                     <input type="image" width="22px" src="/static/images/delete-icon.png" alt="Delete"
-                           onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}')"/>
+                           onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_name }}/trials/{{ trial.id }}')"/>
                 </td>
             </tr>
             {% endfor %}

@@ -5,7 +5,7 @@ from django.db import models
 
 
 class Study(models.Model):
-  name = models.CharField(max_length=128, blank=False)
+  name = models.CharField(max_length=128, blank=False, unique=True)
   study_configuration = models.TextField(blank=False)
   algorithm = models.CharField(max_length=128, blank=False)
 
@@ -43,7 +43,9 @@ class Study(models.Model):
 
 
 class Trial(models.Model):
-  study_id = models.IntegerField(blank=False)
+  # TODO: Use foreign key or not
+  #study_name = models.ForeignKey(Study, related_name="trial_study", to_field=Study.name)
+  study_name = models.CharField(max_length=128, blank=False)
   name = models.CharField(max_length=128, blank=False)
   parameter_values = models.TextField(blank=True, null=True)
   objective_value = models.FloatField(blank=True, null=True)
@@ -56,9 +58,9 @@ class Trial(models.Model):
     return "{}-{}".format(self.id, self.name)
 
   @classmethod
-  def create(cls, study_id, name):
+  def create(cls, study_name, name):
     trial = cls()
-    trial.study_id = study_id
+    trial.study_name = study_name
     trial.name = name
     trial.status = "Pending"
     trial.save()
@@ -67,7 +69,7 @@ class Trial(models.Model):
   def to_json(self):
     return {
         "id": self.id,
-        "study_id": self.study_id,
+        "study_name": self.study_name,
         "name": self.name,
         "parameter_values": self.parameter_values,
         "objective_value": self.objective_value,

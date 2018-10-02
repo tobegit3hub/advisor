@@ -56,7 +56,7 @@ class RunnerLauncher():
       logging.info("-------------------- Start Trial --------------------")
 
       # Get suggested trials
-      trials = client.get_suggestions(study.id, 1)
+      trials = client.get_suggestions(study.name, 1)
 
       logging.info("Get trial: {}".format(trials[0]))
 
@@ -103,6 +103,6 @@ class RunnerLauncher():
 
       logging.info("--------------------- End Trial ---------------------")
 
-    is_done = client.is_study_done(study.id)
-    best_trial = client.get_best_trial(study.id)
+    is_done = client.is_study_done(study.name)
+    best_trial = client.get_best_trial(study.name)
     logging.info("The study: {}, best trial: {}".format(study, best_trial))

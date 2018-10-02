@@ -11,7 +11,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
 
     self.algorithm_name = algorithm_name
 
-  def get_new_suggestions(self, study_id, input_trials=[], number=1):
+  def get_new_suggestions(self, study_name, input_trials=[], number=1):
     """
     Get the new suggested trials with Chocolate algorithm.
     """
@@ -20,7 +20,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
     # Example: {"x" : choco.uniform(-6, 6), "y" : choco.uniform(-6, 6)}
     chocolate_search_space = {}
 
-    study = Study.objects.get(id=study_id)
+    study = Study.objects.get(name=study_name)
     study_configuration_json = json.loads(study.study_configuration)
     params = study_configuration_json["params"]
 
@@ -61,7 +61,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
 
     # 2. Update with completed advisor trials
     completed_advisor_trials = Trial.objects.filter(
-        study_id=study_id, status="Completed")
+        study_name=study_name, status="Completed")
 
     for index, advisor_trial in enumerate(completed_advisor_trials):
       parameter_values_json = json.loads(advisor_trial.parameter_values)
@@ -95,7 +95,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
           parameter_values_json[param["parameterName"]] = int(
               chocolate_params[param["parameterName"]])
 
-      new_advisor_trial = Trial.create(study.id, "ChocolateTrial")
+      new_advisor_trial = Trial.create(study.name, "ChocolateTrial")
       new_advisor_trial.parameter_values = json.dumps(parameter_values_json)
       new_advisor_trial.save()
       return_trial_list.append(new_advisor_trial)

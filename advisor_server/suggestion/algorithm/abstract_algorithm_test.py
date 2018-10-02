@@ -8,7 +8,7 @@ class TestAbstractSuggestionAlgorithm(AbstractSuggestionAlgorithm):
   Construct the test class to implement AbstractSuggestionAlgorithm.
   """
 
-  def get_new_suggestions(self, study_id, trials=[], number=1):
+  def get_new_suggestions(self, study_name, trials=[], number=1):
     return []
 
 
@@ -35,5 +35,5 @@ class RandomSearchAlgorithmTest(TestCase):
     instance = TestAbstractSuggestionAlgorithm()
 
     # Test get_new_suggestions function
-    study_id = 0
-    self.assertEqual(len(instance.get_new_suggestions(study_id)), 0)
+    study_name = "test"
+    self.assertEqual(len(instance.get_new_suggestions(study_name)), 0)

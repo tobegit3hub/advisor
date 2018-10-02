@@ -14,14 +14,14 @@ from suggestion.algorithm.random_search import RandomSearchAlgorithm
 
 
 class BayesianOptimization(AbstractSuggestionAlgorithm):
-  def get_new_suggestions(self, study_id, trials=[], number=1):
+  def get_new_suggestions(self, study_name, trials=[], number=1):
     # TODO: Only support returning one trial
     number = 1
 
     # Get study and completed data
-    study = Study.objects.get(id=study_id)
+    study = Study.objects.get(name=study_name)
     completed_trials = Trial.objects.filter(
-        study_id=study_id, status="Completed")
+        study_name=study_name, status="Completed")
     study_configuration_json = json.loads(study.study_configuration)
     random_init_trial_number = study_configuration_json.get(
         "randomInitTrials", 3)
@@ -32,7 +32,7 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
     if len(completed_trials) < random_init_trial_number:
       randomSearchAlgorithm = RandomSearchAlgorithm()
       return_trials = randomSearchAlgorithm.get_new_suggestions(
-          study_id, trials, number)
+          study_name, trials, number)
       return return_trials
 
     # Construct the map of name and scope to compute gaussian process
@@ -229,7 +229,7 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
         suggested_parameter_values_json[param[
             "parameterName"]] = suggested_parameter_value
 
-    return_trial = Trial.create(study.id, "BayesianOptimizationTrial")
+    return_trial = Trial.create(study.name, "BayesianOptimizationTrial")
     return_trial.parameter_values = json.dumps(suggested_parameter_values_json)
     return_trial.save()
 

@@ -52,7 +52,7 @@ def print_trials(trials):
 
   for trial in trials:
     print("{:16} {:16} {:16} {:16} {:16} {:16} {:32} {:32}".format(
-        trial.id, trial.study_id, trial.name, trial.parameter_values, trial.
+        trial.id, trial.study_name, trial.name, trial.parameter_values, trial.
         objective_value, trial.status, trial.created_time, trial.updated_time))
 
 
@@ -63,7 +63,7 @@ def list_studies(args):
 
 def list_trials(args):
   client = AdvisorClient()
-  print_trials(client.list_trials(args.study_id))
+  print_trials(client.list_trials(args.study_name))
 
 
 def run_with_file(args):
@@ -78,7 +78,7 @@ def main():
       "-v",
       "--version",
       action="version",
-      version=pkg_resources.require("advisor_client")[0].version,
+      version=pkg_resources.require("advisor-clients")[0].version,
       help="Display sdk version")
 
   main_subparser = parser.add_subparsers(dest="command_group", help="Commands")
@@ -103,8 +103,8 @@ def main():
   trial_list_parser = trial_subparser.add_parser("list", help="List trials")
   trial_list_parser.add_argument(
       "-s",
-      "--study_id",
-      dest="study_id",
+      "--study_name",
+      dest="study_name",
       help="The id of the resource",
       required=True)
   trial_list_parser.set_defaults(func=list_trials)

@@ -81,15 +81,15 @@ def v1_studies(request):
 
 
 @csrf_exempt
-def v1_study(request, study_id):
+def v1_study(request, study_name):
   url = "http://127.0.0.1:{}/suggestion/v1/studies/{}".format(
-      request.META.get("SERVER_PORT"), study_id)
+      request.META.get("SERVER_PORT"), study_name)
 
   if request.method == "GET":
     response = requests.get(url)
 
     tirals_url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials".format(
-        request.META.get("SERVER_PORT"), study_id)
+        request.META.get("SERVER_PORT"), study_name)
     tirals_response = requests.get(tirals_url)
 
     if response.ok and tirals_response.ok:
@@ -116,14 +116,14 @@ def v1_study(request, study_id):
 
 
 @csrf_exempt
-def v1_study_suggestions(request, study_id):
+def v1_study_suggestions(request, study_name):
   if request.method == "POST":
     trials_number_string = request.POST.get("trials_number", "1")
     trials_number = int(trials_number_string)
 
     data = {"trials_number": trials_number}
     url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/suggestions".format(
-        request.META.get("SERVER_PORT"), study_id)
+        request.META.get("SERVER_PORT"), study_name)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -134,13 +134,13 @@ def v1_study_suggestions(request, study_id):
 @csrf_exempt
 def v1_trials(request):
   if request.method == "POST":
-    study_id = request.POST.get("study_id", "")
+    study_name = request.POST.get("study_name", "")
     name = request.POST.get("name", "")
 
     data = {"name": name}
 
     url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials".format(
-        request.META.get("SERVER_PORT"), study_id)
+        request.META.get("SERVER_PORT"), study_name)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return redirect("index")
@@ -149,15 +149,15 @@ def v1_trials(request):
 
 
 @csrf_exempt
-def v1_trial(request, study_id, trial_id):
+def v1_trial(request, study_name, trial_id):
   url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}".format(
-      request.META.get("SERVER_PORT"), study_id, trial_id)
+      request.META.get("SERVER_PORT"), study_name, trial_id)
 
   if request.method == "GET":
     response = requests.get(url)
 
     tiral_metrics_url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}/metrics".format(
-        request.META.get("SERVER_PORT"), study_id, trial_id)
+        request.META.get("SERVER_PORT"), study_name, trial_id)
     tiral_metrics_response = requests.get(tiral_metrics_url)
 
     if response.ok and tiral_metrics_response.ok:
@@ -200,7 +200,7 @@ def v1_trial(request, study_id, trial_id):
 
 
 @csrf_exempt
-def v1_study_trial_metrics(request, study_id, trial_id):
+def v1_study_trial_metrics(request, study_name, trial_id):
   if request.method == "POST":
     training_step_string = request.POST.get("training_step", "1")
     training_step = int(training_step_string)
@@ -209,7 +209,7 @@ def v1_study_trial_metrics(request, study_id, trial_id):
 
     data = {"training_step": training_step, "objective_value": objective_value}
     url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}/metrics".format(
-        request.META.get("SERVER_PORT"), study_id, trial_id)
+        request.META.get("SERVER_PORT"), study_name, trial_id)
     response = requests.post(url, json=data)
     messages.info(request, response.content)
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
@@ -218,9 +218,9 @@ def v1_study_trial_metrics(request, study_id, trial_id):
 
 
 @csrf_exempt
-def v1_study_trial_metric(request, study_id, trial_id, metric_id):
+def v1_study_trial_metric(request, study_name, trial_id, metric_id):
   url = "http://127.0.0.1:{}/suggestion/v1/studies/{}/trials/{}/metrics/{}".format(
-      request.META.get("SERVER_PORT"), study_id, trial_id, metric_id)
+      request.META.get("SERVER_PORT"), study_name, trial_id, metric_id)
 
   if request.method == "GET":
     response = requests.get(url)

@@ -35,7 +35,7 @@ class Study(object):
 
 class Trial(object):
   def __init__(self,
-               study_id,
+               study_name,
                name,
                parameter_values=None,
                objective_value=None,
@@ -44,7 +44,7 @@ class Trial(object):
                created_time=None,
                updated_time=None):
     self.id = id
-    self.study_id = study_id
+    self.study_name = study_name
     self.name = name
     self.parameter_values = parameter_values
     self.objective_value = objective_value
@@ -53,16 +53,16 @@ class Trial(object):
     self.updated_time = updated_time
 
   def __str__(self):
-    return "Id: {}, study_id: {}, name: {}, parameter_values: {}, objective_value: {}".format(
-        self.id, self.study_id, self.name, self.parameter_values,
+    return "Id: {}, study_name: {}, name: {}, parameter_values: {}, objective_value: {}".format(
+        self.id, self.study_name, self.name, self.parameter_values,
         self.objective_value)
 
   def to_dict(self):
-    return {"study_id": self.study_id, "name": self.name}
+    return {"study_name": self.study_name, "name": self.name}
 
   @classmethod
   def from_dict(self, dict):
-    return Trial(dict["study_id"], dict["name"], dict["parameter_values"],
+    return Trial(dict["study_name"], dict["name"], dict["parameter_values"],
                  dict["objective_value"], dict["id"], dict["status"],
                  dict["created_time"], dict["updated_time"])
 

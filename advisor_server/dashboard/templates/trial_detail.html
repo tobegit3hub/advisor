@@ -25,8 +25,8 @@
                 <td class="text-center success">{{ trial.id }}</td>
             </tr>
             <tr>
-                <td class="text-center active">Study Id</td>
-                <td class="text-center success"><a href="/dashboard/v1/studies/{{ trial.study_id }}">{{ trial.study_id }}</a></td>
+                <td class="text-center active">Study Name</td>
+                <td class="text-center success"><a href="/dashboard/v1/studies/{{ trial.study_name }}">{{ trial.study_name }}</a></td>
             </tr>
             <tr>
                 <td class="text-center active">Name</td>
@@ -54,7 +54,7 @@
             </tr>
         </table>
 
-        <form action="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}" method="post"
+        <form action="/dashboard/v1/studies/{{ trial.study_name }}/trials/{{ trial.id }}" method="post"
               onsubmit="return confirm('Do you want to update trial?');">
             <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label"> Objective value </label>
@@ -75,7 +75,7 @@
             </div>
         </form>
 
-        <form action="/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}/metrics" method="post"
+        <form action="/dashboard/v1/studies/{{ trial.study_name }}/trials/{{ trial.id }}/metrics" method="post"
               onsubmit="return confirm('Do you want to add trial metric?');">
             <div class="form-group row">
                 <label for="inputEmail3" class="col-sm-2 col-form-label"> Training step </label>
@@ -120,7 +120,7 @@
                 <td class="text-center info">{{ trial.updated_time }}</td>
                 <td class="text-center active">
                     <input type="image" width="22px" src="/static/images/delete-icon.png" alt="Delete"
-                           onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_id }}/trials/{{ trial.id }}/metrics/{{ trial_metric.id }}')"/>
+                           onclick="delete_resource('/dashboard/v1/studies/{{ trial.study_name }}/trials/{{ trial.id }}/metrics/{{ trial_metric.id }}')"/>
                 </td>
             </tr>
             {% endfor %}

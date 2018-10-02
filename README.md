@@ -95,7 +95,7 @@ Run with command-line tool.
 ```bash
 advisor study list
 
-advisor trial list --study_id 1
+advisor trial list --study_name "test"
 ```
 
 Please checkout [examples](./examples) for more usage.

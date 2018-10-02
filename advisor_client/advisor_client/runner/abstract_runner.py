@@ -6,7 +6,7 @@ class AbstractRunner(object):
   __metaclass__ = abc.ABCMeta
 
   @abc.abstractmethod
-  def run(self, study_id, trials=[], number=1):
+  def run(self, study_name, trials=[], number=1):
     """
         The study's study_configuration is like this.
         {
@@ -30,7 +30,7 @@ class AbstractRunner(object):
         }
         
         Args:
-          study_id: The study id.
+          study_name: The study name.
           trials: The all trials of this study.
           number: The number of trial to return. 
         Returns:
