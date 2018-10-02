@@ -36,7 +36,7 @@ def clear_db(args):
     print("Try to clear the database")
 
   else:
-    print("Cancel clear operation")
+    print("Cancel operation")
 
 
 def start_server(args):
@@ -60,7 +60,28 @@ def start_server(args):
             format(args.port))
 
   else:
-    print("Cancel start server operation")
+    print("Cancel operation")
+
+
+def stop_server(args):
+
+  print("Are you sure to stop server container(Y/N):")
+  choice = raw_input().lower()
+  if choice in ("y", "yes"):
+    print("Try to start the server with container")
+
+    command = "docker ps |grep 'tobegit3hub/advisor' | awk '{print $1}' | xargs docker stop"
+    print("Run the command: {}".format(command))
+
+    exit_code = subprocess.call(command, shell=True)
+
+    if exit_code != 0:
+      print("Fail to stop server, exit code: {}".format(exit_code))
+    else:
+      print("Success to stop the server")
+
+  else:
+    print("Cancel operation")
 
 
 def main():
@@ -98,6 +119,11 @@ def main():
       dest="command_args",
       help="The extrs command args",
       required=False)
+
+  # subcommand: stop_server
+  stop_server_parser = main_subparser.add_parser(
+          "stop_server", help="Commands about stop_server")
+  stop_server_parser.set_defaults(func=stop_server)
 
   start_server_parser.set_defaults(func=start_server)
 
