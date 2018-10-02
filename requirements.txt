@@ -5,4 +5,4 @@ scipy
 requests
 social-auth-app-django
 hyperopt
-chocolate
+git+https://github.com/AIworx-Labs/chocolate@master
