@@ -24,11 +24,9 @@ import pprint
 import json
 from prettytable import PrettyTable
 
-from advisor_client.model import Study
-from advisor_client.model import Trial
-from advisor_client.model import TrialMetric
 from advisor_client.client import AdvisorClient
 from advisor_client.runner.runner_launcher import RunnerLauncher
+
 
 logging.basicConfig(level=logging.DEBUG)
 # Disable debug log from requests and urllib3

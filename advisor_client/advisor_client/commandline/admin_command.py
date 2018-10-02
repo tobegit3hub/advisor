@@ -27,11 +27,17 @@ logging.basicConfig(level=logging.DEBUG)
 logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
+
+if PY2:
+  raw_input = raw_input
+else:
+  raw_input = input
 
 def start_server(args):
 
-  print("Are you sure to run server container(Y/N):")
-  choice = raw_input().lower()
+  choice = raw_input("Are you sure to run server container(Y/N): ").lower()
   if choice in ("y", "yes"):
     print("Try to start the server with container")
 
@@ -54,8 +60,7 @@ def start_server(args):
 
 def stop_server(args):
 
-  print("Are you sure to stop server container(Y/N):")
-  choice = raw_input().lower()
+  choice = raw_input("Are you sure to stop server container(Y/N): ").lower()
   if choice in ("y", "yes"):
     print("Try to start the server with container")
 
