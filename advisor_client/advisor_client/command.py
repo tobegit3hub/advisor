@@ -20,6 +20,8 @@ import argparse
 import logging
 import pkg_resources
 import sys
+import pprint
+import json
 from prettytable import PrettyTable
 
 from advisor_client.model import Study
@@ -45,14 +47,22 @@ def print_studies(studies):
         study.name.encode('utf-8'), study.study_configuration, study.status,
         study.created_time, study.updated_time))
 
+
 def print_studies_as_table(studies):
   table = PrettyTable()
-  table.field_names = ["Id", "Name", "Configuration", "Status", "Create", "Updated"]
+  table.field_names = [
+      "Id", "Name", "Configuration", "Status", "Create", "Updated"
+  ]
 
   for study in studies:
-    table.add_row([study.id, study.name.encode('utf-8'), study.study_configuration, study.status, study.created_time, study.updated_time])
+    table.add_row([
+        study.id,
+        study.name.encode('utf-8'), study.study_configuration, study.status,
+        study.created_time, study.updated_time
+    ])
 
   print(table)
+
 
 def print_trials(trials):
   print("{:16} {:16} {:16} {:16} {:16} {:16} {:32} {:32}".format(
@@ -64,13 +74,20 @@ def print_trials(trials):
         trial.id, trial.study_name, trial.name, trial.parameter_values, trial.
         objective_value, trial.status, trial.created_time, trial.updated_time))
 
+
 def print_trials_as_table(trials):
   table = PrettyTable()
-  table.field_names = ["Id", "Study", "Name", "PARAMETER", "Objective", "Status", "Create", "Updated"]
+  table.field_names = [
+      "Id", "Study", "Name", "PARAMETER", "Objective", "Status", "Create",
+      "Updated"
+  ]
 
   for trial in trials:
-    table.add_row([trial.id, trial.study_name, trial.name, trial.parameter_values, trial.
-                  objective_value, trial.status, trial.created_time, trial.updated_time])
+    table.add_row([
+        trial.id, trial.study_name, trial.name, trial.parameter_values,
+        trial.objective_value, trial.status, trial.created_time,
+        trial.updated_time
+    ])
   print(table)
 
 
@@ -79,13 +96,35 @@ def list_studies(args):
   print_studies_as_table(client.list_studies())
 
 
-
 def describe_studie(args):
   client = AdvisorClient()
+  study = client.get_study_by_name(args.study_name)
 
-  args.study_name
-  print_trials_as_table(client.list_trials(args.study_name))
+  # Print study
+  table = PrettyTable()
+  table.field_names = [
+      "Id", "Name", "Algorithm", "Status", "Create", "Updated"
+  ]
+  table.add_row([
+      study.id,
+      study.name.encode('utf-8'), study.algorithm, study.status,
+      study.created_time, study.updated_time
+  ])
+  print(table)
 
+  # Print study configuration
+  """
+  table = PrettyTable()
+  table.field_names = ["Configuration"]
+  table.add_row([study.study_configuration])
+  print(table)
+  """
+  pprint.pprint(json.loads(study.study_configuration))
+
+  # Print related trials
+  study_trials = client.list_trials(args.study_name)
+  if (len(study_trials)) > 0:
+    print_trials_as_table(study_trials)
 
 
 def list_trials(args):
@@ -121,13 +160,14 @@ def main():
   study_list_parser.set_defaults(func=list_studies)
 
   # subcommand: study describe
-  study_describe_parser = study_subparser.add_parser("describe", help="Describe studiy")
+  study_describe_parser = study_subparser.add_parser(
+      "describe", help="Describe studiy")
   study_describe_parser.add_argument(
-          "-s",
-          "--study_name",
-          dest="study_name",
-          help="The id of the resource",
-          required=True)
+      "-s",
+      "--study_name",
+      dest="study_name",
+      help="The id of the resource",
+      required=True)
   study_describe_parser.set_defaults(func=describe_studie)
 
   # subcommand: trial

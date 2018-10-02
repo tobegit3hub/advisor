@@ -8,7 +8,6 @@ from .model import TrialMetric
 
 
 class AdvisorClient(object):
-
   def __init__(self, endpoint=None):
     # TODO: Read endpoint from configuration file
     if endpoint != None:
