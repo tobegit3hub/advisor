@@ -38,7 +38,7 @@ def v1_studies(request):
     name = data["name"]
 
     try:
-      #study = Study.objects.get(name=name)
+      study = Study.objects.get(name=name)
       return JsonResponse({"error": "The study {} exists".format(name)})
     except Study.DoesNotExist:
       study_configuration = json.dumps(data["study_configuration"])

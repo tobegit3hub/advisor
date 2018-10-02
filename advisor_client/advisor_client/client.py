@@ -38,7 +38,7 @@ class AdvisorClient(object):
     response = requests.get(url)
     study_exist = response.json()["exist"]
 
-    if study_exist:
+    if study_exist == True:
       study = self.get_study_by_name(study_name)
     else:
       study = self.create_study(study_name, study_configuration, algorithm)

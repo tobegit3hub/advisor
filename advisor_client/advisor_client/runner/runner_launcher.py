@@ -45,13 +45,9 @@ class RunnerLauncher():
         logging.info("Run with local runner")
 
 
-
-
-    #study = client.create_study("Study", study_configuration, "BayesianOptimization")
     study = client.get_or_create_study(self.run_config_dict["name"],
                                 self.run_config_dict["search_space"],
                                 self.run_config_dict["algorithm"])
-    #study = client.get_study_by_id(6)
 
     logging.info("Create study: {}".format(study))
 
