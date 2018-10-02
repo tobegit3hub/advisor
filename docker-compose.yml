@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  advisor:
+    restart: always
+    image: tobegit3hub/advisor
+    ports:
+      - "8000:8000"
+
