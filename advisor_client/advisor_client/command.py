@@ -110,14 +110,9 @@ def main():
   trial_list_parser.set_defaults(func=list_trials)
 
   # subcommand: run
-  run_parser = main_subparser.add_parser(
-          "run", help="Commands about run")
+  run_parser = main_subparser.add_parser("run", help="Commands about run")
   run_parser.add_argument(
-          "-f",
-          "--file",
-          dest="run_file",
-          help="The run file",
-          required=True)
+      "-f", "--file", dest="run_file", help="The run file", required=True)
   run_parser.set_defaults(func=run_with_file)
 
   # Display help information by default

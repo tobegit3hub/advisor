@@ -12,12 +12,12 @@ class AdvisorClient(object):
     self.endpoint = endpoint
 
   def create_study(self,
-                   name,
+                   study_name,
                    study_configuration,
                    algorithm="BayesianOptimization"):
     url = "{}/suggestion/v1/studies".format(self.endpoint)
     request_data = {
-        "name": name,
+        "name": study_name,
         "study_configuration": study_configuration,
         "algorithm": algorithm
     }
@@ -26,6 +26,22 @@ class AdvisorClient(object):
     study = None
     if response.ok:
       study = Study.from_dict(response.json()["data"])
+
+    return study
+
+  def get_or_create_study(self,
+                          study_name,
+                          study_configuration,
+                          algorithm="BayesianOptimization"):
+
+    url = "{}/suggestion/v1/studies/{}/exist".format(self.endpoint, study_name)
+    response = requests.get(url)
+    study_exist = response.json()["exist"]
+
+    if study_exist:
+      study = self.get_study_by_name(study_name)
+    else:
+      study = self.create_study(study_name, study_configuration, algorithm)
 
     return study
 
@@ -87,7 +103,8 @@ class AdvisorClient(object):
     return is_completed
 
   def list_trials(self, study_name):
-    url = "{}/suggestion/v1/studies/{}/trials".format(self.endpoint, study_name)
+    url = "{}/suggestion/v1/studies/{}/trials".format(self.endpoint,
+                                                      study_name)
     response = requests.get(url)
     trials = []
 

@@ -37,14 +37,18 @@ class RunnerLauncher():
 
     self.run_config_dict
 
+    # TODO: move the logic into local runner
     runner = LocalRunner()
     if "runner" in self.run_config_dict:
       if self.run_config_dict["runner"] == "local_runner":
         runner = LocalRunner()
         logging.info("Run with local runner")
 
+
+
+
     #study = client.create_study("Study", study_configuration, "BayesianOptimization")
-    study = client.create_study(self.run_config_dict["name"],
+    study = client.get_or_create_study(self.run_config_dict["name"],
                                 self.run_config_dict["search_space"],
                                 self.run_config_dict["algorithm"])
     #study = client.get_study_by_id(6)

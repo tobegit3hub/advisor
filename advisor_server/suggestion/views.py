@@ -36,11 +36,16 @@ def v1_studies(request):
   if request.method == "POST":
     data = json.loads(request.body)
     name = data["name"]
-    study_configuration = json.dumps(data["study_configuration"])
-    algorithm = data.get("algorithm", "RandomSearchAlgorithm")
 
-    study = Study.create(name, study_configuration, algorithm)
-    return JsonResponse({"data": study.to_json()})
+    try:
+      #study = Study.objects.get(name=name)
+      return JsonResponse({"error": "The study {} exists".format(name)})
+    except Study.DoesNotExist:
+      study_configuration = json.dumps(data["study_configuration"])
+      algorithm = data.get("algorithm", "RandomSearchAlgorithm")
+      study = Study.create(name, study_configuration, algorithm)
+
+      return JsonResponse({"data": study.to_json()})
 
   # List the studies
   elif request.method == "GET":
@@ -73,6 +78,25 @@ def v1_study(request, study_name):
     study = Study.objects.get(name=study_name)
     study.delete()
     return JsonResponse({"message": "Success to delete"})
+  else:
+    return JsonResponse({"error": "Unsupported http method"})
+
+
+@csrf_exempt
+def v1_study_exist(request, study_name):
+
+  # Check if the study exist or not
+  if request.method == "GET":
+    response_dict = {"exist": False}
+
+    try:
+      study = Study.objects.get(name=study_name)
+      response_dict["exist"] = True
+    except Study.DoesNotExist:
+      response_dict["exist"] = False
+
+    return JsonResponse(response_dict)
+
   else:
     return JsonResponse({"error": "Unsupported http method"})
 
