@@ -33,7 +33,7 @@ setup(
     author_email="tobeg3oogle@gmail.com",
     url="https://github.com/tobegit3hub/advisor",
     install_requires=["requests>=2.6.0", "pyOpenSSL>=16.1.0",
-                      "argcomplete>=1.4.1", prettytable, coloredlogs],
+                      "argcomplete>=1.4.1", "prettytable", "coloredlogs"],
     description=
     "Advisor is the hyper parameters tuning system for black box optimization",
     #packages=["advisor_client"],
