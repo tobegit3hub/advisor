@@ -40,5 +40,8 @@ setup(
     packages=find_packages(),
     zip_safe=False,
     entry_points={
-        "console_scripts": ["advisor=advisor_client.command:main"],
+        "console_scripts": [
+            "advisor=advisor_client.commandline.command:main",
+            "advisor_admin=advisor_client.commandline.admin_command:main"
+        ],
     })

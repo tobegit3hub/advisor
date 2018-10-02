@@ -42,8 +42,7 @@ def print_studies(studies):
 
   for study in studies:
     print("{:16} {:16} {:16} {:16} {:32} {:32}".format(
-        study.id,
-        study.name, study.study_configuration, study.status,
+        study.id, study.name, study.study_configuration, study.status,
         study.created_time, study.updated_time))
 
 
@@ -55,8 +54,7 @@ def print_studies_as_table(studies):
 
   for study in studies:
     table.add_row([
-        study.id,
-        study.name, study.study_configuration, study.status,
+        study.id, study.name, study.study_configuration, study.status,
         study.created_time, study.updated_time
     ])
 
@@ -70,8 +68,9 @@ def print_trials(trials):
 
   for trial in trials:
     print("{:16} {:16} {:16} {:16} {:16} {:16} {:32} {:32}".format(
-        trial.id, trial.study_name, trial.name, trial.parameter_values, trial.
-        objective_value, trial.status, trial.created_time, trial.updated_time))
+        trial.id, trial.study_name, trial.name, trial.parameter_values,
+        trial.objective_value, trial.status, trial.created_time,
+        trial.updated_time))
 
 
 def print_trials_as_table(trials):
@@ -105,9 +104,8 @@ def describe_studie(args):
       "Id", "Name", "Algorithm", "Status", "Create", "Updated"
   ]
   table.add_row([
-      study.id,
-      study.name, study.algorithm, study.status,
-      study.created_time, study.updated_time
+      study.id, study.name, study.algorithm, study.status, study.created_time,
+      study.updated_time
   ])
   print(table)
 

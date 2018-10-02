@@ -46,7 +46,6 @@ class RunnerLauncher():
 
 
     study_name = self.run_config_dict["name"].encode("utf-8")
-    #import ipdb;ipdb.set_trace()
     study = client.get_or_create_study(study_name,
                                 self.run_config_dict["search_space"],
                                 self.run_config_dict["algorithm"])
