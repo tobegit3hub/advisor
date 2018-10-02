@@ -11,8 +11,9 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 * Included search and early stop algorithms
 * Recommend parameters with trained model
 * Same programming interfaces as Google Vizier
+* Command-line tool just like Microsoft NNI.
 
-## Algorithms
+## Supported Algorithms
 
 * [x] Grid Search
 * [x] Random Search
@@ -66,6 +67,23 @@ Or run with official docker image.
 docker run -d -p 8000:8000 tobegit3hub/advisor
 ```
 
+Or run with docker-compose.
+
+```bash
+
+wget https://raw.githubusercontent.com/tobegit3hub/advisor/master/docker-compose.yml
+
+docker-compose up -d
+```
+
+Or run in Kubernetes cluster.
+
+```bash
+wget https://raw.githubusercontent.com/tobegit3hub/advisor/master/kubernetes_advisor.yaml
+
+kubectl create -f ./kubernetes_advisor.yaml
+```
+
 Or run from scratch with source code.
 
 ```bash
@@ -80,13 +98,15 @@ pip install -r ./requirements.txt
 
 ## Advisor Client
 
-Install with `pip`.
+Install with `pip` or use docker container.
 
 ```bash
 pip install advisor-clients
+
+docker run -it --net=host tobegit3hub/advisor bash
 ```
 
-Run command-line tool.
+Use the command-line tool.
 
 ```bash
 export ADVISOR_ENDPOINT="http://127.0.0.1:8000"
@@ -98,7 +118,7 @@ advisor study describe -s "demo"
 advisor trial list --study_name "demo"
 ```
 
-Run with admin tool to start/stop server.
+Use admin tool to start/stop server.
 
 ```bash
 advisor_admin server start
@@ -106,7 +126,7 @@ advisor_admin server start
 advisor_admin server stop
 ```
 
-Run with Python SDK.
+Use the Python SDK.
 
 ```python
 client = AdvisorClient()
@@ -186,7 +206,7 @@ Study configuration describe the search space of parameters. It supports four ty
 
 Here is the configuration file for `advisor run`.
 
-```
+```json
 {
   "name": "demo",
   "algorithm": "BayesianOptimization",
@@ -228,7 +248,7 @@ List the detail of trial and all the related metrics.
 
 ![trial_detail.png](./images/trial_detail.png)
 
-## Develop
+## Development
 
 You can edit the source code and test without re-deploying the server and client.
 
