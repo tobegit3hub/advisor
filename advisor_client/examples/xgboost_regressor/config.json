@@ -1,0 +1,48 @@
+{
+  "name": "simple1",
+  "algorithm": "RandomSearch",
+  "trialNumber": 3,
+  "concurrency": 1,
+  "path": "~/code/advisor/advisor_client/examples/xgboost_regressor/",
+  "command": "./allstate_insure_regressor.py",
+  "search_space": {
+      "goal": "MINIMIZE",
+      "randomInitTrials": 1,
+      "maxTrials": 5,
+      "maxParallelTrials": 1,
+      "params": [
+        {
+          "parameterName": "min_child_weight",
+          "type": "INTEGER",
+          "minValue": 1,
+          "maxValue": 20,
+          "feasiblePoints": "",
+          "scalingType": "LINEAR"
+        },
+        {
+          "parameterName": "max_depth",
+          "type": "INTEGER",
+          "minValue": 5,
+          "maxValue": 15,
+          "feasiblePoints": "",
+          "scalingType": "LINEAR"
+        },
+        {
+          "parameterName": "gamma",
+          "type": "DOUBLE",
+          "minValue": 0.0,
+          "maxValue": 10.0,
+          "feasiblePoints": "",
+          "scalingType": "LINEAR"
+        },
+        {
+          "parameterName": "alpha",
+          "type": "DOUBLE",
+          "minValue": 0.0,
+          "maxValue": 10.0,
+          "feasiblePoints": "",
+          "scalingType": "LINEAR"
+        }
+      ]
+  }
+}
