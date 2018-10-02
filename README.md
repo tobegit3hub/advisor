@@ -31,34 +31,79 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 * [x] Early Stop Descending Algorithm
 * [ ] Performance Curve Stop Algorithm
 
-## Usage
 
-### Advisor Server
+## Quick Start
 
-Run the advisor server.
+It is easy to setup advisor service in local machine.
 
 ```bash
-pip install -r ./requirements.txt
+pip install advisor-clients
 
-./manage.py runserver 0.0.0.0:8000
+advisor_admin server start
 ```
 
-Open `http://127.0.0.1:8000` in the browser.
+Then go to `http://127.0.0.1:8000` in the browser and submit tuning jobs.
 
-### Docker Server
+```bash
+git clone --depth 1 https://github.com/tobegit3hub/advisor.git && cd ./advisor/
 
-You can run the server with `docker` as well.
+advisor run -f ./advisor_client/examples/python_function/config.json
+
+advisor study describe demo
+```
+
+## Advisor Server
+
+Run server with official package.
+
+```bash
+advisor_admin server start
+```
+
+Or run with official docker image.
 
 ```bash
 docker run -d -p 8000:8000 tobegit3hub/advisor
 ```
 
-### Advisor Client
+Or run from scratch with source code.
+
+```bash
+git clone --depth 1 https://github.com/tobegit3hub/advisor.git && cd ./advisor/
+
+pip install -r ./requirements.txt
+
+./manage.py migrate
+
+./manage.py runserver 0.0.0.0:8000
+```
+
+## Advisor Client
 
 Install with `pip`.
 
 ```bash
-pip install advisor_clients
+pip install advisor-clients
+```
+
+Run command-line tool.
+
+```bash
+export ADVISOR_ENDPOINT="http://127.0.0.1:8000"
+
+advisor study list
+
+advisor study describe -s "demo"
+
+advisor trial list --study_name "demo"
+```
+
+Run with admin tool to start/stop server.
+
+```bash
+advisor_admin server start
+
+advisor_admin server stop
 ```
 
 Run with Python SDK.
@@ -69,8 +114,6 @@ client = AdvisorClient()
 # Create the study
 study_configuration = {
         "goal": "MAXIMIZE",
-        "maxTrials": 5,
-        "maxParallelTrials": 1,
         "params": [
                 {
                         "parameterName": "hidden1",
@@ -81,26 +124,20 @@ study_configuration = {
                 }
         ]
 }
-study = client.create_study("Study", study_configuration)
+study = client.create_study("demo", study_configuration)
 
 # Get suggested trials
 trials = client.get_suggestions(study, 3)
 
 # Complete the trial
+trial = trials[0]
+trial_metrics = 1.0
 client.complete_trial(trial, trial_metrics)
 ```
 
-Run with command-line tool.
+Please checkout [examples](./advisor_client/examples/) for more usage.
 
-```bash
-advisor study list
-
-advisor trial list --study_name "test"
-```
-
-Please checkout [examples](./examples) for more usage.
-
-## Concepts
+## Configuration
 
 Study configuration describe the search space of parameters. It supports four types and here is the example.
 
@@ -147,9 +184,31 @@ Study configuration describe the search space of parameters. It supports four ty
 }
 ```
 
-## Visualization
+Here is the configuration file for `advisor run`.
 
-You can visualize one-dimentation Bayesian Optimization with the notebooks in [visualization](./visualization).
+```
+{
+  "name": "demo",
+  "algorithm": "BayesianOptimization",
+  "trialNumber": 10,
+  "concurrency": 1,
+  "path": "./advisor_client/examples/python_function/",
+  "command": "./min_function.py",
+  "search_space": {
+      "goal": "MINIMIZE",
+      "randomInitTrials": 3,
+      "params": [
+          {
+              "parameterName": "x",
+              "type": "DOUBLE",
+              "minValue": -10.0,
+              "maxValue": 10.0,
+              "scalingType": "LINEAR"
+          }
+      ]
+  }
+}
+```
 
 ## Screenshots
 
@@ -169,3 +228,16 @@ List the detail of trial and all the related metrics.
 
 ![trial_detail.png](./images/trial_detail.png)
 
+## Develop
+
+You can edit the source code and test without re-deploying the server and client.
+
+```
+git clone git@github.com:tobegit3hub/advisor.git
+
+cd ./advisor/advisor_client/
+
+python ./setup.py develop
+
+export PYTHONPATH="/Library/Python/2.7/site-packages/:$PYTHONPATH"
+```
