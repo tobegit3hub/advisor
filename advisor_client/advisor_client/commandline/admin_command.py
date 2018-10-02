@@ -28,17 +28,6 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 
 
-def clear_db(args):
-
-  print("Are you sure to clear database(Y/N):")
-  choice = raw_input().lower()
-  if choice in ("y", "yes"):
-    print("Try to clear the database")
-
-  else:
-    print("Cancel operation")
-
-
 def start_server(args):
 
   print("Are you sure to run server container(Y/N):")
@@ -96,11 +85,6 @@ def main():
 
   main_subparser = parser.add_subparsers(dest="command_group", help="Commands")
 
-  # subcommand: clear_db
-  clear_db_parser = main_subparser.add_parser(
-      "clear_db", help="Commands about clear_db")
-  clear_db_parser.set_defaults(func=clear_db)
-
   # subcommand: starta_server
   start_server_parser = main_subparser.add_parser(
       "start_server", help="Commands about start_server")
@@ -122,7 +106,7 @@ def main():
 
   # subcommand: stop_server
   stop_server_parser = main_subparser.add_parser(
-          "stop_server", help="Commands about stop_server")
+      "stop_server", help="Commands about stop_server")
   stop_server_parser.set_defaults(func=stop_server)
 
   start_server_parser.set_defaults(func=start_server)
