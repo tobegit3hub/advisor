@@ -36,7 +36,7 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
       return return_trials
 
     # Construct the map of name and scope to compute gaussian process
-    acquisition_fucntion_kappa = 5
+    acquisition_function_kappa = 5
 
     # Example: {'x': (-4, 4), 'y': (-3, 3)}
     # name_scope_map = {}
@@ -146,7 +146,7 @@ class BayesianOptimization(AbstractSuggestionAlgorithm):
     mean, std = gp.predict(x_tries, return_std=True)
 
     # Confidence bound criteria
-    acquisition_fucntion_values = mean + acquisition_fucntion_kappa * std
+    acquisition_fucntion_values = mean + acquisition_function_kappa * std
 
     #x_max = x_tries[acquisition_fucntion_values.argmax()]
     # tobe
@@ -248,7 +248,7 @@ class BayesianOptimizationDemo(object):
     print("Start bayesian optimization")
 
     # 1. Initialize parameters
-    acquisition_fucntion_kappa = 5
+    acquisition_function_kappa = 5
     init_point_number = 3
     iteration_number = 3
     iteration_index = 0
@@ -297,7 +297,7 @@ class BayesianOptimizationDemo(object):
 
     mean, std = gp.predict(x_tries, return_std=True)
     # Confidence bound criteria
-    acquisition_fucntion_values = mean + acquisition_fucntion_kappa * std
+    acquisition_fucntion_values = mean + acquisition_function_kappa * std
     x_max = x_tries[acquisition_fucntion_values.argmax()]
     max_acquision_fucntion_value = acquisition_fucntion_values.max()
 
@@ -324,7 +324,7 @@ class BayesianOptimizationDemo(object):
           bounds[:, 0], bounds[:, 1], size=(100000, bounds.shape[0]))
 
       mean, std = gp.predict(x_tries, return_std=True)
-      acquisition_fucntion_values = mean + acquisition_fucntion_kappa * std
+      acquisition_fucntion_values = mean + acquisition_function_kappa * std
       x_max = x_tries[acquisition_fucntion_values.argmax()]
       max_acquision_fucntion_value = acquisition_fucntion_values.max()
 
