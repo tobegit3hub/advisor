@@ -8,7 +8,7 @@ Advisor is the hyper parameters tuning system for black box optimization.
 
 It is the open-source implementation of [Google Vizier](https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/46180.pdf) with these features.
 
-* Get suggestions from API, WEB or CLI
+* Easy to use with API, SDK, WEB and CLI
 * Support abstractions of Study and Trial
 * Included search and early stop algorithms
 * Recommend parameters with trained model
@@ -52,7 +52,7 @@ git clone --depth 1 https://github.com/tobegit3hub/advisor.git && cd ./advisor/
 
 advisor run -f ./advisor_client/examples/python_function/config.json
 
-advisor study describe demo
+advisor study describe -s demo
 ```
 
 ## Advisor Server

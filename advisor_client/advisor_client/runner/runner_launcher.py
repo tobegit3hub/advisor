@@ -44,11 +44,10 @@ class RunnerLauncher():
         runner = LocalRunner()
         logging.info("Run with local runner")
 
-
     study_name = self.run_config_dict["name"].encode("utf-8")
     study = client.get_or_create_study(study_name,
-                                self.run_config_dict["search_space"],
-                                self.run_config_dict["algorithm"])
+                                       self.run_config_dict["search_space"],
+                                       self.run_config_dict["algorithm"])
 
     logging.info("Create study: {}".format(study))
 
@@ -86,7 +85,7 @@ class RunnerLauncher():
         command_string = "cd {} && {} {}".format(
             self.run_config_dict["path"], self.run_config_dict["command"],
             parameter_string)
-        #import ipdb;ipdb.set_trace()
+
         #exit_code = subprocess.call(command_string, shell=True)
         logging.info("Run the command: {}".format(command_string))
 
@@ -95,7 +94,6 @@ class RunnerLauncher():
         command_output = subprocess.check_output(command_string, shell=True)
         # TODO: Log the output in the directory
         #logging.info("Get output of command: {}".format(command_output))
-
 
         metric = float(command_output.split("\n")[-2].strip())
         # Complete the trial

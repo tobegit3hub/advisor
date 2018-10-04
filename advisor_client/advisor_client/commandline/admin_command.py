@@ -79,6 +79,26 @@ def stop_server(args):
     print("Cancel operation")
 
 
+def check_server_status(args):
+
+  print("Try to get status of the server container")
+
+  command = "docker ps |grep 'tobegit3hub/advisor'"
+  print("Run the command: {}".format(command))
+
+  try:
+    command_output = subprocess.check_output(command, shell=True)
+
+    if command_output != "":
+      print("Server running")
+
+  except subprocess.CalledProcessError, e:
+    if e.output == "":
+      print("Server not running")
+    else:
+      print("Get error: {}".format(e.output))
+
+
 def main():
   parser = argparse.ArgumentParser()
 
@@ -121,6 +141,11 @@ def main():
   server_stop_parser = server_subparser.add_parser(
       "stop", help="Commands about server stop")
   server_stop_parser.set_defaults(func=stop_server)
+
+  # subcommand: server status
+  server_status_parser = server_subparser.add_parser(
+      "status", help="Commands about server status")
+  server_status_parser.set_defaults(func=check_server_status)
 
   # Display help information by default
   if len(sys.argv) == 1:
