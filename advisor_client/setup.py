@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# twine upload dist/advisor-clients-x.x.x.tar.gz
-# twine upload dist/advisor-clients-x.x.x.tar.gz -r test
-# pip install --index-url https://test.pypi.org/simple/ --upgrade advisor-clients
+# twine upload dist/advisor-x.x.x.tar.gz
+# twine upload dist/advisor-x.x.x.tar.gz -r test
+# pip install --index-url https://test.pypi.org/simple/ --upgrade advisor
 
 
 try:
@@ -28,7 +28,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="advisor",
-    version="0.1.4.1",
+    version="0.1.5",
     author="tobe",
     author_email="tobeg3oogle@gmail.com",
     url="https://github.com/tobegit3hub/advisor",
