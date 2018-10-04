@@ -40,7 +40,7 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 It is easy to setup advisor service in local machine.
 
 ```bash
-pip install advisor-clients
+pip install advisor
 
 advisor_admin server start
 ```
@@ -103,7 +103,7 @@ pip install -r ./requirements.txt
 Install with `pip` or use docker container.
 
 ```bash
-pip install advisor-clients
+pip install advisor
 
 docker run -it --net=host tobegit3hub/advisor bash
 ```

@@ -138,7 +138,7 @@ def main():
       "-v",
       "--version",
       action="version",
-      version=pkg_resources.require("advisor-clients")[0].version,
+      version=pkg_resources.require("advisor")[0].version,
       help="Display sdk version")
 
   main_subparser = parser.add_subparsers(dest="command_group", help="Commands")
