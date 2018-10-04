@@ -1,5 +1,7 @@
 # Advisor
 
+![](./images/advisor_architecture.jpg)
+
 ## Introduction
 
 Advisor is the hyper parameters tuning system for black box optimization.
