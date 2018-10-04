@@ -38,6 +38,10 @@ else:
 
 def start_server(args):
 
+  if is_server_running() == True:
+    print("Server running, do not start again")
+    return
+
   choice = raw_input("Are you sure to run server container(Y/N): ").lower()
   if choice in ("y", "yes"):
     print("Try to start the server with container")
@@ -61,6 +65,10 @@ def start_server(args):
 
 def stop_server(args):
 
+  if is_server_running() == False:
+    print("Server not running, do not stop again")
+    return
+
   choice = raw_input("Are you sure to stop server container(Y/N): ").lower()
   if choice in ("y", "yes"):
     print("Try to start the server with container")
@@ -82,6 +90,13 @@ def stop_server(args):
 def check_server_status(args):
 
   print("Try to get status of the server container")
+  if is_server_running():
+    print("Server running")
+  else:
+    print("Server not running")
+
+
+def is_server_running():
 
   command = "docker ps |grep 'tobegit3hub/advisor'"
   print("Run the command: {}".format(command))
@@ -90,13 +105,14 @@ def check_server_status(args):
     command_output = subprocess.check_output(command, shell=True)
 
     if command_output != "":
-      print("Server running")
+      return True
 
   except subprocess.CalledProcessError, e:
     if e.output == "":
-      print("Server not running")
+      pass
     else:
       print("Get error: {}".format(e.output))
+    return False
 
 
 def main():
