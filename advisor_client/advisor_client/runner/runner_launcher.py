@@ -1,4 +1,5 @@
 import json
+import yaml
 import logging
 import subprocess
 import coloredlogs
@@ -27,9 +28,14 @@ class RunnerLauncher():
     self.run_config_dict = {}
 
     with open(run_file, "r") as f:
-      run_config_dict = json.load(f)
 
-      self.run_config_dict = run_config_dict
+      if run_file.endswith(".json"):
+        self.run_config_dict = json.load(f)
+      elif run_file.endswith(".yml") or run_file.endswith(".yaml"):
+        self.run_config_dict = yaml.safe_load(f)
+      else:
+        logging.error("Unsupport config file format, use json or yaml")
+
       logging.info("Run with config: {}".format(self.run_config_dict))
 
   def run(self):
