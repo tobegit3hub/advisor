@@ -28,7 +28,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="advisor",
-    version="0.1.5",
+    version="0.1.5.1",
     author="tobe",
     author_email="tobeg3oogle@gmail.com",
     url="https://github.com/tobegit3hub/advisor",
