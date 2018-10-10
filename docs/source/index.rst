@@ -10,12 +10,10 @@ Welcome to advisor's documentation!
    :maxdepth: 2
    :caption: Contents:
    
+   introduction
    installation
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   quick_start
+   server
+   commandline
+   sdk
+   configuration
