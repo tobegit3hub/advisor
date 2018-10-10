@@ -14,6 +14,6 @@ Welcome to advisor's documentation!
    installation
    quick_start
    server
-   commandline
+   cli
    sdk
-   configuration
+   configuration_file
