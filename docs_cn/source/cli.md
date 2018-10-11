@@ -1,37 +1,37 @@
-# Command Line Interface
+# 命令行
 
 
-## Start Server
+## 启动服务
 
 ```bash
 advisor_admin server start
 ```
 
-## Stop Server
+## 停止服务
 
 ```bash
 advisor_admin server stop
 ```
 
-## Submit Job
+## 提交任务
 
 ```bash
 advisor run -f ./advisor_client/examples/python_function/config.json
 ```
 
-## List Study
+## 列举Study
 
 ```bash
 advisor study list
 ```
 
-## Describe Study
+## 查看Study
 
 ```bash
 advisor study describe -s demo
 ```
 
-## List Trials
+## 列举Trial
 
 ```bash
 advisor trials list

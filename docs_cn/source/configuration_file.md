@@ -1,6 +1,6 @@
-# Configuration File
+# 配置文件
 
-## YAML Example
+## YAML示例
 
 ```yaml
 name: "demo"
@@ -18,7 +18,7 @@ search_space:
       maxValue: 10.0
 ```
 
-## JSON Example
+## JSON示例
 
 ```json
 {

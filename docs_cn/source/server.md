@@ -1,6 +1,6 @@
-# Server
+# 服务器
 
-## Command-line
+## 命令行
 
 ```bash
 advisor_admin server start
@@ -29,7 +29,7 @@ wget https://raw.githubusercontent.com/tobegit3hub/advisor/master/kubernetes_adv
 kubectl create -f ./kubernetes_advisor.yaml
 ```
 
-## From Source
+## 源码启动
 
 ```bash
 git clone --depth 1 https://github.com/tobegit3hub/advisor.git && cd ./advisor/

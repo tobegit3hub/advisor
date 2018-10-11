@@ -1,12 +1,12 @@
 # SDK
 
-## Create Client
+## 创建客户端对象
 
 ```python
 client = AdvisorClient()
 ```
 
-## Create Study
+## 创建Study
 
 ```python
 study_configuration = {
@@ -58,20 +58,19 @@ study = client.create_study("Study", study_configuration,
 
 ```
 
-## Get Study
+## 获取Study
 
 ```python
 study = client.get_study_by_id(6)
 ```
 
-## Get Trials
+## 获取Trial
 
 ```python
 trials = client.get_suggestions(study.id, 3)
 ```
-  
 
-## Generate Parameters
+## 生成参数
 
 ```python
 parameter_value_dicts = []
@@ -81,7 +80,7 @@ for trial in trials:
   parameter_value_dicts.append(parameter_value_dict)
 ```
 
-## Run Training
+## 运行训练
 
 ```python
 metrics = []
@@ -90,7 +89,7 @@ for i in range(len(trials)):
   metrics.append(metric)
 ```
   
-## Complete Trial
+## 完成Trial
 
 ```python
 for i in range(len(trials)):

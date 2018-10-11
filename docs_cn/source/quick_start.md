@@ -1,20 +1,20 @@
-# Quick Start
+# 快速使用
 
-Install with `pip`.
+使用`pip`安装。
 
 ```bash
 pip install advisor
 ```
 
-Start the server.
+启动服务器。
 
 ```bash
 advisor_admin server start
 ```
 
-Go to `http://127.0.0.1:8000` in the browser.
+在浏览器打开`http://127.0.0.1:8000`。
 
-Submit tuning jobs.
+提交调优任务。
 
 ```bash
 git clone --depth 1 https://github.com/tobegit3hub/advisor.git && cd ./advisor/
@@ -22,7 +22,7 @@ git clone --depth 1 https://github.com/tobegit3hub/advisor.git && cd ./advisor/
 advisor run -f ./advisor_client/examples/python_function/config.json
 ```
 
-Get result of jobs.
+获取任务结果。
 
 ```bash
 advisor study describe -s demo
