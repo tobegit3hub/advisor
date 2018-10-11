@@ -30,6 +30,7 @@ It is the open-source implementation of [Google Vizier](https://static.googleuse
 * [x] CMAES(Chocolate)
 * [x] MOCMAES(Chocolate)
 * [ ] SMAC Algorithm
+* [x] Bayesian Optimization(Skopt)
 * [x] Early Stop First Trial Algorithm
 * [x] Early Stop Descending Algorithm
 * [ ] Performance Curve Stop Algorithm
@@ -206,7 +207,7 @@ Study configuration describe the search space of parameters. It supports four ty
 }
 ```
 
-Here is the configuration file for `advisor run`.
+Here is the configuration file in JSON format for `advisor run`.
 
 ```json
 {
@@ -230,6 +231,24 @@ Here is the configuration file for `advisor run`.
       ]
   }
 }
+```
+
+Or use the equivalent configuration file in YAML format.
+
+```yaml
+name: "demo"
+algorithm: "BayesianOptimization"
+trialNumber: 10
+path: "./advisor_client/examples/python_function/"
+command: "./min_function.py"
+search_space:
+  goal: "MINIMIZE"
+  randomInitTrials: 3
+  params:
+    - parameterName: "x"
+      type: "DOUBLE"
+      minValue: -10.0
+      maxValue: 10.0
 ```
 
 ## Screenshots

@@ -6,3 +6,4 @@ requests
 social-auth-app-django
 hyperopt
 git+https://github.com/AIworx-Labs/chocolate@master
+scikit-optimize

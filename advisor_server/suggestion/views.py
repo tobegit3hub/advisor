@@ -22,6 +22,7 @@ from suggestion.algorithm.chocolate_grid_search import ChocolateGridSearchAlgori
 from suggestion.algorithm.chocolate_bayes import ChocolateBayesAlgorithm
 from suggestion.algorithm.cmaes import CmaesAlgorithm
 from suggestion.algorithm.mocmaes import MocmaesAlgorithm
+from suggestion.algorithm.skopt_bayesian_optimization import SkoptBayesianOptimization
 
 
 def index(request):
@@ -143,6 +144,8 @@ def v1_study_suggestions(request, study_name):
       algorithm = CmaesAlgorithm()
     elif study.algorithm == "MOCMAES":
       algorithm = MocmaesAlgorithm()
+    elif study.algorithm == "SkoptBayesianOptimization":
+      algorithm = SkoptBayesianOptimization()
     else:
       return JsonResponse({
           "error":
