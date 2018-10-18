@@ -9,8 +9,8 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 flags = tf.app.flags
 # TODO: Change to int if advisor support DISCRETE with int
-flags.DEFINE_float("batch_size", 64, "")
-flags.DEFINE_integer("batch_number", 938, "")
+flags.DEFINE_float("batch_size", 64.0, "")
+flags.DEFINE_float("batch_number", 938.0, "")
 flags.DEFINE_string("optimizer", "sgd", "")
 flags.DEFINE_float("learning_rate", 0.01, "")
 FLAGS = flags.FLAGS
@@ -61,7 +61,7 @@ def main():
   sess = tf.InteractiveSession()
   tf.global_variables_initializer().run()
 
-  for i in range(FLAGS.batch_number):
+  for i in range(int(FLAGS.batch_number)):
     #batch_xs, batch_ys = mnist.train.next_batch(100)
     batch_xs, batch_ys = mnist.train.next_batch(int(FLAGS.batch_size))
     sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
