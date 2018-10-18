@@ -129,7 +129,7 @@ def v1_study_suggestions(request, study_name):
     elif study.algorithm == "TPE":
       algorithm = TpeAlgorithm()
     elif study.algorithm == "HyperoptRandomSearch":
-      algorithm = HyperoptRandomSearchAlgorithm
+      algorithm = HyperoptRandomSearchAlgorithm()
     elif study.algorithm == "SimulateAnneal":
       algorithm = SimulateAnnealAlgorithm()
     elif study.algorithm == "QuasiRandomSearch":
