@@ -107,7 +107,7 @@ def is_server_running():
     if command_output != "":
       return True
 
-  except subprocess.CalledProcessError, e:
+  except subprocess.CalledProcessError as e:
     if e.output == "":
       pass
     else:
