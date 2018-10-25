@@ -41,8 +41,12 @@ def start_server(args):
   if is_server_running() == True:
     print("Server running, do not start again")
     return
+  
+  if args.server_start_noprompt:
+    choice = "y"
+  else:
+    choice = raw_input("Are you sure to run server container(Y/N): ").lower()
 
-  choice = raw_input("Are you sure to run server container(Y/N): ").lower()
   if choice in ("y", "yes"):
     print("Try to start the server with container")
 
@@ -146,6 +150,16 @@ def main():
       type=int,
       help="The port",
       required=False)
+ 
+  server_start_parser.add_argument(
+    "-y",
+    dest="server_start_noprompt",
+    default=False,
+    action="store_const",
+    const=True,
+    help="Answer yes to the start server prompt. Useful for daemonizing the server."
+  )
+  
   server_start_parser.add_argument(
       "--command_args",
       dest="command_args",
