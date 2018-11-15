@@ -49,7 +49,7 @@
                     <td class="text-center success">{{ study.updated_time }}</td>
                     <td class="text-center warning">
                         <input type="image" width="22px" src="/static/images/delete-icon.png" alt="Delete"
-                               onclick="delete_resource('/dashboard/v1/studies/{{ study.id }}')"/>
+                               onclick="delete_resource('/dashboard/v1/studies/{{ study.name }}')"/>
                     </td>
                 </tr>
                 {% endfor %}
