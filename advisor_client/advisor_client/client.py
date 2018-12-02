@@ -100,6 +100,10 @@ class AdvisorClient(object):
       return True
 
     trials = self.list_trials(study_name)
+
+    if len(trials) == 0:
+      return False
+
     for trial in trials:
       if trial.status != "Completed":
         return False
