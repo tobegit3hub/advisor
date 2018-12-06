@@ -3,6 +3,7 @@ import yaml
 import logging
 import subprocess
 import coloredlogs
+import six
 
 from .abstract_runner import AbstractRunner
 from .local_runner import LocalRunner
@@ -50,7 +51,10 @@ class RunnerLauncher():
         runner = LocalRunner()
         logging.info("Run with local runner")
 
-    study_name = self.run_config_dict["name"].encode("utf-8")
+    if six.PY2:
+      study_name = self.run_config_dict["name"].encode("utf-8")
+    else:
+      study_name = self.run_config_dict["name"]
     study = client.get_or_create_study(study_name,
                                        self.run_config_dict["search_space"],
                                        self.run_config_dict["algorithm"])
@@ -97,7 +101,10 @@ class RunnerLauncher():
 
         # Example: '0.0\n'
         # Example: 'Compute y = x * x - 3 * x + 2\nIput x is: 1.0\nOutput is: 0.0\n0.0\n'
-        command_output = subprocess.check_output(command_string, shell=True)
+        if six.PY2:
+          command_output = subprocess.check_output(command_string, shell=True)
+        else:
+          command_output = subprocess.check_output(command_string, universal_newlines=True, shell=True)
         # TODO: Log the output in the directory
         #logging.info("Get output of command: {}".format(command_output))
 

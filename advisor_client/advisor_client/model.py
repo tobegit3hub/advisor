@@ -1,3 +1,6 @@
+import six
+
+
 class Study(object):
   def __init__(self,
                name,
@@ -8,7 +11,10 @@ class Study(object):
                created_time=None,
                updated_time=None):
     self.id = id
-    self.name = name.encode("utf-8")
+    if six.PY2:
+      self.name = name.encode("utf-8")
+    else:
+      self.name = name
     self.study_configuration = study_configuration
     self.algorithm = algorithm
     self.status = status
@@ -44,7 +50,10 @@ class Trial(object):
                created_time=None,
                updated_time=None):
     self.id = id
-    self.study_name = study_name.encode("utf-8")
+    if six.PY2:
+      self.study_name = study_name.encode("utf-8")
+    else:
+      self.study_name = study_name
     self.name = name
     self.parameter_values = parameter_values
     self.objective_value = objective_value

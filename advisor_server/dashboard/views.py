@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 import json
 import requests
 import platform
+import six
 
 from django.contrib import messages
 from django.shortcuts import redirect
@@ -93,8 +94,12 @@ def v1_study(request, study_name):
     tirals_response = requests.get(tirals_url)
 
     if response.ok and tirals_response.ok:
-      study = json.loads(response.content.decode("utf-8"))["data"]
-      trials = json.loads(tirals_response.content.decode("utf-8"))["data"]
+      if six.PY2:
+        study = json.loads(response.content.decode("utf-8"))["data"]
+        trials = json.loads(tirals_response.content.decode("utf-8"))["data"]
+      else:
+        study = json.loads(response.text)["data"]
+        trials = json.loads(tirals_response.text)["data"]
       context = {"success": True, "study": study, "trials": trials}
       return render(request, "study_detail.html", context)
     else:
@@ -161,9 +166,14 @@ def v1_trial(request, study_name, trial_id):
     tiral_metrics_response = requests.get(tiral_metrics_url)
 
     if response.ok and tiral_metrics_response.ok:
-      trial = json.loads(response.content.decode("utf-8"))["data"]
-      trial_metrics = json.loads(
-          tiral_metrics_response.content.decode("utf-8"))["data"]
+      if six.PY2:
+        trial = json.loads(response.content.decode("utf-8"))["data"]
+        trial_metrics = json.loads(
+            tiral_metrics_response.content.decode("utf-8"))["data"]
+      else:
+        trial = json.loads(response.text)["data"]
+        trial_metrics = json.loads(
+          tiral_metrics_response.text)["data"]
       context = {
           "success": True,
           "trial": trial,
@@ -188,7 +198,10 @@ def v1_trial(request, study_name, trial_id):
     response = requests.put(url, json=data)
     messages.info(request, response.content)
 
-    trial = json.loads(response.content.decode("utf-8"))["data"]
+    if six.PY2:
+      trial = json.loads(response.content.decode("utf-8"))["data"]
+    else:
+      trial = json.loads(response.text)["data"]
     context = {"success": True, "trial": trial, "trial_metrics": []}
     return render(request, "trial_detail.html", context)
   else:
@@ -226,7 +239,10 @@ def v1_study_trial_metric(request, study_name, trial_id, metric_id):
     response = requests.get(url)
 
     if response.ok:
-      trial_metric = json.loads(response.content.decode("utf-8"))["data"]
+      if six.PY2:
+        trial_metric = json.loads(response.content.decode("utf-8"))["data"]
+      else:
+        trial_metric = json.loads(response.text)["data"]
       context = {"success": True, "trial_metric": trial_metric}
       # TODO: Add the detail page of trial metric
       return render(request, "trial_detail.html", context)
