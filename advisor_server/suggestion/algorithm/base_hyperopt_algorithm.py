@@ -17,7 +17,7 @@ class BaseHyperoptAlgorithm(AbstractSuggestionAlgorithm):
     elif algorithm_name == 'anneal':
       self.hyperopt_algorithm = hyperopt.anneal.suggest
 
-  def get_new_suggestions(self, study_name, input_trials=[], number=1):
+  def get_new_suggestions(self, study_id, input_trials=[], number=1):
     """
     Get the new suggested trials with TPE algorithm.
     """
@@ -25,7 +25,7 @@ class BaseHyperoptAlgorithm(AbstractSuggestionAlgorithm):
     # Construct search space, example: {"x": hyperopt.hp.uniform('x', -10, 10), "x2": hyperopt.hp.uniform('x2', -10, 10)}
     hyperopt_search_space = {}
 
-    study = Study.objects.get(name=study_name)
+    study = Study.objects.get(id=study_id)
     study_configuration_json = json.loads(study.study_configuration)
     params = study_configuration_json["params"]
 
@@ -62,7 +62,7 @@ class BaseHyperoptAlgorithm(AbstractSuggestionAlgorithm):
     completed_hyperopt_trials = hyperopt.Trials()
 
     completed_advisor_trials = Trial.objects.filter(
-        study_name=study_name, status="Completed")
+        study_name=study_id, status="Completed")
 
     for index, advisor_trial in enumerate(completed_advisor_trials):
       # Example: {"learning_rate": 0.01, "optimizer": "ftrl"}

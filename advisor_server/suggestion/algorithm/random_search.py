@@ -8,14 +8,14 @@ from suggestion.algorithm.util import AlgorithmUtil
 
 
 class RandomSearchAlgorithm(AbstractSuggestionAlgorithm):
-  def get_new_suggestions(self, study_name, trials=[], number=1):
+  def get_new_suggestions(self, study_id, trials=[], number=1):
     """
     Get the new suggested trials with random search.
     """
 
     return_trial_list = []
 
-    study = Study.objects.get(name=study_name)
+    study = Study.objects.get(id=study_id)
     study_configuration_json = json.loads(study.study_configuration)
     params = study_configuration_json["params"]
 

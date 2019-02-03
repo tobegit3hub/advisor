@@ -4,8 +4,8 @@ from django.test import TestCase
 
 from suggestion.models import Study
 from suggestion.models import Trial
-from random_search import RandomSearchAlgorithm
-from particle_swarm_optimization import ParticleSwarmOptimization
+from .random_search import RandomSearchAlgorithm
+from .particle_swarm_optimization import ParticleSwarmOptimization
 
 
 class RandomSearchAlgorithmTest(TestCase):

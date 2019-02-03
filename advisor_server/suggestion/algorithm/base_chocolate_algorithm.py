@@ -11,7 +11,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
 
     self.algorithm_name = algorithm_name
 
-  def get_new_suggestions(self, study_name, input_trials=[], number=1):
+  def get_new_suggestions(self, study_id, input_trials=[], number=1):
     """
     Get the new suggested trials with Chocolate algorithm.
     """
@@ -20,7 +20,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
     # Example: {"x" : choco.uniform(-6, 6), "y" : choco.uniform(-6, 6)}
     chocolate_search_space = {}
 
-    study = Study.objects.get(name=study_name)
+    study = Study.objects.get(id=study_id)
     study_configuration_json = json.loads(study.study_configuration)
     params = study_configuration_json["params"]
 
@@ -61,7 +61,7 @@ class BaseChocolateAlgorithm(AbstractSuggestionAlgorithm):
 
     # 2. Update with completed advisor trials
     completed_advisor_trials = Trial.objects.filter(
-        study_name=study_name, status="Completed")
+        study_name=study_id, status="Completed")
 
     for index, advisor_trial in enumerate(completed_advisor_trials):
       parameter_values_json = json.loads(advisor_trial.parameter_values)

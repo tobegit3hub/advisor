@@ -23,9 +23,9 @@ from dashboard import views as dashboard_views
 urlpatterns = [
     # TODO: Redirect to dashboard instead of login page
     # url(r'^$', dashboard_views.home, name='home'),
-    url(r'^$', include('dashboard.urls')),
-    url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
+    url(r'^', include('dashboard.urls')),
+    url(r'^login/$', auth_views.LoginView, name='login'),
+    url(r'^logout/$', auth_views.LogoutView, name='logout'),
     url(r'^oauth/', include('social_django.urls', namespace='social')),  # <--
     url(r'^admin/', admin.site.urls),
     url(r'^suggestion/', include('suggestion.urls')),

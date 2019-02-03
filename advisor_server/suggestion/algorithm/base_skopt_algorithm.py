@@ -17,15 +17,17 @@ class BaseSkoptAlgorithm(AbstractSuggestionAlgorithm):
     self.algorithm_name = algorithm_name
 
 
-  def get_new_suggestions(self, study_name, input_trials=[], number=1):
+  def get_new_suggestions(self, study_id, input_trials=None, number=1):
     """
     Get the new suggested trials with skopt algorithm.
     """
 
     # Construct search space, example: {"x": hyperopt.hp.uniform('x', -10, 10), "x2": hyperopt.hp.uniform('x2', -10, 10)}
+    if input_trials is None:
+      input_trials = []
     hyperopt_search_space = {}
 
-    study = Study.objects.get(name=study_name)
+    study = Study.objects.get(id=study_id)
     study_configuration_json = json.loads(study.study_configuration)
     params = study_configuration_json["params"]
 
@@ -46,13 +48,13 @@ class BaseSkoptAlgorithm(AbstractSuggestionAlgorithm):
 
 
     if self.algorithm_name == "bayesian_optimization":
-      skopt_optimizer = skopt.Optimizer([(-2.0, 2.0)])
+      skopt_optimizer = skopt.Optimizer([(1.0, 10.0), (0.01, 0.5)])
     else:
       print("Unsupport skopt algorithm: {}".format(self.algorithm_name))
 
 
     completed_advisor_trials = Trial.objects.filter(
-        study_name=study_name, status="Completed")
+        study_name=study_id, status="Completed")
 
     for index, advisor_trial in enumerate(completed_advisor_trials):
       # Example: {"learning_rate": 0.01, "optimizer": "ftrl"}

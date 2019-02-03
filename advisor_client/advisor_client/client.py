@@ -77,7 +77,7 @@ class AdvisorClient(object):
 
     return study
 
-  def get_suggestions(self, study_name, trials_number=1):
+  def get_suggestions(self, study_id, trials_number=1):
     url = "{}/suggestion/v1/studies/{}/suggestions".format(
         self.endpoint, study_name)
     request_data = {"trials_number": trials_number}

@@ -5,6 +5,7 @@ scikit-learn
 scipy
 requests
 social-auth-app-django
+ghalton
 hyperopt
 git+https://github.com/AIworx-Labs/chocolate@master
 scikit-optimize

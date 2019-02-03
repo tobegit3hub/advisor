@@ -10,7 +10,7 @@ class EarlyStopDescendingAlgorithm(AbstractEarlyStopAlgorithm):
     result = []
 
     for trial in trials:
-      study = Study.objects.get(name=trial.study_name)
+      study = Study.objects.get(id=trial.study_name)
       study_configuration_json = json.loads(study.study_configuration)
       study_goal = study_configuration_json["goal"]
 
