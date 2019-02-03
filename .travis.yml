@@ -1,0 +1,16 @@
+sudo: false
+language: python
+python:
+  - "3.5"
+# command to install dependencies
+install:
+  # Ensure using latest pip, Travis provides wheels for most packages
+  - pip install -U pip
+  - pip install .
+  - pip install -r requirements.txt
+  - pip install -r advisor_client/requirements.txt
+  - pip install pytest
+# command to run tests
+script:
+  - bash advisor_client/advisor_client/run_unittest.sh
+  - bash advisor_server/run_unittest.sh
