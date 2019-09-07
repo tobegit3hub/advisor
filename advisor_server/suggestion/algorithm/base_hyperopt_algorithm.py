@@ -167,7 +167,7 @@ class BaseHyperoptAlgorithm(AbstractSuggestionAlgorithm):
     for i in range(number):
 
       # Example: {u'hidden2': [2], u'learning_rate': [0.04633366105812467], u'l1_normalization': [0.16858448611765364], u'optimizer': [3]}
-      vals = new_trials[0]['misc']['vals']
+      vals = new_trials[i]['misc']['vals']
 
       new_advisor_trial = Trial.create(study.name, "TpeTrial")
       parameter_values_json = {}
